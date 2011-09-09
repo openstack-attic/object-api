@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE chapter [
+<!-- Some useful entities borrowed from HTML -->
+<!ENTITY ndash  "&#x2013;">
+<!ENTITY mdash  "&#x2014;">
+<!ENTITY hellip "&#x2026;">
+
+<!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+
+<!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="img/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+
+<!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="img/Arrow_east.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]>
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="ch_object-storage-dev-troubleshooting">
+    <title>Troubleshooting</title>
+    <para>This section introduces a command-line utility, cURL, and demonstrates interacting with the ReST
+        interfaces through that utility.</para>
+    <section xml:id="using-curl-cli">
+        <title>Using cURL</title>
+        <para>cURL is a command-line tool which is available on most UNIX®-like environments and Mac
+            OS X® and can be downloaded for Windows®. For more information on cURL, visit <link
+                xlink:href="http://curl.haxx.se/">http://curl.haxx.se/</link>. </para>
+        <para>cURL allows you to transmit and receive HTTP requests and responses from the
+            command-line or from within a shell script. This makes it possible to work with the ReST API
+            directly without using one of the client APIs. </para>
+        <para>The following cURL command-line options will be used</para>
+        <variablelist>
+            <title>cURL Command-Line Options</title>
+            <varlistentry>
+                <term><option>-X METHOD</option></term>
+                <listitem>
+                    <para>Specify the HTTP method to request (<code>HEAD</code>, &GET;,
+                        etc.)</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><option>-D</option></term>
+                <listitem>
+                    <para>Dump HTTP response headers to stdout.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><option>-H HEADER</option></term>
+                <listitem>
+                    <para>Specify an HTTP header in the request.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+        <section xml:id="authentication-examples-curl">
+            <title>Authentication</title>
+            <para>In order to use the ReST API, you will first need to obtain a authorization token,
+                which will need to be passed in for each request using the <code>X-Auth-Token</code>
+                header. The following example demonstrates how to use cURL to obtain the authorization
+                token and the URL of the storage system.</para>
+            <example>
+                <title>cURL Authenticate</title>
+                <screen>
+   <command>curl</command> <option>-D</option> - \
+        <option>-H "X-Auth-Key: jdoesecretpassword"</option> \
+        <option>-H "X-Auth-User: jdoe"</option> \
+        <uri>https://auth.api.yourcloud.com/v1.0</uri>
+                      </screen>
+                <screen>
+   <computeroutput>HTTP/1.1 204 No Content
+   Date: Thu, 09 Jul 2009 15:31:39 GMT
+   Server: Apache/2.2.3
+   X-Storage-Url: https://storage.swiftdrive.com/v1/CF_xer7_343
+   X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae
+   Content-Length: 0
+   Connection: close
+   Content-Type: application/octet-stream
+                      </computeroutput></screen>
+            </example>
+            <para>The storage URL and authentication token are returned in
+                the headers of the response. After authentication, you can use cURL to perform
+                <code>HEAD</code>, &GET;, &DELETE;, &POST; and &PUT; requests on the storage
+                service.</para>
+        </section>
+        <section xml:id="determining-storage-useage">
+            <title>Determining Storage Usage</title>
+            <para>A <code>HEAD</code> request can be sent to the storage service to determine how much
+                data you have stored in the system and the number of containers you are using. Use the
+                <code>-X</code> switch to specify the correct HTTP method and the <code>-D</code> to
+                dump the HTTP response headers to terminal output (stdout).</para>
+            <example>
+                <title>cURL Get Storage Space</title>
+                <screen>
+   <command>curl</command> <option>–X HEAD</option> <option>-D</option> - \
+        <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+        <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
+                      </screen>
+                <screen>
+   <computeroutput>HTTP/1.1 204 No Content
+   Date: Thu, 09 Jul 2009 15:38:14 GMT
+   Server: Apache
+   X-Account-Container-Count: 22
+   X-Account-Bytes-Used: 9891628380
+   Content-Type: text/plain
+                      </computeroutput></screen>
+            </example>
+            <para>The HTTP request must include a header to specify the authentication token. The HTTP
+                headers in the response indicate the number of containers in this storage account and the
+                total bytes stored for the entire account.</para>
+        </section>
+        <section xml:id="creating-a-storage-container">
+            <title>Creating a Storage Container</title>
+            <para> Before uploading any data to OpenStack Object Storage, you must create a storage container. You do
+                this with a &PUT; request; cURL can be used for that, too.</para>
+            <example>
+                <title>cURL Create Storage Container</title>
+                <screen>
+   <command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+        <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+        <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/images</uri>
+                      </screen>
+                <screen>
+   <computeroutput>HTTP/1.1 201 Created
+   Date: Thu, 09 Jul 2009 17:03:36 GMT
+   Server: Apache
+   Content-Length: 0
+   Content-Type: text/plain
+   </computeroutput></screen>
+            </example>
+            <para>Returning an HTTP status code of 201 (Created) indicates that the container was
+                successfully created.</para>
+        </section>
+        <section xml:id="uploading-a-storage-object">
+            <title>Uploading a Storage Object</title>
+            <para>After creating a container, you can upload a local file. For this example, let's
+                upload a screenshot image. The <code>-T</code> switch specifies the full path to the local
+                file to upload. </para>
+            <example>
+                <title>cURL Upload Storage Object</title>
+                <screen>
+   <command>curl</command> <option>–X PUT</option> <option>-T screenies/wow1.jpg</option><option>-D</option> - \
+     <option>-H "ETag: 805120ec285a7ed28f74024422fe3594"</option> \
+     <option>-H "Content-Type: image/jpeg"</option> \
+     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+     <option>-H "X-Object-Meta-Screenie: Mel visits Outland"</option> \
+     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/images/wow1.jpg</uri>
+                      </screen>
+                <screen>
+   <computeroutput>HTTP/1.1 201 Created
+   Date: Thu, 09 Jul 2009 17:03:36 GMT
+   Server: Apache
+   Content-Length: 0
+   Etag: 805120ec285a7ed28f74024422fe3594 
+   Content-Type: text/plain
+   </computeroutput></screen>
+            </example>
+        </section>
+        <section xml:id="other-curl-commands">
+            <title>Other cURL Commands</title>
+            <para>You can issue any of the ReST methods defined for OpenStack Object Storage with the cURL utility.
+                For example, you can use cURL to send &POST; and &DELETE; requests even though we haven't
+                provided specific examples.</para>
+            <para>Note that generally each time you invoke <code>curl</code> to perform an
+                operation, the system creates a separate TCP/IP and SSL connection and then throws it away. The language
+                APIs, however, are designed to re-use these connections between operations and therefore
+                provide much better performance. We recommend that you use one of the supported
+                language APIs in your production applications and limit <code>curl</code> to
+                quick-and-easy testing/troubleshooting.</para>
+        </section>
+    </section>
+</chapter>

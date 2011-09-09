@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book [
+        <!-- Some useful entities borrowed from HTML -->
+        <!ENTITY ndash  "&#x2013;">
+        <!ENTITY mdash  "&#x2014;">
+        <!ENTITY hellip "&#x2026;">
+
+        <!-- Useful for describing APIs -->
+        <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+        <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+        <!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+        <!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+
+        <!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+                 <imageobject>
+                  <imagedata fileref="img/Check_mark_23x20_02.svg"
+                             format="SVG" scale="60"/>
+                  </imageobject>
+                </inlinemediaobject>'>
+
+         <!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+                  <imageobject>
+                   <imagedata fileref="img/Arrow_east.svg"
+                              format="SVG" scale="60"/>
+                  </imageobject>
+                </inlinemediaobject>'>
+]>
+  <book xmlns="http://docbook.org/ns/docbook"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:xi="http://www.w3.org/2001/XInclude"
+        xmlns:svg="http://www.w3.org/2000/svg"
+        xmlns:m="http://www.w3.org/1998/Math/MathML"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns:db="http://docbook.org/ns/docbook"
+        version="5.0">
+  <title>OpenStack Object Storage Developer Guide</title>
+  <info>
+    <author>
+      <personname>
+        <firstname/>
+        <surname/>
+      </personname>
+      <affiliation>
+        <orgname>OpenStack</orgname>
+      </affiliation>
+    </author>
+    <copyright>
+      <year>2010</year>
+      <year>2011</year>
+      <holder>OpenStack, LLC</holder>
+    </copyright>
+    <releaseinfo>API v1</releaseinfo>
+    <productname>OpenStack Object Storage</productname>
+    <pubdate>2011-09-08</pubdate>
+    <legalnotice role="apache2">
+      <annotation>
+        <remark>Copyright details are filled in by the template.</remark>
+      </annotation>
+    </legalnotice>
+    <abstract>
+      <para> This document is intended for software developers interested in developing applications
+        using the OpenStack™ Object Storage Application Programming Interface
+        (<abbrev>API</abbrev>). </para>
+    </abstract>
+    <cover>
+      <para>this is a placeholder for the front cover</para>
+    </cover>
+    <cover>
+      <para>this is a placeholder for the back cover</para>
+      
+    </cover>
+  </info>
+    
+    <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->
+    <xi:include href="object-api-overview.xml"/>
+    <xi:include href="object-api-general.xml"/>
+    <xi:include href="object-api-storage-services.xml"/>
+    <xi:include href="object-api-troubleshooting-examples.xml"/>
+</book>
