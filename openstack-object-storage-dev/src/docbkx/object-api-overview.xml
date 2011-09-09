@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter [
+<!-- Some useful entities borrowed from HTML -->
+<!ENTITY ndash  "&#x2013;">
+<!ENTITY mdash  "&#x2014;">
+<!ENTITY hellip "&#x2026;">
+
+<!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+
+<!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="img/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+
+<!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="img/Arrow_east.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]>
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="ch_object-storage-dev-overview">
+    
+    <title>Overview</title>
+    <para>OpenStack Object Storage is an affordable, redundant, scalable, and dynamic storage
+        service offering. The core storage system is designed to provide a safe, secure,
+        automatically re-sizing and network accessible way to store data. You can store an
+        unlimited quantity of files and each file can be as large as 5 gigabytes, plus with
+        large storage support you can download and .</para>
+    <para>OpenStack Object Storage allows users to store and retrieve files and content via a simple
+        Web Service (ReST: Representational State Transfer) interface. There are also
+        language-specific APIs that utilize the ReSTful API but make it much easier for
+        developers to integrate into their applications.</para>
+    <para>For more details on the OpenStack Object Storage service, please refer to <link
+        xlink:href="http://swift.openstack.org"
+        >http://swift.openstack.org</link>
+    </para>
+    <para> We welcome feedback, comments, and bug reports at <link
+        xlink:href="http://bugs.launchpad.net/swift">bugs.launchpad.net/swift</link>. 
+    </para>
+    <section xml:id="intended-audience-object-dev-guide">
+        <title>Intended Audience</title>
+        <para>This guide is intended to assist software developers who want to develop applications
+            using the OpenStack Object Storage API. It fully documents the ReST application programming
+            interface (API) that allows developers to interact with the storage components of
+            the OpenStack Object Storage system. To use the information provided here, you should first have a
+            general understanding of the OpenStack Object Storage service and have access to an installation of
+            OpenStack Object Storage. You should also be familiar with: </para>
+        <itemizedlist spacing="compact">
+            <listitem>
+                <para>ReSTful web services</para>
+            </listitem>
+            <listitem>
+                <para>HTTP/1.1</para>
+            </listitem>
+        </itemizedlist>
+        <para>Rackspace also provides Rackspace-supported, language-specific APIs in several popular
+            programming languages. Currently, the supported APIs are C#/.NET, Java, PHP, Python,
+            and Ruby. These APIs utilize the ReST API and are provided to help developers
+            rapidly integrate OpenStack Object Storage support into their applications without
+            needing to write at the ReST interface. Each API includes its own documentation in
+            its native format. For example, the Java API includes JavaDocs and the C#/.NET API
+            includes a CHM file.</para>
+        
+    </section>
+    
+    <section xml:id="doc-change-history-object-dev-guide">
+        <title>Document Change History</title>
+        <para>This version of the Developer Guide was forked from the Rackspace Cloud Files Developer
+            Guide. The most recent changes for both guides are described in the table
+            below:</para>
+        <informaltable rules='all'>
+            <thead>
+                <tr>
+                    <td align="center" colspan="1">Revision Date</td>
+                    <td align="center" colspan="4">Summary of Changes</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="1" align="center">Feb. 10, 2011</td>
+                    
+                    <td colspan="4">
+                        <itemizedlist spacing="compact">
+                            <listitem>
+                                <para> 
+                                    Revised to change first to last in the first range example for fetching a portion of an object.
+                                </para>
+                            </listitem>
+                            
+                        </itemizedlist>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="1" align="center">Jan. 25, 2011</td>
+                    
+                    <td colspan="4">
+                        <itemizedlist spacing="compact">
+                            <listitem>
+                                <para> 
+                                    Revised for OpenStack Object Storage use by removing CDN references, Rackspace Cloud references, and revised account examples and URLs for generic implementations.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    It's not a changed requirement that Container and Object names are required to be UTF-8, but it's pointed out in the documentation.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </td>
+                </tr><tr>
+                    <td colspan="1" align="center">Jan. 12, 2011</td>
+                    <td colspan="4">
+                        <itemizedlist spacing="compact">
+                            <listitem>
+                                <para> 
+                                    Removed references to ACL (Access Control List).
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para> 
+                                    Fixed error in examples referring to X-Auth-Key where it should be X-Auth-Token.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para>
+                                    Added section numbers.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </td>
+                </tr><tr>
+                    <td colspan="1" align="center">Jan. 4, 2011</td>
+                    <td colspan="4">
+                        <itemizedlist spacing="compact">
+                            <listitem>
+                                <para> 
+                                    Expanded authentication information for UK release.
+                                </para>
+                            </listitem>
+                            <listitem>
+                                <para> 
+                                    Added "delimiter" as a Query Parameter and server-side object copy example.
+                                </para>
+                            </listitem>
+                        </itemizedlist>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="1" align="center">May 5, 2008</td>
+                    <td colspan="4">
+                        <itemizedlist spacing="compact">
+                            <listitem>
+                                <para>Initial release.</para>
+                            </listitem>
+                        </itemizedlist>
+                    </td>
+                </tr>
+            </tbody>
+        </informaltable>
+    </section>
+    <section xml:id="additional-resources-object-devguide">
+        <title>Additional Resources</title>
+        <para>You can download the most current version of this document from the OpenStack Docs
+            website at <link
+                xlink:href="http://docs.openstack.org">
+                http://docs.openstack.org</link>. </para>
+        <para> For more details about the Rackspace Cloud Files implementation of the OpenStack Object
+            Storage service, please refer to <link
+                xlink:href="www.rackspacecloud.com/cloud_hosting_products/files"
+                >http://www.rackspacecloud.com/cloud_hosting_products/files</link>. Related documents are
+            available at the same site, as are links to Rackspace's official support channels, including
+            knowledge base articles, forums, phone, chat, and email. </para>
+        
+    </section>   
+</chapter>
