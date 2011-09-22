@@ -32,7 +32,8 @@
         xmlns:m="http://www.w3.org/1998/Math/MathML"
         xmlns:html="http://www.w3.org/1999/xhtml"
         xmlns:db="http://docbook.org/ns/docbook"
-        version="5.0">
+        version="5.0"
+    xml:id="openstack-object-storage-dev-guide">
   <title>OpenStack Object Storage Developer Guide</title>
   <info>
     <author>
@@ -51,7 +52,7 @@
     </copyright>
     <releaseinfo>API v1</releaseinfo>
     <productname>OpenStack Object Storage</productname>
-    <pubdate>2011-09-08</pubdate>
+    <pubdate>2011-09-22</pubdate>
     <legalnotice role="apache2">
       <annotation>
         <remark>Copyright details are filled in by the template.</remark>

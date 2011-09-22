@@ -70,7 +70,7 @@
                         <phase>generate-sources</phase>
                         <configuration>
                             <!-- These parameters only apply to webhelp -->
-                            <enableDisqus>0</enableDisqus>
+                            <enableDisqus>1</enableDisqus>
                             <disqusShortname>openstackdocs</disqusShortname>
                             <enableGoogleAnalytics>1</enableGoogleAnalytics>
                             <googleAnalyticsId>UA-17511903-6</googleAnalyticsId>
@@ -95,7 +95,7 @@
                                 <!-- No figures in this book -->
                                 
                                 <!-- Copies HTML to a release folder -->                                                                                <copy
-                                    todir="${basedir}/target/docbkx/webhelp/trunk/openstack-object-storage/developer">
+                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0">
                                     <fileset
                                         dir="${basedir}/target/docbkx/webhelp/os-objectstorage-devguide">
                                         <include name="**/*" />
@@ -106,7 +106,7 @@
                                 
                                 <move failonerror="false"
                                     file="${basedir}/target/docbkx/pdf/os-objectstorage-devguide.pdf"
-                                    tofile="${basedir}/target/docbkx/webhelp/trunk/openstack-object-storage/developer/os-objectstorage-devguide-trunk.pdf"/>
+                                    tofile="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/os-objectstorage-devguide-1.0.pdf"/>
                                 
                                 <delete
                                     dir="${basedir}/target/docbkx/webhelp/os-objectstorage-devguide"/>
