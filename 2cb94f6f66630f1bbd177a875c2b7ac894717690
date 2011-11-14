@@ -1,0 +1,7 @@
+Verified+1: Jenkins
+Code-Review+2: Anne Gentle <anne@openstack.org>
+Submitted-by: Jenkins
+Submitted-at: Mon, 14 Nov 2011 21:59:24 +0000
+Reviewed-on: https://review.openstack.org/1592
+Project: openstack/object-api
+Branch: refs/heads/master
