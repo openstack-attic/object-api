@@ -413,4 +413,75 @@ jerry
         </example>
 	</section>
 
+    <section xml:id="special-metadata-acls">
+        <title>Special Metadata: Container ACLs</title>
+        <para>A particularly important metadata element for containers is X-Container-Read, which establishes the ACL permissions on who can read objects in the container.  Prior to being set, the ACL logic default to only be accessible to someone with a valid X-Auth-Token for the account in question.  Doing a simple listing of a container shows us the absence of X-Container-Read in this default situation:</para>
+        <example>
+            <title>cURL List Container Showing Lack of ACL</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: tx3aa52e951fc64b63bc1fda27902b9bd3
+Content-Length: 0
+Date: Tue, 15 Nov 2011 03:29:22 GMT
+</computeroutput>
+		</screen>
+        </example>
+		<para>Now we'll set the X-Container-Read.  For a full explanation of valid values, see: http://swift.openstack.org/misc.html#acls but for our simple needs, we'll enable read access and listing access to anybody:</para>
+		<example>
+            <title>cURL Setting an ACL on a Container</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+	<option>-H "X-Container-Read: .r:*,.rlistings"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 202 Accepted
+Content-Length: 58
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txf2befb56b1854a50995f710f2db48089
+Date: Tue, 15 Nov 2011 03:33:16 GMT
+
+202 Accepted
+
+The request is accepted for processing.
+</computeroutput>
+			</screen>
+        </example>
+		<para>To see the metadata change, do a listing again:</para>
+		<example>
+            <title>cURL List Container Showing with an ACL</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: txb40eb86d949345f7bc66b01e8b63c3a5
+Content-Length: 0
+Date: Tue, 15 Nov 2011 03:33:36 GMT
+</computeroutput>
+			</screen>
+        </example>
+		<para>The side effect of giving anybody read access is that any object in the container is now accessible from a browser simply by entering the X-Storage-URL used throughout the session and append the object name.  For example:</para>
+	<para>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry/cereal.jpg</para>
+		<para>would be the URL of an object named "cereal.jpg" in the container "jerry" that has been made publicly accessible using this method.</para>
+	</section>
+
 </chapter>
