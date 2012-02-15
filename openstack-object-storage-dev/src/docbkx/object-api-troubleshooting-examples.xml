@@ -52,7 +52,7 @@ format="SVG" scale="60"/>
                 </listitem>
             </varlistentry>
             <varlistentry>
-                <term><option>-D</option></term>
+                <term><option>-i</option></term>
                 <listitem>
                     <para>Dump HTTP response headers to stdout.</para>
                 </listitem>
@@ -75,7 +75,7 @@ format="SVG" scale="60"/>
         <example>
             <title>cURL Authenticate</title>
             <screen>
-<command>curl</command> <option>-D</option> - \
+<command>curl</command> <option>-i</option> \
     <option>-H "X-Auth-Key: jdoesecretpassword"</option> \
     <option>-H "X-Auth-User: jdoe"</option> \
     <uri>https://auth.api.yourcloud.com/v1.0</uri>
@@ -103,12 +103,12 @@ Content-Type: application/octet-stream
         <title>Determining Storage Usage</title>
         <para>A <code>HEAD</code> request can be sent to the storage service to determine how much
             data you have stored in the system and the number of containers you are using. Use the
-            <code>-X</code> switch to specify the correct HTTP method and the <code>-D</code> to
+            <code>-X</code> switch to specify the correct HTTP method and the <code>-i</code> to
             dump the HTTP response headers to terminal output (stdout).</para>
         <example>
             <title>cURL Get Storage Space</title>
             <screen>
-<command>curl</command> <option>–X HEAD</option> <option>-D</option> - \
+<command>curl</command> <option>–X HEAD</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
                   </screen>
@@ -134,7 +134,7 @@ Content-Type: text/plain
         <example>
             <title>cURL List Storage Container</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
@@ -156,7 +156,7 @@ Date: Mon, 07 Nov 2011 17:07:01 GMT
 		<example>
             <title>cURL Create Storage Container</title>
             <screen>
-<command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+<command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/george</uri>
             </screen>
@@ -176,7 +176,7 @@ Date: Mon, 07 Nov 2011 17:44:20 GMT
         <example>
             <title>cURL List Storage Container After a Creation</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
@@ -204,7 +204,7 @@ george
         <example>
             <title>cURL List Storage Container (long list)</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
@@ -232,7 +232,7 @@ jerry
 		<example>
             <title>cURL List Storage Container with Paging (first page)</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?limit=2</uri>
             </screen>
@@ -257,7 +257,7 @@ dogs
         <example>
             <title>cURL List Storage Container with Paging (later pages)</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?marker=dogs\&amp;limit=2</uri>
             </screen>
@@ -287,7 +287,7 @@ george
         <example>
             <title>cURL List Storage Container (JSON output)</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?format=json</uri>
             </screen>
@@ -314,7 +314,7 @@ Date: Mon, 07 Nov 2011 19:17:33 GMT
 		<example>
             <title>cURL List Storage Container (XML output)</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?format=xml</uri>
             </screen>
@@ -350,7 +350,7 @@ Date: Mon, 07 Nov 2011 19:17:38 GMT
         <example>
             <title>cURL List Container Metadata</title>
             <screen>
-<command>curl</command> <option>–X HEAD</option> <option>-D</option> - \
+<command>curl</command> <option>–X HEAD</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
             </screen>
@@ -370,7 +370,7 @@ Date: Mon, 07 Nov 2011 20:39:41 GMT
 		<example>
             <title>cURL Delete Storage Container</title>
             <screen>
-<command>curl</command> <option>–X DELETE</option> <option>-D</option> - \
+<command>curl</command> <option>–X DELETE</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/george</uri>
             </screen>
@@ -388,7 +388,7 @@ Date: Mon, 07 Nov 2011 20:42:58 GMT
 		<example>
             <title>cURL List Containers After a Delete</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
@@ -419,7 +419,7 @@ jerry
         <example>
             <title>cURL List Container Showing Lack of ACL</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
             </screen>
@@ -439,7 +439,7 @@ Date: Tue, 15 Nov 2011 03:29:22 GMT
 		<example>
             <title>cURL Setting an ACL on a Container</title>
             <screen>
-<command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+<command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
 	<option>-H "X-Container-Read: .r:*,.rlistings"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
@@ -462,7 +462,7 @@ The request is accepted for processing.
 		<example>
             <title>cURL List Container Showing with an ACL</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
             </screen>
@@ -503,7 +503,7 @@ total 504
 		<example>
             <title>Creating and Uploading an Object to a Container</title>
             <screen>
-<command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+<command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
 	<option>-T JingleRocky.jpg"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
@@ -537,7 +537,7 @@ Date: Mon, 07 Nov 2011 22:51:30 GMT
 		<example>
             <title>cURL List Container Showing Newly Uploaded Object</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
             </screen>
@@ -561,7 +561,7 @@ JingleRocky.jpg
 		<example>
             <title>cURL List Container Showing Multiple Newly Uploaded Objects</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
             </screen>
@@ -591,7 +591,7 @@ SittingBuster.jpg
 		<example>
             <title>cURL List Objects (first page)</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?limit=2</uri>
             </screen>
@@ -616,7 +616,7 @@ RockyAndBuster.jpg
 		<example>
             <title>cURL List Objects with Paging (later pages)</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?marker=RockyAndBuster.jpg\&amp;limit=2</uri>
             </screen>
@@ -662,7 +662,7 @@ total 416
 		<example>
             <title>cURL Retrieve an Object</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg > JingleRocky.jpg</uri>
             </screen>
@@ -680,7 +680,7 @@ total 504
 		<example>
             <title>cURL Server-side Copy an Object</title>
             <screen>
-<command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+<command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
 	<option>-H "X-Copy-From: /dogs/JingleRocky.jpg"</option> \
 	<option>-H "Content-Length: 0"</option> \
@@ -716,9 +716,9 @@ Date: Mon, 07 Nov 2011 23:23:54 GMT
 		<example>
             <title>cURL Confirming the Server-side Copy an Object</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
-    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine</uri>
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/</uri>
             </screen>
             <screen>
 <computeroutput>				
@@ -739,7 +739,7 @@ JingleRocky.jpg
 		<example>
             <title>cURL Delete an Object</title>
             <screen>
-<command>curl</command> <option>–X DELETE</option> <option>-D</option> - \
+<command>curl</command> <option>–X DELETE</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg</uri>
             </screen>
@@ -757,7 +757,7 @@ Date: Mon, 07 Nov 2011 23:32:39 GMT
 		<example>
             <title>cURL Confirming the Delete an Object</title>
             <screen>
-<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/</uri>
             </screen>
@@ -770,6 +770,58 @@ Accept-Ranges: bytes
 X-Trans-Id: txc9b43bf4d896405eb9a88ca468bf7b2d
 Content-Length: 0
 Date: Mon, 07 Nov 2011 23:32:41 GMT
+</computeroutput>
+			</screen>
+        </example>
+	</section>
+	
+    <section xml:id="object-metadata">
+        <title>Object Metadata</title>
+		<para>Objects can have whatever metadata keys/values you choose.  Simply POST an HTTP Header to the object in the form of X-Object-Meta-&lt;key>: &lt;value>.  Like this:</para>
+		<example>
+            <title>cURL Set Object Metadata</title>
+            <screen>
+<command>curl</command> <option>–X POST</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <option>-H "X-Object-Meta-Breed: Terrier pit bull mix""</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg > JingleRocky.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+	&lt;html>
+	 &lt;head>
+	  &lt;title>202 Accepted&lt;/title>
+	 &lt;/head>
+	 &lt;body>
+	  &lt;h1>202 Accepted&lt;/h1>
+	  The request is accepted for processing.&lt;br />&lt;br />
+
+
+
+	 &lt;/body>
+	&lt;/html>
+</computeroutput>
+			</screen>
+        </example>
+		<para>And then read the object metadata with a HEAD on the object path:</para>
+		<example>
+            <title>cURL Reading Object Metadata</title>
+            <screen>
+<command>curl</command> <option>–X HEAD</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+    HTTP/1.1 200 OK
+	X-Object-Meta-Breed: Terrier pit bull mix
+	Last-Modified: Tue, 08 Nov 2011 01:26:49 GMT
+	Etag: f7d40eceffdd9c2ecab226105737b2a6
+	Accept-Ranges: bytes
+	Content-Length: 44765
+	Content-Type: image/jpeg
+	X-Trans-Id: txa8bff9ad7ef844829103c1f9b8c20781
+	Date: Tue, 08 Nov 2011 01:29:35 GMT
 </computeroutput>
 			</screen>
         </example>
