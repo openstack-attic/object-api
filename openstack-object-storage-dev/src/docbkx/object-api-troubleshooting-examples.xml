@@ -198,8 +198,8 @@ george
         </example>
 		<para>You may have noticed the account metadata that comes back from the listing call.  As you'd guess, it'll tell you how many objects you have, how much space you are using, and how many containers you are using.</para>
     </section>
-    <section xml:id="paging-container-lists">
-        <title>Paging long list of containers</title>
+    <section xml:id="paging-containers">
+        <title>Paging Lists of Containers</title>
         <para>If you have a large number of containers, it is sometimes more convenient to page through them than getting some big long list of them.  If I create more containers and then do a regular listing, here's what it looks like with five containers:</para>
         <example>
             <title>cURL List Storage Container (long list)</title>
@@ -584,4 +584,58 @@ SittingBuster.jpg
 			</screen>
         </example>
 	</section>
+	
+    <section xml:id="paging-objects">
+        <title>Paging Lists of Objects</title>
+        <para>Exactly like listing containers, objects can be listed in pages at a time using markers to denote pages.  From the previous example with 3 objects in the container "dogs", the list can be paged with the "limit" query string variable:</para>
+		<example>
+            <title>cURL List Objects (first page)</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?limit=2</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 3
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 252732
+Accept-Ranges: bytes
+Content-Length: 35
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx5e00fa9fa895423198bc814cb0c6162d
+Date: Tue, 15 Nov 2011 03:53:51 GMT
+
+JingleRocky.jpg
+RockyAndBuster.jpg
+</computeroutput>
+			</screen>
+        </example>
+		<para>And the second page fetched with:</para>
+		<example>
+            <title>cURL List Objects with Paging (later pages)</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?marker=RockyAndBuster.jpg\&amp;limit=2</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 3
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 252732
+Accept-Ranges: bytes
+Content-Length: 18
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: txe1287a7179dc4dfd98610850a0fff157
+Date: Tue, 15 Nov 2011 03:54:21 GMT
+
+SittingBuster.jpg
+</computeroutput>
+			</screen>
+        </example>
+	</section>	
+	
 </chapter>
