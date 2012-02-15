@@ -484,4 +484,104 @@ Date: Tue, 15 Nov 2011 03:33:36 GMT
 		<para>would be the URL of an object named "cereal.jpg" in the container "jerry" that has been made publicly accessible using this method.</para>
 	</section>
 
+    <section xml:id="creating-objects">
+        <title>Creating Objects</title>
+        <para>Enough with containers already, let's start to upload some objects.  Suppose you had a local directory full of dog pictures:</para>
+        <example>
+            <title>Sample File Listing</title>
+            <screen>
+<computeroutput>				
+$ ls -l
+total 504
+-rw-r--r--@ 1 petecj2  staff   44765 Nov  7 14:49 JingleRocky.jpg
+-rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg
+</computeroutput>
+		</screen>
+        </example>
+		<para>In order to put one of them in a container called "dogs" with cURL, you'd do this:</para>
+		<example>
+            <title>Creating and Uploading an Object to a Container</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+	<option>-T JingleRocky.jpg"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: f7d40eceffdd9c2ecab226105737b2a6
+Last-Modified: Mon, 07 Nov 2011 22:51:29 GMT
+X-Trans-Id: txd131cc897c78403daf5fad010d4d7152
+Date: Mon, 07 Nov 2011 22:51:30 GMT
+
+&lt;html>
+ &lt;head>
+  &lt;title>201 Created&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>201 Created&lt;/h1>
+  &lt;br />&lt;br />
+
+
+
+ &lt;/body>
+&lt;/html>
+</computeroutput>
+			</screen>
+        </example>
+		<para>The object gets named from whatever we append to the URL path beyond the container name and the -T switch lets us name a file to push with the operation as the request body.  We can confirm the upload by checking the container again:</para>
+		<example>
+            <title>cURL List Container Showing Newly Uploaded Object</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 1
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 44765
+Accept-Ranges: bytes
+Content-Length: 16
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx83be89d4e1a34eacbfeebcdfc7a7f2e7
+Date: Mon, 07 Nov 2011 22:56:25 GMT
+
+JingleRocky.jpg
+</computeroutput>
+			</screen>
+        </example>
+		<para>Notice that the container metadata now reflects the number of objects and the bytes match what we saw when we did the directory listing.  After uploading the other two similarly, we get a full object listing:</para>
+		<example>
+            <title>cURL List Container Showing Multiple Newly Uploaded Objects</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 3
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 252732
+Accept-Ranges: bytes
+Content-Length: 53
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: txae17dfa78da64117aaf07585a1b02115
+Date: Mon, 07 Nov 2011 23:00:56 GMT
+
+JingleRocky.jpg
+RockyAndBuster.jpg
+SittingBuster.jpg
+</computeroutput>
+			</screen>
+        </example>
+	</section>
 </chapter>
