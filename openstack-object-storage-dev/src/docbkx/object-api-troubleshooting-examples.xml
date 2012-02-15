@@ -638,4 +638,141 @@ SittingBuster.jpg
         </example>
 	</section>	
 	
+    <section xml:id="retrieve-copy-retrieve-objects">
+        <title>Retrieve, Copy, and Delete Objects</title>
+        <para>Now we'll retrieve an object previously uploaded.  First, we'll remove the local copy:</para>
+		<example>
+            <title>Removing Local Copies</title>
+            <screen>
+<computeroutput>				
+$ ls -l
+total 504
+-rw-r--r--@ 1 petecj2  staff   44765 Nov  7 14:49 JingleRocky.jpg
+-rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg  
+$ rm JingleRocky.jpg
+$ ls -l
+total 416
+-rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg
+</computeroutput>
+			</screen>
+        </example>
+		<para>Be sure not to use -i switch here since what we want is the raw data, which we'll then pipe to a file:</para>
+		<example>
+            <title>cURL Retrieve an Object</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg > JingleRocky.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+$ ls -l
+total 504
+-rw-r--r--  1 petecj2  staff   44765 Nov  7 15:11 JingleRocky.jpg
+-rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg
+</computeroutput>
+			</screen>
+        </example>
+		<para>Next, Object Storage provides a facility to copy objects from one container to another entirely on the server side.  To do this, you do a PUT with the destination container and new object name while passing a special X-Copy-From header and a Content-Length of zero:</para>
+		<example>
+            <title>cURL Server-side Copy an Object</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+	<option>-H "X-Copy-From: /dogs/JingleRocky.jpg"</option> \
+	<option>-H "Content-Length: 0"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg > JingleRocky.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: f7d40eceffdd9c2ecab226105737b2a6
+X-Copied-From: dogs/JingleRocky.jpg
+Last-Modified: Mon, 07 Nov 2011 23:23:53 GMT
+X-Trans-Id: tx244cd14df1b94d8c91ec5dcf8c5f9da4
+Date: Mon, 07 Nov 2011 23:23:54 GMT
+
+&lt;html>
+ &lt;head>
+  &lt;title>201 Created&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>201 Created&lt;/h1>
+  &lt;br />&lt;br />
+
+
+
+ &lt;/body>
+&lt;/html>
+</computeroutput>
+			</screen>
+        </example>
+		<para>Next, Object Storage provides a facility to copy objects from one container to another entirely on the server side.  To do this, you do a PUT with the destination container and new object name while passing a special X-Copy-From header and a Content-Length of zero:</para>
+		<example>
+            <title>cURL Confirming the Server-side Copy an Object</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 1
+X-Container-Bytes-Used: 44765
+Accept-Ranges: bytes
+Content-Length: 16
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx46986b4a09b34790924fd43842b2b0dd
+Date: Mon, 07 Nov 2011 23:24:05 GMT
+
+JingleRocky.jpg
+</computeroutput>
+			</screen>
+        </example>
+		<para>To delete an object from its container, simply use the DELETE verb:</para>
+		<example>
+            <title>cURL Delete an Object</title>
+            <screen>
+<command>curl</command> <option>–X DELETE</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 204 No Content
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txd45f04422b034e6f8447de400b78cbf3
+Date: Mon, 07 Nov 2011 23:32:39 GMT
+</computeroutput>
+			</screen>
+        </example>
+		<para>Confirming the deletion by doing a container listing:</para>
+		<example>
+            <title>cURL Confirming the Delete an Object</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: txc9b43bf4d896405eb9a88ca468bf7b2d
+Content-Length: 0
+Date: Mon, 07 Nov 2011 23:32:41 GMT
+</computeroutput>
+			</screen>
+        </example>
+	</section>
+	
 </chapter>
