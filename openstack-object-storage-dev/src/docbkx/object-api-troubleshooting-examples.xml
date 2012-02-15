@@ -129,7 +129,7 @@ Content-Type: text/plain
     </section>
 
     <section xml:id="listing-and-creating-storage-containers">
-        <title>Listing and creating containers</title>
+        <title>Listing and Creating Containers</title>
         <para> The simplest operation for Object Storage is to simply list the containers you have, which when you don't have any containers yet isn't terribly exciting:</para>
         <example>
             <title>cURL List Storage Container</title>
@@ -441,7 +441,7 @@ Date: Tue, 15 Nov 2011 03:29:22 GMT
             <screen>
 <command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
-	<option>-H "X-Container-Read: .r:*,.rlistings"</option> \
+    <option>-H "X-Container-Read: .r:*,.rlistings"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
             </screen>
             <screen>
@@ -505,7 +505,7 @@ total 504
             <screen>
 <command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
-	<option>-T JingleRocky.jpg"</option> \
+    <option>-T JingleRocky.jpg"</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
             </screen>
             <screen>
@@ -682,9 +682,9 @@ total 504
             <screen>
 <command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
-	<option>-H "X-Copy-From: /dogs/JingleRocky.jpg"</option> \
-	<option>-H "Content-Length: 0"</option> \
-    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg > JingleRocky.jpg</uri>
+    <option>-H "X-Copy-From: /dogs/JingleRocky.jpg"</option> \
+    <option>-H "Content-Length: 0"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg</uri>
             </screen>
             <screen>
 <computeroutput>				
@@ -784,7 +784,7 @@ Date: Mon, 07 Nov 2011 23:32:41 GMT
 <command>curl</command> <option>–X POST</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
     <option>-H "X-Object-Meta-Breed: Terrier pit bull mix""</option> \
-    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg > JingleRocky.jpg</uri>
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
             </screen>
             <screen>
 <computeroutput>				
@@ -825,6 +825,191 @@ Date: Mon, 07 Nov 2011 23:32:41 GMT
 </computeroutput>
 			</screen>
         </example>
+	</section>
+	
+    <section xml:id="folders-directories">
+        <title>Pseudo-Hierarchical Folders/Directories</title>
+		<para>For the last section, we come to the most confusing concept in Object Storage.  In most storage systems, you have the ability to create custom hierarchies of files so that you can better organize them.  On its surface, Object Storage only gives you one level of hierarchy in the form of containers.  However, it turns out that you can get creative with naming your objects to give yourself the same effect as having hierarchical containers.</para>
+		<para>Let's start with a fresh container without any objects in it:</para>
+		<example>
+            <title>cURL Create New Container for Folders</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 18
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txc78254a41b374b6ea10590d90874f769
+Date: Wed, 16 Nov 2011 00:06:22 GMT
+
+201 Created
+</computeroutput>
+			</screen>
+        </example>
+		<para>Now list the new container:</para>
+		<example>
+            <title>cURL Listing the New Container</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: tx49112200f7934c2bab1de3ae103c368e
+Content-Length: 0
+Date: Wed, 16 Nov 2011 00:06:26 GMT
+</computeroutput>
+			</screen>
+        </example>
+		<para>Next, add an object but prefix the name with the hierarchy desired:</para>
+		<example>
+            <title>cURL Upload an Object with a Prefix</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <option>-T JingleRocky.jpg</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos/terriers/JingleRocky.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: f7d40eceffdd9c2ecab226105737b2a6
+Last-Modified: Wed, 16 Nov 2011 00:09:18 GMT
+X-Trans-Id: txe34fdf2704f044e3a7102256386b1cb7
+Date: Wed, 16 Nov 2011 00:09:19 GMT
+
+&lt;html>
+	&lt;head>
+ 		&lt;title>201 Created&lt;/title>
+	&lt;/head>
+	&lt;body>
+ 		&lt;h1>201 Created&lt;/h1>
+ 		&lt;br />&lt;br />
+	
+	
+	
+	&lt;/body>
+&lt;/html>
+</computeroutput>
+			</screen>
+        </example>
+		<para>Do it again with a different object and prefix:</para>
+		<example>
+            <title>cURL Upload a Different Object with a Different Prefix</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <option>-T SittingBuster.jpg</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos/chihuahuas/SittingBuster.jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: e692e744c7180ee368166a24f1a2fa9b
+Last-Modified: Wed, 16 Nov 2011 00:52:25 GMT
+X-Trans-Id: txe229d03af5ea4d2ea1071def213c3f02
+Date: Wed, 16 Nov 2011 00:52:25 GMT
+
+&lt;html>
+	&lt;head>
+ 		&lt;title>201 Created&lt;/title>
+	&lt;/head>
+	&lt;body>
+ 		&lt;h1>201 Created&lt;/h1>
+ 		&lt;br />&lt;br />
+
+
+
+	&lt;/body>
+&lt;/html>
+</computeroutput>
+			</screen>
+        </example>
+		<para>Now list the container, revealing the prefixes:</para>
+		<example>
+            <title>cURL Listing a Container with Object Prefix</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 2
+X-Container-Bytes-Used: 151868
+Accept-Ranges: bytes
+Content-Length: 54
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx8544a17e8b1e4da693145fb5f2e6db43
+Date: Wed, 16 Nov 2011 00:53:43 GMT
+
+chihuahuas/SittingBuster.jpg
+terriers/JingleRocky.jpg
+</computeroutput>
+			</screen>
+        </example>
+		<para>If you want to perform hierarchical listings, with the prefixes in place, you can use the "path" query string variable:</para>
+		<example>
+            <title>cURL Listing a Container with a Path</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos?path=terriers</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 2
+X-Container-Bytes-Used: 151868
+Accept-Ranges: bytes
+Content-Length: 25
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx3f1b9575d4de4a7d97ba3f9ad81923cc
+Date: Wed, 16 Nov 2011 00:55:12 GMT
+
+terriers/JingleRocky.jpg
+</computeroutput>
+			</screen>
+        </example>
+		<para>If you wanted to see what prefixes were in place, you can use the "delimiter" query string variable to distinguish prefix paths from object names:</para>
+		<example>
+            <title>cURL Listing a Container with a Delimiter</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-i</option> \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos?delimiter=/</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Container-Object-Count: 2
+X-Container-Bytes-Used: 151868
+Accept-Ranges: bytes
+Content-Length: 22
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx7222a3dd73fe44b888db4e58cc647d1e
+Date: Wed, 16 Nov 2011 00:57:40 GMT
+
+chihuahuas/
+terriers/
+</computeroutput>
+			</screen>
+        </example>
+		<para>Using these in combination allows you to discover directories within a particular path and then further drill down based on the results.</para>
 	</section>
 	
 </chapter>
