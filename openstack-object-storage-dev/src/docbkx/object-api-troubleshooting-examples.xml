@@ -65,7 +65,8 @@ format="SVG" scale="60"/>
             </varlistentry>
         </variablelist>
     </section>
-        <section xml:id="authentication-examples-curl">
+
+    <section xml:id="authentication-examples-curl">
         <title>Authentication</title>
         <para>In order to use the ReST API, you will first need to obtain a authorization token,
             which will need to be passed in for each request using the <code>X-Auth-Token</code>
@@ -97,6 +98,7 @@ Content-Type: application/octet-stream
             <code>HEAD</code>, &GET;, &DELETE;, &POST; and &PUT; requests on the storage
             service.</para>
     </section>
+
     <section xml:id="determining-storage-useage">
         <title>Determining Storage Usage</title>
         <para>A <code>HEAD</code> request can be sent to the storage service to determine how much
@@ -125,6 +127,7 @@ Content-Type: text/plain
             headers in the response indicate the number of containers in this storage account and the
             total bytes stored for the entire account.</para>
     </section>
+
     <section xml:id="listing-and-creating-storage-containers">
         <title>Listing and creating containers</title>
         <para> The simplest operation for Object Storage is to simply list the containers you have, which when you don't have any containers yet isn't terribly exciting:</para>
@@ -277,6 +280,7 @@ george
         </example>
 		<para>Notice that I had to use \&amp; so that my bash shell didn't try to interpret the &amp; as wanting to run something in its own thread.  With that in place, you get the next page of items that appear after the marker.</para>
 	</section>
+	
     <section xml:id="serialized-output">
         <title>Serialized Output</title>
         <para>In other situations, like if you are working on a language binding on top of the REST API, you might want more structured data back from the method calls.  By appending a "format=" and then choosing either json or xml, you can get that structured data back you've been dreaming about.</para>
@@ -338,6 +342,75 @@ Date: Mon, 07 Nov 2011 19:17:38 GMT
 			</screen>
         </example>
 		<para>The remainder of the examples in this document will use the standard, non-serialized output but all operations accept the format argument.  You might notice that when you use one of the formats, you get more information about the containers.  That's the per-container metadata, which is covered in the next section.</para>
+	</section>
+	
+    <section xml:id="container-metadata-and-delete-containers">
+        <title>Container Metadata and Deleting Containers</title>
+        <para>You can get at container metadata directly simply by appending the name of the container to a HEAD request:</para>
+        <example>
+            <title>cURL List Container Metadata</title>
+            <screen>
+<command>curl</command> <option>–X HEAD</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes   
+X-Trans-Id: tx3dd984f9482341dd97546e9d49d65e90
+Content-Length: 0
+Date: Mon, 07 Nov 2011 20:39:41 GMT
+</computeroutput>
+		</screen>
+        </example>
+		<para>Not very exciting without any objects in the container, but you get the idea.  While you cannot update or delete container metadata, you can delete a container:</para>
+		<example>
+            <title>cURL Delete Storage Container</title>
+            <screen>
+<command>curl</command> <option>–X DELETE</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/george</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 204 No Content
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx3fa3857f266f44319d9b8f4bf7ce7fc8
+Date: Mon, 07 Nov 2011 20:42:58 GMT
+</computeroutput>
+			</screen>
+        </example>
+		<para>Then let's confirm the delete by listing the containers again:</para>
+		<example>
+            <title>cURL List Containers After a Delete</title>
+            <screen>
+<command>curl</command> <option>–X GET</option> <option>-D</option> - \
+    <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+X-Account-Object-Count: 0
+X-Account-Bytes-Used: 0
+X-Account-Container-Count: 4
+Accept-Ranges: bytes
+Content-Length: 24
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx2475741852b849ce9403e382fe3f8015
+Date: Mon, 07 Nov 2011 20:43:08 GMT
+
+cosmo
+dogs
+elaine
+jerry
+</computeroutput>
+			</screen>
+        </example>
 	</section>
 
 </chapter>
