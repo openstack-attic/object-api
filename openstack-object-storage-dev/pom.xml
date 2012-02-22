@@ -11,7 +11,7 @@
     <packaging>jar</packaging>
     <name>OpenStack Guides</name>
     <!-- ################################################ -->
-    <!-- USE "mvn clean generate-sources" to run this POM -->
+    <!-- USE "mvn clean generate-sources" to run this POM --> 
     <!-- ################################################ -->
     <profiles>
         <profile>
