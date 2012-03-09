@@ -139,7 +139,7 @@ Content-Type: text/plain
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -161,7 +161,7 @@ Date: Mon, 07 Nov 2011 17:07:01 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/george</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 201 Created
 Content-Length: 18
 Content-Type: text/html; charset=UTF-8
@@ -181,7 +181,7 @@ Date: Mon, 07 Nov 2011 17:44:20 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -209,7 +209,7 @@ george
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -237,7 +237,7 @@ jerry
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?limit=2</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -262,7 +262,7 @@ dogs
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?marker=dogs\&amp;limit=2</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -280,7 +280,7 @@ george
         </example>
 		<para>Notice that I had to use \&amp; so that my bash shell didn't try to interpret the &amp; as wanting to run something in its own thread.  With that in place, you get the next page of items that appear after the marker.</para>
 	</section>
-	
+
     <section xml:id="serialized-output">
         <title>Serialized Output</title>
         <para>In other situations, like if you are working on a language binding on top of the REST API, you might want more structured data back from the method calls.  By appending a "format=" and then choosing either json or xml, you can get that structured data back you've been dreaming about.</para>
@@ -292,7 +292,7 @@ george
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?format=json</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -319,7 +319,7 @@ Date: Mon, 07 Nov 2011 19:17:33 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343?format=xml</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -343,7 +343,7 @@ Date: Mon, 07 Nov 2011 19:17:38 GMT
         </example>
 		<para>The remainder of the examples in this document will use the standard, non-serialized output but all operations accept the format argument.  You might notice that when you use one of the formats, you get more information about the containers.  That's the per-container metadata, which is covered in the next section.</para>
 	</section>
-	
+
     <section xml:id="container-metadata-and-delete-containers">
         <title>Container Metadata and Deleting Containers</title>
         <para>You can get at container metadata directly simply by appending the name of the container to a HEAD request:</para>
@@ -355,11 +355,11 @@ Date: Mon, 07 Nov 2011 19:17:38 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 X-Container-Object-Count: 0
 X-Container-Bytes-Used: 0
-Accept-Ranges: bytes   
+Accept-Ranges: bytes
 X-Trans-Id: tx3dd984f9482341dd97546e9d49d65e90
 Content-Length: 0
 Date: Mon, 07 Nov 2011 20:39:41 GMT
@@ -375,7 +375,7 @@ Date: Mon, 07 Nov 2011 20:39:41 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/george</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 Content-Length: 0
 Content-Type: text/html; charset=UTF-8
@@ -393,7 +393,7 @@ Date: Mon, 07 Nov 2011 20:42:58 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Account-Object-Count: 0
 X-Account-Bytes-Used: 0
@@ -424,7 +424,7 @@ jerry
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 X-Container-Object-Count: 0
 X-Container-Bytes-Used: 0
@@ -445,7 +445,7 @@ Date: Tue, 15 Nov 2011 03:29:22 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 202 Accepted
 Content-Length: 58
 Content-Type: text/html; charset=UTF-8
@@ -467,7 +467,7 @@ The request is accepted for processing.
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 X-Container-Object-Count: 0
 X-Container-Read: .r:*,.rlistings
@@ -490,7 +490,7 @@ Date: Tue, 15 Nov 2011 03:33:36 GMT
         <example>
             <title>Sample File Listing</title>
             <screen>
-<computeroutput>				
+<computeroutput>
 $ ls -l
 total 504
 -rw-r--r--@ 1 petecj2  staff   44765 Nov  7 14:49 JingleRocky.jpg
@@ -509,7 +509,7 @@ total 504
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 201 Created
 Content-Length: 118
 Content-Type: text/html; charset=UTF-8
@@ -542,7 +542,7 @@ Date: Mon, 07 Nov 2011 22:51:30 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 1
 X-Container-Read: .r:*,.rlistings
@@ -566,7 +566,7 @@ JingleRocky.jpg
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 3
 X-Container-Read: .r:*,.rlistings
@@ -584,7 +584,7 @@ SittingBuster.jpg
 			</screen>
         </example>
 	</section>
-	
+
     <section xml:id="paging-objects">
         <title>Paging Lists of Objects</title>
         <para>Exactly like listing containers, objects can be listed in pages at a time using markers to denote pages.  From the previous example with 3 objects in the container "dogs", the list can be paged with the "limit" query string variable:</para>
@@ -596,7 +596,7 @@ SittingBuster.jpg
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?limit=2</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 3
 X-Container-Read: .r:*,.rlistings
@@ -621,7 +621,7 @@ RockyAndBuster.jpg
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?marker=RockyAndBuster.jpg\&amp;limit=2</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 3
 X-Container-Read: .r:*,.rlistings
@@ -636,20 +636,20 @@ SittingBuster.jpg
 </computeroutput>
 			</screen>
         </example>
-	</section>	
-	
+	</section>
+
     <section xml:id="retrieve-copy-retrieve-objects">
         <title>Retrieve, Copy, and Delete Objects</title>
         <para>Now we'll retrieve an object previously uploaded.  First, we'll remove the local copy:</para>
 		<example>
             <title>Removing Local Copies</title>
             <screen>
-<computeroutput>				
+<computeroutput>
 $ ls -l
 total 504
 -rw-r--r--@ 1 petecj2  staff   44765 Nov  7 14:49 JingleRocky.jpg
 -rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
--rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg  
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg
 $ rm JingleRocky.jpg
 $ ls -l
 total 416
@@ -667,7 +667,7 @@ total 416
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg > JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 $ ls -l
 total 504
 -rw-r--r--  1 petecj2  staff   44765 Nov  7 15:11 JingleRocky.jpg
@@ -687,7 +687,7 @@ total 504
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 201 Created
 Content-Length: 118
 Content-Type: text/html; charset=UTF-8
@@ -721,7 +721,7 @@ Date: Mon, 07 Nov 2011 23:23:54 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 1
 X-Container-Bytes-Used: 44765
@@ -744,7 +744,7 @@ JingleRocky.jpg
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 Content-Length: 0
 Content-Type: text/html; charset=UTF-8
@@ -762,7 +762,7 @@ Date: Mon, 07 Nov 2011 23:32:39 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 X-Container-Object-Count: 0
 X-Container-Bytes-Used: 0
@@ -774,7 +774,7 @@ Date: Mon, 07 Nov 2011 23:32:41 GMT
 			</screen>
         </example>
 	</section>
-	
+
     <section xml:id="object-metadata">
         <title>Object Metadata</title>
 		<para>Objects can have whatever metadata keys/values you choose.  Simply POST an HTTP Header to the object in the form of X-Object-Meta-&lt;key>: &lt;value>.  Like this:</para>
@@ -787,7 +787,7 @@ Date: Mon, 07 Nov 2011 23:32:41 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 	&lt;html>
 	 &lt;head>
 	  &lt;title>202 Accepted&lt;/title>
@@ -812,7 +812,7 @@ Date: Mon, 07 Nov 2011 23:32:41 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
     HTTP/1.1 200 OK
 	X-Object-Meta-Breed: Terrier pit bull mix
 	Last-Modified: Tue, 08 Nov 2011 01:26:49 GMT
@@ -826,7 +826,7 @@ Date: Mon, 07 Nov 2011 23:32:41 GMT
 			</screen>
         </example>
 	</section>
-	
+
     <section xml:id="folders-directories">
         <title>Pseudo-Hierarchical Folders/Directories</title>
 		<para>For the last section, we come to the most confusing concept in Object Storage.  In most storage systems, you have the ability to create custom hierarchies of files so that you can better organize them.  On its surface, Object Storage only gives you one level of hierarchy in the form of containers.  However, it turns out that you can get creative with naming your objects to give yourself the same effect as having hierarchical containers.</para>
@@ -839,7 +839,7 @@ Date: Mon, 07 Nov 2011 23:32:41 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 201 Created
 Content-Length: 18
 Content-Type: text/html; charset=UTF-8
@@ -859,7 +859,7 @@ Date: Wed, 16 Nov 2011 00:06:22 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 204 No Content
 X-Container-Object-Count: 0
 X-Container-Bytes-Used: 0
@@ -880,7 +880,7 @@ Date: Wed, 16 Nov 2011 00:06:26 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos/terriers/JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 201 Created
 Content-Length: 118
 Content-Type: text/html; charset=UTF-8
@@ -896,9 +896,9 @@ Date: Wed, 16 Nov 2011 00:09:19 GMT
 	&lt;body>
  		&lt;h1>201 Created&lt;/h1>
  		&lt;br />&lt;br />
-	
-	
-	
+
+
+
 	&lt;/body>
 &lt;/html>
 </computeroutput>
@@ -914,7 +914,7 @@ Date: Wed, 16 Nov 2011 00:09:19 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos/chihuahuas/SittingBuster.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 201 Created
 Content-Length: 118
 Content-Type: text/html; charset=UTF-8
@@ -947,7 +947,7 @@ Date: Wed, 16 Nov 2011 00:52:25 GMT
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 2
 X-Container-Bytes-Used: 151868
@@ -957,7 +957,7 @@ Content-Type: text/plain; charset=utf-8
 X-Trans-Id: tx8544a17e8b1e4da693145fb5f2e6db43
 Date: Wed, 16 Nov 2011 00:53:43 GMT
 
-chihuahuas/SittingBuster.jpg 
+chihuahuas/SittingBuster.jpg
 terriers/JingleRocky.jpg
 </computeroutput>
 			</screen>
@@ -971,7 +971,7 @@ terriers/JingleRocky.jpg
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos?path=terriers</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 2
 X-Container-Bytes-Used: 151868
@@ -994,7 +994,7 @@ terriers/JingleRocky.jpg
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/photos?delimiter=/</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 200 OK
 X-Container-Object-Count: 2
 X-Container-Bytes-Used: 151868
@@ -1011,5 +1011,5 @@ terriers/
         </example>
 		<para>Using these in combination allows you to discover directories within a particular path and then further drill down based on the results.</para>
 	</section>
-	
+
 </chapter>
