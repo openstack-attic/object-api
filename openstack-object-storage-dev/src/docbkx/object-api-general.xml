@@ -7,6 +7,7 @@
 
 <!-- Useful for describing APIs -->
 <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
 <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
 <!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
 <!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
@@ -48,7 +49,7 @@ format="SVG" scale="60"/>
                 <td colspan="3">List containers</td>
             </tr>
             <tr>
-                <td colspan="1"><code>HEAD</code></td>
+                <td colspan="1"><code>&HEAD;</code></td>
                 <td colspan="2"><parameter>account</parameter></td>
                 <td colspan="3">Retrieve account metadata</td>
             </tr>
@@ -80,7 +81,7 @@ format="SVG" scale="60"/>
                 <td colspan="3">Delete container</td>
             </tr>
             <tr>
-                <td colspan="1"><code>HEAD</code></td>
+                <td colspan="1"><code>&HEAD;</code></td>
                 <td colspan="2">/<parameter>account</parameter>/<parameter>container</parameter></td>
                 <td colspan="3">Retrieve container metadata</td>
             </tr>
@@ -121,7 +122,7 @@ format="SVG" scale="60"/>
                 <td colspan="3">Delete container</td>
             </tr>
             <tr>
-                <td colspan="1"><code>HEAD</code></td>
+                <td colspan="1"><code>&HEAD;</code></td>
                 <td colspan="2"
                     >/<parameter>account</parameter>/<parameter>container</parameter>/<parameter>object</parameter></td>
                 <td colspan="3">Retrieve object metadata</td>
@@ -157,7 +158,10 @@ format="SVG" scale="60"/>
                     </listitem>
                     <listitem>
                         <para> Obtain your API access key from authentication service you chose when
-                            installing. You have some options for auth, including tempauth, which is included, or swauth, an auth service for Swift as WSGI middleware that uses Swift itself as a backing store that is provided via download from Github, or the OpenStack Identity Service (project named Keystone), or you can use your own
+                            installing. <phrase security="reviewer">You have some options for auth, including tempauth (which is 
+                            included with Swift), swauth (an auth service for Swift as WSGI middleware that uses 
+                            Swift itself as a backing store that is provided via download from Github), 
+                            the OpenStack Identity Service (project named Keystone),</phrase> or you can use your own
                             authentication system. Place your access key in the <code>X-Auth-Key</code> x-header. </para>
                     </listitem>
                 </itemizedlist>
@@ -166,10 +170,10 @@ format="SVG" scale="60"/>
             <example>
                 <title>Authentication Request </title>
                 <literallayout class="monospaced">
-GET /v1.0 HTTP/1.1
-Host: auth.api.yourcloud.com
-X-Auth-User: jdoe
-X-Auth-Key: a86850deb2742ec3cb41518e26aa2d89
+    GET /v1.0 HTTP/1.1
+    Host: auth.api.yourcloud.com
+    X-Auth-User: jdoe
+    X-Auth-Key: a86850deb2742ec3cb41518e26aa2d89
                     </literallayout>
             </example>
         </simplesect>
@@ -177,8 +181,10 @@ X-Auth-Key: a86850deb2742ec3cb41518e26aa2d89
             <title>Response</title>     
             <para>When authentication is successful, an HTTP status 204 (No Content) is returned with
                 the <code>X-Storage-Url</code> and
-                <code>X-Auth-Token</code> headers. Any 2xx response is a good response. For example, a
-                202 response means the request has been accepted. Also, additional <code>X-</code> headers
+                <code>X-Auth-Token</code> headers. Any 2xx response is a good response. 
+                <phrase security="reviewer">
+                For example, a 202 response means the request has been accepted.</phrase> 
+                Also, additional <code>X-</code> headers
                 may be returned. These additional headers are related to other Rackspace services and can
                 be ignored. An HTTP status of 401 (Unauthorized) is returned upon authentication failure.
                 All subsequent container/object operations against OpenStack Object Storage should be made
@@ -209,9 +215,8 @@ X-Auth-Key: a86850deb2742ec3cb41518e26aa2d89
         <title>Overview of API Operations</title>
         <para>The OpenStack Object Storage API is implemented as a set of ReSTful (Representational State Transfer)
             web services. All authentication and container/object operations can be performed with
-            standard HTTP calls. See the <link
-                xlink:href="http://en.wikipedia.org/wiki/Representational_State_Transfer">Wikipedia
-                article</link> for more information about ReST.</para>
+            standard HTTP calls. See the <link xlink:href="http://en.wikipedia.org/wiki/Representational_State_Transfer">Wikipedia
+                article</link> on ReST for more information</para>
         <para>The following constraints apply to the ReST API's HTTP requests:</para>
         <itemizedlist>
             <listitem>
@@ -236,13 +241,13 @@ X-Auth-Key: a86850deb2742ec3cb41518e26aa2d89
         <para>Container and object names should be properly URL-encoded prior to interacting with the
             ReST interface (the language APIs handle URL encoding/decoding) and the container
             and object names must be UTF-8 encoded. The length restrictions should be checked
-            against the URL encoded string.</para>
+            against the URL-encoded string.</para>
         <para>Each ReST request against the OpenStack Object Storage system requires the inclusion of a specific
             <firstterm>authorization token</firstterm> HTTP header defined as <code>X-Auth-Token</code>.
-            Clients obtain this token, along with the OpenStack Object Storage URIs, by first using the Authentication
+            Clients obtain this token, along with the OpenStack Object Storage URLs, by first using the Authentication
             service and supplying a valid Username and API Access Key.</para>
-        <para><!--There are actually two different sets of ReST services that make up the full OpenStack Object Storage product. -->The
-            ReST service identified with <code>X-Storage-Url</code> is used for managing the data stored
+        <para><!--There are actually two different sets of ReST services that make up the full OpenStack Object Storage product. -->
+            The ReST service identified with <code>X-Storage-Url</code> is used for managing the data stored
             in the system. Example operations are creating containers and uploading objects.
             <!--The second ReST service is for managing the CDN feature of OpenStack Object Storage and is identified by <code>X-CDN-Management-Url</code>.--></para>
         <para>In the following sections, the purpose of each HTTP method depends upon which service the

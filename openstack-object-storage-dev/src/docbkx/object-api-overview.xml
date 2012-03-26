@@ -33,11 +33,12 @@ format="SVG" scale="60"/>
     <title>Overview</title>
     <para>OpenStack Object Storage is an affordable, redundant, scalable, and dynamic storage
         service offering. The core storage system is designed to provide a safe, secure,
-        automatically re-sizing and network accessible way to store data. You can store an
-        unlimited quantity of files and each file can be as large as 5 gigabytes, plus with
-        large storage support you can download and .</para>
+        automatically re-sizing and network-accessible way to store data. You can store an
+        unlimited quantity of files and each file can be as large as 5 gigabytes, <phrase security="reviewer">plus with
+        large object creation, you can upload and store objects of virtually any size</phrase>.
+    </para>
     <para>OpenStack Object Storage allows users to store and retrieve files and content via a simple
-        Web Service (ReST: Representational State Transfer) interface. There are also
+        Web Service inteface (ReST: Representational State Transfer). There are also
         language-specific APIs that utilize the ReSTful API but make it much easier for
         developers to integrate into their applications.</para>
     <para>For more details on the OpenStack Object Storage service, please refer to <link
@@ -45,7 +46,7 @@ format="SVG" scale="60"/>
         >http://swift.openstack.org</link>
     </para>
     <para> We welcome feedback, comments, and bug reports at <link
-        xlink:href="http://bugs.launchpad.net/swift">bugs.launchpad.net/swift</link>. 
+        xlink:href="http://bugs.launchpad.net/swift">http://bugs.launchpad.net/swift</link>. 
     </para>
     <section xml:id="intended-audience-object-dev-guide">
         <title>Intended Audience</title>
@@ -76,8 +77,8 @@ format="SVG" scale="60"/>
     <section xml:id="doc-change-history-object-dev-guide">
         <title>Document Change History</title>
         <para>This version of the Developer Guide was forked from the Rackspace Cloud Files Developer
-            Guide. The most recent changes for both guides are described in the table
-            below:</para>
+            Guide.
+        </para>
         <informaltable rules='all'>
             <thead>
                 <tr>
@@ -174,10 +175,11 @@ format="SVG" scale="60"/>
             website at <link
                 xlink:href="http://docs.openstack.org">
                 http://docs.openstack.org</link>. </para>
-        <para> For more details about the Rackspace Cloud Files implementation of the OpenStack Object
-            Storage service, please refer to <link
-                xlink:href="www.rackspacecloud.com/cloud_hosting_products/files"
-                >http://www.rackspacecloud.com/cloud_hosting_products/files</link>. Related documents are
+        <para>
+            If you would like more information about the Rackspace implementation of 
+            the OpenStack Object Storage service, visit this address:
+            <link xlink:href="www.rackspacecloud.com/cloud_hosting_products/files"> 
+            http://www.rackspacecloud.com/cloud_hosting_products/files</link>. Related documents are
             available at the same site, as are links to Rackspace's official support channels, including
             knowledge base articles, forums, phone, chat, and email. </para>
         
