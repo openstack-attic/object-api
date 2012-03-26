@@ -8,6 +8,7 @@
 
 <!-- Useful for describing APIs -->
 <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
 <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
 <!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
 <!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
@@ -47,7 +48,7 @@ format="SVG" scale="60"/>
             <varlistentry>
                 <term><option>-X METHOD</option></term>
                 <listitem>
-                    <para>Specify the HTTP method to request (<code>HEAD</code>, &GET;,
+                    <para>Specify the HTTP method to request (&HEAD;, &GET;,
                         etc.)</para>
                 </listitem>
             </varlistentry>
@@ -95,13 +96,13 @@ Content-Type: application/octet-stream
         </example>
         <para>The storage URL and authentication token are returned in
             the headers of the response. After authentication, you can use cURL to perform
-            <code>HEAD</code>, &GET;, &DELETE;, &POST; and &PUT; requests on the storage
+            &HEAD;, &GET;, &DELETE;, &POST; and &PUT; requests on the storage
             service.</para>
     </section>
 
     <section xml:id="determining-storage-useage">
         <title>Determining Storage Usage</title>
-        <para>A <code>HEAD</code> request can be sent to the storage service to determine how much
+        <para>A &HEAD; request can be sent to the storage service to determine how much
             data you have stored in the system and the number of containers you are using. Use the
             <code>-X</code> switch to specify the correct HTTP method and the <code>-i</code> to
             dump the HTTP response headers to terminal output (stdout).</para>

@@ -7,6 +7,7 @@
 
         <!-- Useful for describing APIs -->
         <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+        <!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
         <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
         <!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
         <!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
@@ -48,21 +49,95 @@
     <copyright>
       <year>2010</year>
       <year>2011</year>
+      <year>2012</year>
       <holder>OpenStack, LLC</holder>
     </copyright>
     <releaseinfo>API v1</releaseinfo>
     <productname>OpenStack Object Storage</productname>
-    <pubdate>2011-09-22</pubdate>
+    <pubdate>2012-03-22</pubdate>
     <legalnotice role="apache2">
       <annotation>
         <remark>Copyright details are filled in by the template.</remark>
       </annotation>
     </legalnotice>
     <abstract>
-      <para> This document is intended for software developers interested in developing applications
-        using the OpenStack™ Object Storage Application Programming Interface
-        (<abbrev>API</abbrev>). </para>
+      <para> This document is intended for software
+        developers interested in developing applications using the
+        OpenStack™ Object Storage Application Programming Interface
+          (<abbrev>API</abbrev>). </para>
     </abstract>
+   
+    
+    <revhistory>
+      <revision>
+        <date>2012-03-29</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Fixed bugs 890435 and 907563 - Add/Update Container Metadata and Expiring Objects. 
+                Changed to Maven 1.0.10.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
+        <date>2011-02--10</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Revised to change first to last in the first range example for fetching a portion of an object.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
+        <date>2011-01-25</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Revised for OpenStack Object Storage use by removing CDN references, Rackspace Cloud references, and revised account examples and URLs for generic implementations.   It's not a changed requirement that Container and Object names are required to be UTF-8, but it's pointed out in the documentation.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
+        <date>2011-01-12</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Removed references to ACL (Access Control List). Fixed error in examples referring to X-Auth-Key where it should be X-Auth-Token. Added section numbers.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
+        <date>2011-01-04</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para> Expanded authentication information for UK release. Added "delimiter" as a Query Parameter and server-side object copy example.
+              </para>
+            </listitem>   
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
+        <date>2008-05-5</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Initial Release.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+    </revhistory>
+     
     <cover>
       <para>this is a placeholder for the front cover</para>
     </cover>
