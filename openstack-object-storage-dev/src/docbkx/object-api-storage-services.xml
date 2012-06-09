@@ -49,7 +49,7 @@ format="SVG" scale="60"/>
         </listitem>
       </itemizedlist>
       <para>
-        <info>Added paragraph to forecast info structure -- dsh -2012-03-09 </info>
+        <!--<info>Added paragraph to forecast info structure -\- dsh -2012-03-09 </info>-->
         The following sections describe the actions that may be performed within the
         storage system. The first section addresses actions that can be taken on the account
         level of the storage system. The second section addresses actions that may be performed
@@ -309,8 +309,80 @@ format="SVG" scale="60"/>
                       </literallayout>
           </example>
         </section>
+        <section xml:id="create-update-account-metadata">
+          <title>Create/Update Account Metadata</title>
+          <para>
+            You can associate custom metadata headers with the account level
+            URI. These headers must take the format
+            <code>X-Account-Meta-*</code>.
+          </para>
+          <para>
+            To create or update an account metadata header use the &POST; query.
+            Subsequent requests for the same key/value pair overwrite the
+            previous value.
+          </para>
+          <para>
+            To delete a metadata header, send an empty value for that particular
+            header, e.g. <code>X-Account-Meta-Book:</code>. Older versions of curl do not support
+            empty headers values so an example is not included here. 
+          </para>
+        <para>Alternatively, send the headers
+            "X-Remove-Account-Meta-<replaceable>value</replaceable>"
+          or
+          "X-Remove-Container-Meta-<replaceable>value</replaceable>"
+          such as "X-Remove-Account-Meta-Book" with the previously-set
+          value to delete metadata headers.</para>
+          <example>
+            <title>Update Account Metadata Request</title>
+            <literallayout class="monospaced">
+        POST /&lt;api version&gt;/&lt;account&gt; HTTP/1.1
+        Host: storage.clouddrive.com
+        X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
+        X-Account-Meta-Book: MobyDick
+        X-Account-Meta-Subject: Whaling
+            </literallayout>
+          </example>
+          <para>
+            No response body is returned. A status code of 204 (No Content)
+            indicates success.
+          </para>
+          <example>
+            <title>Update Account Metadata Response</title>
+            <literallayout class="monospaced">
+        HTTP/1.1 204 No Content
+        Content-Length: 0
+        Content-Type: text/html; charset=UTF-8
+        Date: Sat, 09 Jun 2012 19:16:29 GMT
+            </literallayout>
+          </example>
+          <para>To confirm your metadata changes, perform a &HEAD; request on the
+          account. Do not send the metadata in your &HEAD; request.</para>
+          <example>
+            <title>View Account Metadata Request</title>
+            <literallayout class="monospaced">
+        HEAD /&lt;api version&gt;/&lt;account&gt; HTTP/1.1
+        Host: storage.clouddrive.com
+        X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
+            </literallayout>
+          </example>
+          <example>
+            <title>View Account Metadata Response</title>
+            <literallayout class="monospaced">
+        HTTP/1.1 204 No Content
+        X-Account-Meta-Book: MobyDick
+        X-Account-Meta-Subject: Whaling
+        X-Account-Object-Count: 5
+        X-Timestamp: 1323466696.21566
+        X-Account-Container-Count: 5
+        X-Account-Bytes-Used: 46988
+        Accept-Ranges: bytes
+        Content-Length: 0
+        Date: Sat, 09 Jun 2012 19:16:59 GMT
+            </literallayout>
+          </example>
+        </section>
       </section>
-      
+
       <section xml:id="storage-container-services">
         <title>Storage Container Services</title>
         <para>This section documents the ReST operations that can be performed on containers. All
@@ -830,8 +902,8 @@ format="SVG" scale="60"/>
         Content-Type: text/plain; charset=UTF-8
                           </literallayout>
           </example>
-          To confirm your metadata changes, perform a &HEAD; request on the container. Do not send
-          the metadata in your &HEAD; request.
+          <para>To confirm your metadata changes, perform a &HEAD; request on the container. Do not send
+          the metadata in your &HEAD; request.</para>
           <example>
             <title>View Container Metadata Request</title>
             <literallayout class="monospaced">
@@ -1411,7 +1483,7 @@ format="SVG" scale="60"/>
           </para>
           <para>Key names must be prefixed with <code>X-Object-Meta-</code>. A &POST;
             request will delete all existing metadata added with a previous
-            <code>&PUT;/&POST;</code>.</para>
+            &PUT;/&POST;.</para>
           <example>
             <title>Update Object Metadata Request</title>
             <literallayout class="monospaced">
