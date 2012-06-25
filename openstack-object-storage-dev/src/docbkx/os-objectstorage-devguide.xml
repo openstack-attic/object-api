@@ -35,6 +35,7 @@
         xmlns:db="http://docbook.org/ns/docbook"
         version="5.0"
     xml:id="openstack-object-storage-dev-guide">
+  <?rax pdf.url="../os-objectstorage-devguide-1.0.pdf"?>
   <title>OpenStack Object Storage Developer Guide</title>
   <info>
     <author>
