@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Approved+1: Lorin Hochstein <lorin@nimbisservices.com>
+Code-Review+2: Lorin Hochstein <lorin@nimbisservices.com>
+Submitted-by: Jenkins
+Submitted-at: Mon, 02 Jul 2012 01:00:05 +0000
+Reviewed-on: https://review.openstack.org/8921
+Project: openstack/object-api
+Branch: refs/heads/master
