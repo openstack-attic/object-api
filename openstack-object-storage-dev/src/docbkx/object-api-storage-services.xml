@@ -91,7 +91,16 @@ format="SVG" scale="60"/>
               <listitem>
                 <para>Given a string value <inlineequation>
                     <mathphrase><emphasis>x</emphasis></mathphrase>
-                  </inlineequation>, return object names greater in value than the specified
+                  </inlineequation>, return container names greater in value than the specified
+                  marker.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><code>end_marker</code></term>
+              <listitem>
+                <para>Given a string value <inlineequation>
+                    <mathphrase><emphasis>x</emphasis></mathphrase>
+                  </inlineequation>, return container names less in value than the specified
                   marker.</para>
               </listitem>
             </varlistentry>
@@ -249,6 +258,20 @@ format="SVG" scale="60"/>
                     </literallayout>
               <para>With this one-item response we received less than the limit number of container
                 names, indicating that this is the end of the list.</para>
+              <para>
+                 By using <code>end_marker</code> we can limit the result set to
+                 container names less than the given value.
+              </para>
+              <literallayout class="monospaced">
+  GET /&lt;api version&gt;&lt;account&gt;?end_marker=oranges
+  Host: storage.swiftdrive.com
+  X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
+              </literallayout>
+              <literallayout class="monospaced">
+  apples
+  bananas
+  kiwis
+              </literallayout>
             </example>
           </section>
         </section>
@@ -324,6 +347,15 @@ format="SVG" scale="60"/>
                 <para>Given a string value <inlineequation>
                     <mathphrase><emphasis>x</emphasis></mathphrase>
                   </inlineequation>, return object names greater in value than the specified
+                  marker.</para>
+              </listitem>
+            </varlistentry>
+            <varlistentry>
+              <term><code>end_marker</code></term>
+              <listitem>
+                <para>Given a string value <inlineequation>
+                    <mathphrase><emphasis>x</emphasis></mathphrase>
+                  </inlineequation>, return object names less in value than the specified
                   marker.</para>
               </listitem>
             </varlistentry>
@@ -424,7 +456,7 @@ format="SVG" scale="60"/>
     "content_type":"application\/octet-stream",
     "last_modified":"2009-02-03T05:26:32.612278"},
  ]
-					</programlisting>
+                    </programlisting>
             </example>
             <example>
               <title>Objects Details Request: XML</title>
@@ -510,15 +542,29 @@ format="SVG" scale="60"/>
                     </literallayout>
               <para>Again we have two items returned; there may be more:</para>
               <literallayout class="monospaced">
-  GET /&lt;api version>/&lt;account>/&lt;container>?limit=2&amp;marker=oranges
+  GET /&lt;api version>/&lt;account>/&lt;container>?limit=2&amp;marker=jonagold
   Host: storage.swiftdrive.com
   X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
                     </literallayout>
               <literallayout class="monospaced">
   reddelicious
                     </literallayout>
-              <para>Now we received less than the limit number of container names, indicating that we
+              <para>Now we received less than the limit number of object names, indicating that we
                 have the complete list.</para>
+              <para>
+                 By using <code>end_marker</code> we can limit the result set to
+                 object names less than the given value.
+              </para>
+              <literallayout class="monospaced">
+  GET /&lt;api version&gt;&lt;account&gt;/&lt;container&gt;?end_marker=jonagold
+  Host: storage.swiftdrive.com
+  X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
+              </literallayout>
+              <literallayout class="monospaced">
+  gala
+  grannysmith
+  honeycrisp
+              </literallayout>
             </example>
           </section>
           <section xml:id="pseudo-hierarchical-folders-directories">
