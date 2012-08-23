@@ -370,32 +370,31 @@ format="SVG" scale="60"/>
             </literallayout>
           </example>
         </section>
+        <section xml:id="delete-account-metadata">
+          <title>Delete Account Metadata</title>
+          <para>To delete a metadata header send an empty value for that
+            particular header, e.g. <code>X-Account-Meta-Book:</code>. </para>
+          <para>If the tool you're using to communicate with Swift doesn't
+            support sending empty headers (e.g. older versions of curl) send
+            the header
+            "X-Remove-Account-Meta-<replaceable>name</replaceable>: <replaceable>arbitrary value</replaceable>",
+            e.g. <code>X-Remove-Account-Meta-Book: x</code>. The 
+            <emphasis>value</emphasis> is ignored.</para>
+          <example>
+            <title>Account Metadata Delete Request</title>
+            <literallayout class="monospaced">
+POST /&lt;api version&gt;/&lt;account&gt; HTTP/1.1
+Host: storage.clouddrive.com
+X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
+X-Remove-Account-Meta-Book: x
+            </literallayout>
+            <para>
+              No response body is returned. A status code of 204 (No Content)
+              indicates success.
+            </para>
+          </example>
+        </section>
       </section>
-  <section xml:id="delete-account-metadata">
-    <title>Delete Account Metadata</title>
-    <para> To delete a metadata header, send an empty value for that
-      particular header, e.g. <code>X-Account-Meta-Book:</code>. </para>
-    <para>Alternatively, send the headers
-        "X-Remove-Account-Meta-<replaceable>value</replaceable>" or
-        "X-Remove-Container-Meta-<replaceable>value</replaceable>"
-      such as "X-Remove-Account-Meta-Book" with the previously-set
-      value to delete metadata headers. Since older versions of curl
-      do not support sending empty headers, the example below uses the
-      alternate method of deleting metadata. </para>
-    <example>
-      <title>Account Metadata Delete Request</title>
-      <literallayout class="monospaced">
-        POST /&lt;api version&gt;/&lt;account&gt; HTTP/1.1
-        Host: storage.clouddrive.com
-        X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
-        X-Remove-Account-Meta-Book: MobyDick
-      </literallayout>
-      <para>
-        No response body is returned. A status code of 204 (No Content)
-        indicates success.
-      </para>
-    </example>
-  </section>
       <section xml:id="storage-container-services">
         <title>Storage Container Services</title>
         <para>This section documents the ReST operations that can be performed on containers. All
@@ -943,7 +942,34 @@ format="SVG" scale="60"/>
             this method is not functional with all tools, so we are leaving it out for now.
             A future patch may come where using "-" (dash) for the value will delete it.  dsh - 2012-0309 -->
         </section>
-       </section>
+        <section xml:id="delete-container-metadata">
+          <title>Delete Container Metadata</title>
+          <para>To delete a metadata header send an empty value for
+        that particular header, such as
+          <code>X-Container-Meta-Book:</code>. </para>
+          <para>If the tool you're using to communicate with Object
+        Storage doesn't support sending empty headers (older versions
+        of curl) send the header
+          "X-Remove-Container-Meta-<replaceable>name</replaceable>:
+          <replaceable>arbitrary value</replaceable>". For example,
+        send a header like <code>X-Remove-Container-Meta-Book:
+          x</code>. The <emphasis>value</emphasis> (x in this example)
+        is ignored.</para>
+          <example>
+            <title>Container Metadata Delete Request</title>
+            <literallayout class="monospaced">
+POST /&lt;api version&gt;/&lt;account&gt;/&lt;container&gt; HTTP/1.1
+Host: storage.clouddrive.com
+X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
+X-Remove-Container-Meta-Book: x
+            </literallayout>
+            <para>
+              No response body is returned. A status code of 204 (No Content)
+              indicates success.
+            </para>
+          </example>
+        </section>
+      </section>
         
         
         
