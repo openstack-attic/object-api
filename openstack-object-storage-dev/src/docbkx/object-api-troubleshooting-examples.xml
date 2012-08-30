@@ -713,7 +713,9 @@ Date: Mon, 07 Nov 2011 23:23:54 GMT
 </computeroutput>
 			</screen>
         </example>
-		<para>Next, Object Storage provides a facility to copy objects from one container to another entirely on the server side.  To do this, you do a PUT with the destination container and new object name while passing a special X-Copy-From header and a Content-Length of zero:</para>
+		<para>You can then confirm the new location of the object. To do
+            this, you do a GET with the destination container to see
+            the listing of the object:</para>
 		<example>
             <title>cURL Confirming the Server-side Copy an Object</title>
             <screen>
