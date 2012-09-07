@@ -894,7 +894,7 @@ X-Remove-Account-Meta-Book: x
           <example>
             <title>Update Container Metadata Request</title>
             <literallayout class="monospaced">
-        POST /&lt;api version&gt;/&lt;account&gt;/&lt;container&gt;/&lt;object&gt; HTTP/1.1
+        POST /&lt;api version&gt;/&lt;account&gt;/&lt;container&gt;/ HTTP/1.1
         Host: storage.clouddrive.com
         X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
         X-Container-Meta-Book: MobyDick
@@ -942,6 +942,7 @@ X-Remove-Account-Meta-Book: x
             this method is not functional with all tools, so we are leaving it out for now.
             A future patch may come where using "-" (dash) for the value will delete it.  dsh - 2012-0309 -->
         </section>
+
         <section xml:id="delete-container-metadata">
           <title>Delete Container Metadata</title>
           <para>To delete a metadata header send an empty value for
@@ -971,8 +972,141 @@ X-Remove-Container-Meta-Book: x
         </section>
       </section>
         
-        
-        
+  <section xml:id="Create_Static_Website-dle4000">
+    <title>Create Static Website</title>
+    <para> You may use your swift account to create a static website
+      on the World Wide Web. This mode is normally only active for
+      anonymous requests. If you want to use it with authenticated
+      requests, set the header <code>X-Web-Mode</code> to
+        <code>TRUE</code> on the request. The <code>staticweb</code>
+      filter should be added to the pipeline in your
+        <code>/etc/swift/proxy-server.conf</code> file just after any
+      auth middleware. Beneath the pipeline, the
+        <code>staticweb</code> middleware configuration must be added.
+      For example:
+      <literallayout class="monospaced">
+   [DEFAULT]
+   ...
+
+   [pipeline:main]
+   pipeline = healthcheck cache tempauth staticweb proxy-server
+
+   ...
+
+   [filter:staticweb]
+   use = egg:swift#staticweb
+   # Seconds to cache container x-container-meta-web-* header values.
+   # cache_timeout = 300
+   # You can override the default log routing for this filter here:
+   # set log_name = staticweb
+   # set log_facility = LOG_LOCAL0
+   # set log_level = INFO
+   # set access_log_name = staticweb
+   # set access_log_facility = LOG_LOCAL0
+   # set access_log_level = INFO
+   # set log_headers = False
+      </literallayout>
+      Your publicly readable containers will be checked for two
+      headers, <code>X-Container-Meta-Web-Index</code> and
+        <code>X-Container-Meta-Web-Error</code>. (The latter header is
+      discussed below, under <link linkend="Set_Error_Pages_for_Static_Website-dle4005">Set Error Pages for Static Website</link>.)
+      With <code>X-Container-Meta-Web-Index</code>, you determine the
+      index file (or default page served, such as
+        <code>index.html</code>) displays your website. When someone
+      initially enters your site, they don't have to specify the index
+      file; index.html file displays automatically. If you create
+      sub-directories for your site--which you do by creating
+      pseudo-directories in your container--the index page displays by
+      default for each sub-directory. If your pseduo-directory does
+      not have a file with the same name as your index file, visits to
+      the sub-directory return a 404 error. </para>
+    <para>
+      You also have the option of displaying a list of files in your 
+      pseudo-directory instead of a web page. You do this by setting 
+      the <code>X-Container-Meta-Web-Listings</code> header to 
+      <code>TRUE</code>. You may add style to your file listing by setting
+      <code>X-Container-Meta-Web-Listings-CSS:</code> to a stylesheet
+      (i.e., <code>lists.css</code>).
+     </para>
+  <section xml:id="Examples_for_static_web-dle4025">
+  <title>Static Web Middleware via swift</title>
+      <example>
+        <title>Make Container Publicly Readable</title>
+        <para>
+        Make the container publicly readable. Once the container
+        is publicly readable, you may access your objects directly, but
+        you will need to set the index file to browse the main site 
+        URL and its sub-directories.
+        </para>
+        <literallayout class="monospaced">
+   swift post -r '.r:*' container
+        </literallayout>
+      </example>
+     
+      <example>
+        <title>Set Site's Index File</title>
+        <para>Set the index file. In this case, <code>index.html</code> is the
+          default file displayed when the site displays.
+        </para>
+        <literallayout class="monospaced">
+   swift post -m 'web-index:index.html' container
+        </literallayout>
+      </example>
+
+      <example>
+        <title>Enable File Listing</title>
+        <para>Turn on file listing. If you do not set the index file, list
+          the objects in the container. Instructions on styling the list
+          with the CSS follow.
+        </para>
+        <literallayout class="monospaced">
+   swift post -m 'web-listings: true' container
+        </literallayout>
+      </example>
+
+      <example>
+        <title>Enable CSS for File Listing</title>
+        <para>Style the file listing.
+        </para>
+        <literallayout class="monospaced">
+   swift post -m 'web-listings-css:listings.css' container
+        </literallayout>
+      </example>
+  </section>
+
+  
+  <section xml:id="Set_Error_Pages_for_Static_Website-dle4005">
+    <title>Set Error Pages for Static Website</title>
+    <para> 
+      You may create and set custom error pages for visitors to your website; 
+      currently, only 401 (Unauthorized) and 404 (Not Found) errors are supported. 
+      To do this, set the metadata header, <code>X-Container-Meta-Web-Error</code>.
+    </para>
+    <para>
+      Error pages are served with the &lt;status&gt; code prepended to the name 
+      of the error page you set. For instance, if you set 
+      <code>X-Container-Meta-Web-Error</code> to <code>error.html</code>, 
+      401 errors will display the page <code>401error.html</code>. Similarly, 404 errors 
+      will display <code>404error.html</code>. You must have both of these pages created 
+      in your container when you set the <code>X-Container-Meta-Web-Error</code> 
+      metadata, or your site will display generic error pages.
+    </para>
+    <para>
+      You need only set the <code>X-Container-Meta-Web-Error</code> metadata once 
+      for your entire static website.          
+    </para>
+    <example>
+      <title>Set Error Pages for Static Website</title>
+      <literallayout>
+   swift post -m 'web-error:error.html' container           
+          </literallayout>
+    </example>
+    <para>
+      Any 2xx response indicates success.
+    </para>
+  </section>
+ </section>
+  
       <section xml:id="storage-object-services">
         <title>Storage Object Services</title>
         <para>An object represents the data and any metadata for the files stored in the
@@ -1390,6 +1524,125 @@ X-Remove-Container-Meta-Book: x
                     </literallayout>
           </example>
         </section>
+        
+        <section xml:id="Object_Versioning-e1e3230"> <!-- begin 4.3.2.7 -->
+          <title>Object Versioning</title>       
+          <para>
+            Object Versioning allows you to store multiple versions of your content to 
+            recover from unintended overwrites. 
+            It provides an easy method to implement version control which can be used 
+            on any type of content. It is strongly recommended that you put non-current 
+            objects in a container apart from where the current versions exist. 
+            Once you enable Object Versioning on an object, new data written to an object causes the 
+            last-current version to be written to the separate container. Each of the 
+            non-current versions has a time stamp appended to it, so you know when it was created.
+          </para>
+          <para> To enable Object Versioning, your cloud provider has
+        to set <code>allow_versions</code> to <code>TRUE</code> in
+        their container config. Then, create a container where your
+        non-current versions will be written. Next, set the metadata
+          <code>X-Versions-Location</code> header on the container
+        that holds the current versions of your objects. Set the
+        metadata header to point to the new non-current version
+        container you created. This is where your non-current versions
+        will be stored. Once this is done, each object in your
+        current-version container will have Object Versioning enabled;
+        changes to the objects automatically create non-current
+        versions in the separate container. </para>
+          <para>
+            Nothing is written to the non-current version container when you initially
+            &PUT; an object into the current-version container. Only when you make 
+            edits to the objects via &PUT; will you create non-current versions. These non-current 
+            versions are labeled according to the schema below. 
+          </para>
+          <para>
+            <emphasis>Naming Schema:</emphasis> Non-current versions are assigned the name 
+            &lt;length&gt;&lt;object_name&gt;/&lt;timestamp&gt;, 
+            where length is the 3-character zero-padded hexidecimal character length of the &lt;object_name&gt; 
+            and &lt;timestamp&gt; is when the it was initially created as a current version.
+          </para>    
+          <para>
+            Any return status in the 2xx range, such as 202 (Accepted), notes success. Status codes 
+            in the 4xx or 5xx range note failure. You should retry your request if you receive an error. 
+            Please note, however, that if you have specified a container that does not exist as your 
+            non-current version container, a status of 412 (Precondition Failed) returns when you edit 
+            the versioned object. If you receive this error, check that the container exists. 
+          </para>
+          <para>
+            A &GET; to a versioned object returns the current version of the object without 
+            having to do any request redirects or metadata lookups.
+          </para>
+          <para>
+            A &POST; to a versioned object only updates the object's metadata; it does
+            not create a new version of the object. In other words, new versions are only 
+            created when the content of the object changes.
+          </para>
+          <para>
+            A &DELETE; to a versioned object removes the current version of the 
+            object and replaces it with the next-most current version, moving it 
+            from the non-current container to the current.
+            This next-most current version carries with it any metadata last set on it.
+            If want to completely remove an object and you have five total versions of it,
+            you must &DELETE; it five times.
+          </para>
+          <note><para>
+            Note: A large-object manifest file cannot be versioned, but it may point to 
+            versioned segments. 
+          </para></note>
+          <para>
+            To turn off Object Versioning on your current version container, remove its 
+            <code>X-Versions-Location</code> metadata by sending an empty key value.
+          </para>
+      <example>
+        <title>Object Versioning with cURL</title>
+        <para> Make sure a version-storing container exists, creating
+          it if necessary (this example names it "versions"). Then
+          create a container with the <code>X-Versions-Location</code> header or
+          add it to an existing container. In this example, this
+          container is named "current". You can also add the <code>X-Versions-Location</code> 
+          header to an existing container. Ensure that the
+          container referenced by the <code>X-Versions-Location</code>
+          exists. In this example, the name of that container is
+          “versions”; the location for the current version is the
+          container "current". </para>
+        <para>Create a container named versions.</para>
+        <literallayout class="monospaced">  curl -i -XPUT -H "X-Auth-Token: &lt;token&gt;" http://&lt;storage_url&gt;/versions
+        </literallayout>
+        <para>Create a container named current with the
+          <code>X-Versions-Location</code> header that references "versions".</para>
+        <literallayout class="monospaced">
+  curl -i -XPUT -H "X-Auth-Token: &lt;token&gt;" \
+      -H "X-Versions-Location: versions" http://&lt;storage_url&gt;/current
+        </literallayout>
+        <para> Create an object (the first version): </para>
+        <literallayout class="monospaced">
+  curl -i -XPUT --data-binary 1 -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/current/myobject
+            </literallayout>
+        <para> Now create a new version of that object: </para>
+        <literallayout class="monospaced">
+  curl -i -XPUT --data-binary 2 -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/current/myobject
+            </literallayout>
+        <para> See a listing of the older versions of the object: </para>
+        <literallayout class="monospaced">
+  curl -i -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/versions?prefix=008myobject/
+            </literallayout>
+        <para> Now delete the current version of the object and see
+          that the older version is gone: </para>
+        <literallayout class="monospaced">
+  curl -i -XDELETE -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/current/myobject
+  curl -i -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/versions?prefix=008myobject/
+            </literallayout>
+      </example>
+        </section>   
+        
+        
+        
+        
         <section xml:id="copy-object">
             <title>Copy Object</title>
             <para>Suppose you upload a file with the wrong object name or content type, or you
