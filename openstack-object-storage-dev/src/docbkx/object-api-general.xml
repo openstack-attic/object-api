@@ -158,10 +158,10 @@ format="SVG" scale="60"/>
                     </listitem>
                     <listitem>
                         <para> Obtain your API access key from authentication service you chose when
-                            installing. <phrase security="reviewer">You have some options for auth, including tempauth (which is 
+                            installing. You have some options for auth, including tempauth (which is 
                             included with Swift), swauth (an auth service for Swift as WSGI middleware that uses 
                             Swift itself as a backing store that is provided via download from Github), 
-                            the OpenStack Identity Service (project named Keystone),</phrase> or you can use your own
+                            the OpenStack Identity Service (project named Keystone), or you can use your own
                             authentication system. Place your access key in the <code>X-Auth-Key</code> x-header. </para>
                     </listitem>
                 </itemizedlist>
@@ -182,8 +182,7 @@ format="SVG" scale="60"/>
             <para>When authentication is successful, an HTTP status 204 (No Content) is returned with
                 the <code>X-Storage-Url</code> and
                 <code>X-Auth-Token</code> headers. Any 2xx response is a good response. 
-                <phrase security="reviewer">
-                For example, a 202 response means the request has been accepted.</phrase> 
+                For example, a 202 response means the request has been accepted. 
                 Also, additional <code>X-</code> headers
                 may be returned. These additional headers are related to other Rackspace services and can
                 be ignored. An HTTP status of 401 (Unauthorized) is returned upon authentication failure.
