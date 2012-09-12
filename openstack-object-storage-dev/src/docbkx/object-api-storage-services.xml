@@ -1766,7 +1766,7 @@ X-Remove-Container-Meta-Book: x
           change any of the object's other headers such as
           <code>Content-Type</code>, <code>ETag</code>, etc. It is
           not used to upload storage objects (see &PUT;). Also refer
-          to <link linkend="Copy_Object-d1e2241">copying an
+          to <link linkend="copy-object">copying an
             object</link> when you need to update metadata or other
           headers such as Content-Type or CORS headers. 
           </para>
