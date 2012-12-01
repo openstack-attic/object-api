@@ -1219,7 +1219,9 @@ X-Remove-Container-Meta-Book: x
         additional HTTP headers on the &PUT; request.</para>
       <para>The object can be created with custom metadata via HTTP
         headers identified with the <code>X-Object-Meta-</code>
-        prefix.</para>
+        prefix, or arbitary headers set with the
+        <literal>allowed_headers</literal> option in the object-server
+        configuration.</para>
       <example>
         <title>Create/Update Object Request</title>
         <literallayout class="monospaced">
@@ -1762,7 +1764,7 @@ X-Remove-Container-Meta-Book: x
           set and overwrite arbitrary key/value metadata or to assign
           headers not already assigned such as
           <code>X-Delete-At</code> or <code>X-Delete-After</code>
-          for expiring objects. You cannot use the &POST; operation to
+          for expiring objects. You can use the &POST; operation to
           change any of the object's other headers such as
           <code>Content-Type</code>, <code>ETag</code>, etc. It is
           not used to upload storage objects (see &PUT;). Also refer
