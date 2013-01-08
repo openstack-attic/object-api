@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+1: Juan J. Martínez <juan@memset.com>
+Approved+1: Anne Gentle <anne@openstack.org>
+Code-Review+2: Anne Gentle <anne@openstack.org>
+Submitted-by: Jenkins
+Submitted-at: Tue, 08 Jan 2013 03:00:27 +0000
+Reviewed-on: https://review.openstack.org/16659
+Project: openstack/object-api
+Branch: refs/heads/master
