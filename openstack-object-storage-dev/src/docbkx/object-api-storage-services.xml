@@ -470,6 +470,14 @@ X-Remove-Account-Meta-Book: x
                   the need for the directory marker objects).</para>
               </listitem>
             </varlistentry>
+            <varlistentry>
+              <term><code>path</code></term>
+              <listitem>
+                <para>For a string value<inlineequation>
+                    <mathphrase><emphasis>x</emphasis></mathphrase>
+                  </inlineequation>, return the object names nested in the pseudo path.  Equivalent to setting delimiter to '/' and prefix to the path with a '/' on the end.</para>
+              </listitem>
+            </varlistentry>
           </variablelist>
           <example>
             <title>Objects List Request</title>
