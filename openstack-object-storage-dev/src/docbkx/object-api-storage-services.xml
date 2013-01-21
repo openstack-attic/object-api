@@ -68,7 +68,7 @@ format="SVG" scale="60"/>
         </example>
         <section xml:id="s_listcontainers">
           <title>List Containers</title>
-          <para>&GET; operations against the <code>X-Storage-Url</code> for an account
+          <para>&GET; operations on the <code>X-Storage-Url</code> for an account
               are performed to retrieve a list of existing storage containers ordered by name. The sort order for the name
               is based on a <link xlink:href="http://www.sqlite.org/datatype3.html#collation">binary comparison</link>, a single built-in 
               collating sequence that compares string data using SQLite's memcmp() function, 
@@ -135,10 +135,10 @@ format="SVG" scale="60"/>
   Content-Length: 32
                       </literallayout>
             <literallayout class="monospaced">
+  backups
+  documents
   images
   movies
-  documents
-  backups
                       </literallayout>
           </example>
           <section xml:id="s_serializedlistoutput">
