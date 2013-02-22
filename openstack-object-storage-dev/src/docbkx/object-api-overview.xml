@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter [
+<!DOCTYPE preface [
 <!-- Some useful entities borrowed from HTML -->
 <!ENTITY ndash  "&#x2013;">
 <!ENTITY mdash  "&#x2014;">
@@ -25,29 +25,33 @@ format="SVG" scale="60"/>
 </imageobject>
 </inlinemediaobject>'>
 ]>
-<chapter xmlns="http://docbook.org/ns/docbook"
+<preface xmlns="http://docbook.org/ns/docbook"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="ch_object-storage-dev-overview">
     
     <title>Overview</title>
-    <para>OpenStack Object Storage is an affordable, redundant, scalable, and dynamic storage
-        service offering. The core storage system is designed to provide a safe, secure,
-        automatically re-sizing and network-accessible way to store data. You can store an
-        unlimited quantity of files and each file can be as large as 5 gigabytes, plus with
-        large object creation, you can upload and store objects of virtually any size.
-    </para>
-    <para>OpenStack Object Storage allows users to store and retrieve files and content via a simple
-        Web Service inteface (ReST: Representational State Transfer). There are also
-        language-specific APIs that utilize the ReSTful API but make it much easier for
-        developers to integrate into their applications.</para>
+    <para>OpenStack Object Storage is an affordable, redundant,
+        scalable, and dynamic storage service offering. The core
+        storage system is designed to provide a safe, secure,
+        automatically re-sizing and network-accessible way to store
+        data. You can store an unlimited quantity of files and each
+        file can be as large as 5 GBs, plus with large object
+        creation, you can upload and store objects of virtually any
+        size. </para>
+    <para>OpenStack Object Storage allows users to store and retrieve
+        files and content through a simple Web Service interface
+        (ReST: Representational State Transfer). There are also
+        language-specific APIs that utilize the ReSTful API but make
+        it much easier for developers to integrate into their
+        applications.</para>
     <para>For more details on the OpenStack Object Storage service, please refer to <link
         xlink:href="http://swift.openstack.org"
         >http://swift.openstack.org</link>
     </para>
-    <para> We welcome feedback, comments, and bug reports at <link
-        xlink:href="http://bugs.launchpad.net/swift">http://bugs.launchpad.net/swift</link>. 
-    </para>
+    <para>We welcome feedback, comments, and bug reports at <link
+            xlink:href="http://bugs.launchpad.net/swift"
+            >http://bugs.launchpad.net/swift</link>. </para>
     <section xml:id="intended-audience-object-dev-guide">
         <title>Intended Audience</title>
         <para>This guide is intended to assist software developers who want to develop applications
@@ -72,32 +76,5 @@ format="SVG" scale="60"/>
             its native format. For example, the Java API includes JavaDocs and the C#/.NET API
             includes a CHM file.</para>
         
-    </section>
-    
-    <section xml:id="doc-change-history-object-dev-guide">
-        <title>Document Change History</title>
-        <para>This version of the Developer Guide was forked from the Rackspace Cloud Files Developer
-            Guide.
-        </para>
-       <!-- *** --> 
-        
-        <?rax revhistory?>  
-            
-        <!-- *** -->     
-    </section>
-    <section xml:id="additional-resources-object-devguide">
-        <title>Additional Resources</title>
-        <para>You can download the most current version of this document from the OpenStack Docs
-            website at <link
-                xlink:href="http://docs.openstack.org">
-                http://docs.openstack.org</link>. </para>
-        <para>
-            If you would like more information about the Rackspace implementation of 
-            the OpenStack Object Storage service, visit this address:
-            <link xlink:href="www.rackspacecloud.com/cloud_hosting_products/files"> 
-            http://www.rackspacecloud.com/cloud_hosting_products/files</link>. Related documents are
-            available at the same site, as are links to Rackspace's official support channels, including
-            knowledge base articles, forums, phone, chat, and email. </para>
-        
     </section>   
-</chapter>
+</preface>

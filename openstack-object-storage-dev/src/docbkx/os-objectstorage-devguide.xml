@@ -51,11 +51,13 @@
       <year>2010</year>
       <year>2011</year>
       <year>2012</year>
+      <year>2013</year>
       <holder>OpenStack, LLC</holder>
     </copyright>
     <releaseinfo>API v1</releaseinfo>
     <productname>OpenStack Object Storage</productname>
-    <pubdate>2012-09-04</pubdate>
+  <!--  <pubdate>2012-09-04</pubdate> -->
+    <pubdate>2013-02-22</pubdate>
     <legalnotice role="apache2">
       <annotation>
         <remark>Copyright details are filled in by the template.</remark>
@@ -68,6 +70,17 @@
           (<abbrev>API</abbrev>). </para>
     </abstract>   
     <revhistory>
+      <revision>
+        <date>2013-02-2</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Moved code samples into separate files for content sharing.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
       <revision>
         <date>2012-09-12</date>
         <revdescription>
@@ -173,4 +186,6 @@
     <xi:include href="object-api-general.xml"/>
     <xi:include href="object-api-storage-services.xml"/>
     <xi:include href="object-api-troubleshooting-examples.xml"/>
+    <xi:include href="object-api-dochistory.xml"/>
+    <xi:include href="object-api-resources.xml"/>
 </book>
