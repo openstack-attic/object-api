@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Some useful entities borrowed from HTML -->
+<!ENTITY ndash  "&#x2013;">
+<!ENTITY mdash  "&#x2014;">
+<!ENTITY hellip "&#x2026;">
+
+<!-- Useful for describing APIs -->
+<!ENTITY COPY    '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+
+<!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="img/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+
+<!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="img/Arrow_east.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="storage-container-services">
+    <title>Storage Container Services</title>
+    <para>You can perform the following operations for
+        containers:</para>
+    <informaltable rules="all">
+        <thead>
+            <tr>
+                <td colspan="1">Verb</td>
+                <td colspan="2">URI</td>
+                <td colspan="3">Description</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="1">&GET;</td>
+                <td colspan="2"
+                        >/<parameter>account</parameter>/<parameter>container</parameter></td>
+                <td colspan="3">Lists objects.</td>
+            </tr>
+            <tr>
+                <td colspan="1">&PUT;</td>
+                <td colspan="2"
+                        >/<parameter>account</parameter>/<parameter>container</parameter></td>
+                <td colspan="3">Creates a container.</td>
+            </tr>
+            <tr>
+                <td colspan="1">&DELETE;</td>
+                <td colspan="2"
+                        >/<parameter>account</parameter>/<parameter>container</parameter></td>
+                <td colspan="3">Deletes a container.</td>
+            </tr>
+            <tr>
+                <td colspan="1">&HEAD;</td>
+                <td colspan="2"
+                        >/<parameter>account</parameter>/<parameter>container</parameter></td>
+                <td colspan="3">Gets container metadata.</td>
+            </tr>
+        </tbody>
+    </informaltable>
+    <para>All operations follow this format:</para>
+    <example>
+        <title>Storage Container Services HTTP Request</title>
+        <literallayout class="monospaced">METHOD /v1/&lt;account>/&lt;container> HTTP/1.1           </literallayout>
+    </example>
+    <section xml:id="list-objects">
+        <title>List Objects</title>
+        <para>&GET; operations against a storage container name are
+            performed to retrieve a list of objects stored in the
+            container. Additionally, there are a number of optional
+            query parameters that can be used to refine the list
+            results.</para>
+        <para>A request with no query parameters will return the full
+            list of object names stored in the container, up to 10,000
+            names. Optionally specifying the query parameters will
+            filter the full list and return a subset of
+            objects.</para>
+        <variablelist>
+            <title>Query Parameters</title>
+            <varlistentry>
+                <term><code>limit</code></term>
+                <listitem>
+                    <para>For an integer value <inlineequation>
+                            <mathphrase><emphasis>n</emphasis></mathphrase>
+                        </inlineequation>, limits the number of
+                        results to at most <inlineequation>
+                            <mathphrase><emphasis>n</emphasis></mathphrase>
+                        </inlineequation> values.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><code>marker</code></term>
+                <listitem>
+                    <para>Given a string value <inlineequation>
+                            <mathphrase><emphasis>x</emphasis></mathphrase>
+                        </inlineequation>, return object names greater
+                        in value than the specified marker.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><code>end_marker</code></term>
+                <listitem>
+                    <para>Given a string value <inlineequation>
+                            <mathphrase><emphasis>x</emphasis></mathphrase>
+                        </inlineequation>, return object names less in
+                        value than the specified marker.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><code>prefix</code></term>
+                <listitem>
+                    <para>For a string value <inlineequation>
+                            <mathphrase><emphasis>x</emphasis></mathphrase>
+                        </inlineequation>, causes the results to be
+                        limited to object names beginning with the
+                        substring <inlineequation>
+                            <mathphrase><emphasis>x</emphasis></mathphrase>
+                        </inlineequation>.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><code>format</code></term>
+                <listitem>
+                    <para>Specify either <code>json</code> or
+                            <code>xml</code> to return the respective
+                        serialized response.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><code>delimiter</code></term>
+                <listitem>
+                    <para>For a character <inlineequation>
+                            <mathphrase><emphasis>c</emphasis></mathphrase>
+                        </inlineequation>, return all the object names
+                        nested in the container (without the need for
+                        the directory marker objects).</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term><code>path</code></term>
+                <listitem>
+                    <para>For a string value<inlineequation>
+                            <mathphrase><emphasis>x</emphasis></mathphrase>
+                        </inlineequation>, return the object names
+                        nested in the pseudo path. Equivalent to
+                        setting delimiter to '/' and prefix to the
+                        path with a '/' on the end.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+        <example>
+            <title>List Objects HTTP Request</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-list-req.txt" parse="text"/></literallayout>
+        </example>
+        <para>A list of objects is returned in the response body, one
+            object name per line. A 204 (No Content) HTTP return code
+            will be passed back if the container is empty. If the
+            container does not exist, a 404 code will return. If an
+            incorrect account is specified, the HTTP return code will
+            be 404 (Not Found).</para>
+        <example>
+            <title>List Objects HTTP Response</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-list-resp.txt" parse="text"/></literallayout>
+        </example>
+        <section xml:id="serialized-list-output">
+            <title>Serialized List Output</title>
+            <para>If a <code>format=xml</code> or
+                    <code>format=json</code> argument is appended to
+                the storage account URL, the service will serve
+                extended object information serialized in the chosen
+                format. Other than the <code>?format=xml|json</code>
+                parameter, it will return the same status/errors
+                codes. The sample responses below are formatted for
+                readability.</para>
+            <example>
+                <title>Get Objects Details HTTP and JSON
+                    Request</title>
+                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-req.txt" parse="text"/></literallayout>
+            </example>
+            <example>
+                <title>Get Objects Details HTTP and JSON Response </title>
+                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-resp.txt" parse="text"/></literallayout>
+                <programlisting language="json"><xi:include href="samples/objects-get-details-resp.json" parse="text"/></programlisting>
+            </example>
+            <example>
+                <title>Objects Details Request: XML</title>
+                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-req.txt" parse="text"/></literallayout>
+            </example>
+            <example>
+                <title>Objects Details Request: XML </title>
+                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-resp.txt" parse="text"/></literallayout>
+                <programlisting language="xml"><xi:include href="samples/objects-get-details-resp.xml" parse="text"/></programlisting>
+            </example>
+        </section>
+        <section xml:id="list-large-number-of-objects">
+            <title>Controlling a Large List of Objects</title>
+            <para>The system returns a maximum of 10,000 object names
+                per request. To retrieve subsequent object names,
+                another request must be made with the 'marker'
+                parameter. The marker indicates where the last list
+                left off and the system returns object names greater
+                than this marker, up to 10,000 again. Note that the
+                ‘marker’ value should be URL encoded prior to sending
+                the HTTP request.</para>
+            <para>If 10,000 is larger than desired, a 'limit'
+                parameter may be given.</para>
+            <para>If the number of object names returned equals the
+                limit given (or 10,000 if no limit is given), it can
+                be assumed there are more object names to be listed.
+                If the container name list is exactly divisible by the
+                limit, the last request has no content.</para>
+            <example>
+                <title>List Large Number of Objects</title>
+                <para>For an example, let's use a listing of five
+                    object names:</para>
+                <literallayout class="monospaced">gala
+grannysmith
+honeycrisp
+jonagold
+reddelicious</literallayout>
+                <para>We'll use a limit of two to show how things
+                    work:</para>
+                <literallayout class="monospaced"><xi:include href="samples/objects-list-req.txt" parse="text"/></literallayout>
+                <para>Because we received two items back, we can
+                    assume there are more object names to list. So, we
+                    make another request with a marker of the last
+                    item returned:</para>
+                <literallayout class="monospaced"><xi:include href="samples/objects-list-marker-req.txt" parse="text"/></literallayout>
+                <para>Again we have two items returned; there might be
+                    more:</para>
+                <literallayout class="monospaced"><xi:include href="samples/objects-list-marker2-req.txt" parse="text"/></literallayout>
+                <para>Now we received less than the limit number of
+                    object names, indicating that we have the complete
+                    list.</para>
+                <para>By using <code>end_marker</code> we can limit
+                    the result set to object names less than the given
+                    value. </para>
+                <literallayout class="monospaced"><xi:include href="samples/objects-list-end-marker-req.txt" parse="text"/></literallayout>
+            </example>
+        </section>
+        <section xml:id="pseudo-hierarchical-folders-directories">
+            <title>Pseudo-Hierarchical Folders and Directories</title>
+            <!-- reworked this section / as path and its elements / are not supported - dsh - 02-16-12 -->
+            <para>Although you cannot nest directories in OpenStack
+                Object Storage, you can simulate a hierarchical
+                structure within a single container by adding forward
+                slash characters (<literal>/</literal>) in the object
+                name. To navigate the pseudo-directory structure, you
+                may use the <code>delimiter</code> query parameter.
+                See the below examples for an illustration.</para>
+            <note>
+                <para>In the example below, the objects reside in a
+                    container called <code>backups</code>. Within that
+                    container, the objects are organized in a
+                    pseudo-directory called <code>photos</code>. Keep
+                    in mind that the container name is not displayed
+                    in the example, but that it is a part of the
+                    object URLs. For instance, the URL of the picture
+                        <code>me.jpg</code> is
+                        <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/backups/photos/me.jpg</uri>.
+                </para>
+            </note>
+            <example>
+                <title>List Pseudo-Hierarchical Folders/Directories
+                    Request</title>
+                <para>To display a list of all the objects in the
+                    storage container, use &GET; without a
+                        <code>delimiter</code> or <code>prefix</code>. </para>
+                <literallayout class="monospaced">GET /v1/AccountString/backups</literallayout>
+                <para>The system returns status code 200 (OK) and the
+                    requested list of the objects. </para>
+                <literallayout class="monospaced">photos/animals/cats/persian.jpg
+photos/animals/cats/siamese.jpg
+photos/animals/dogs/corgi.jpg
+photos/animals/dogs/poodle.jpg
+photos/animals/dogs/terrier.jpg
+photos/me.jpg
+photos/plants/fern.jpg
+photos/plants/rose.jpg</literallayout>
+                <para>
+                    <!-- The JIRA ticket / doc-97 subsumed / to this location - dsh - 02-03-12 -->Use
+                    the delimiter parameter to limit the displayed
+                    results. Any character may be used as a delimiter.
+                    However, to use <code>delimiter</code> with
+                    pseudo-directories, use the parameter slash
+                        (<literal>/</literal>). </para>
+                <literallayout class="monospaced">GET /v1/AccountString/backups?delimiter=/</literallayout>
+                <para>The system returns status code 200 (OK) and the
+                    requested matching objects. Because we use the
+                    slash, only the pseudo-directory
+                        <code>photos/</code> displays. Keep in mind
+                    that the returned values from a slash
+                        <code>delimiter</code> query are not real
+                    objects. They have a content-type of
+                    application/directory and are in a subdir section
+                    of json and xml results. </para>
+                <literallayout class="monospaced">photos/</literallayout>
+                <para>Use the <code>prefix</code> parameter with the
+                        <code>delimiter</code> parameter to view the
+                    objects inside a pseudo-directory, including
+                    further nested pseudo-directories. </para>
+                <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/&#38;delimiter=/</literallayout>
+                <para>The system returns status code 200 (OK) and the
+                    objects and pseudo-directories within the top
+                    level pseudo-directory. </para>
+                <literallayout class="monospaced">photos/animals/
+photos/me.jpg
+photos/plants/            </literallayout>
+                <para>There is no limit to the amount of nested
+                    pseudo-directories you can create. In order to
+                    navigate through them, use a longer
+                        <code>prefix</code> parameter coupled with the
+                        <code>delimiter</code> parameter. In the
+                    sample output below, there is a pseudo-directory
+                    called <code>dogs</code> within the
+                    pseudo-directory <code>animals</code>. In order to
+                    navigate directly to the files contained within
+                        <code>dogs</code>, enter the below command. </para>
+                <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/animals/dogs/&#38;delimiter=/         </literallayout>
+                <para>The system returns status code 200 (OK) and the
+                    objects and pseudo-directories within the nested
+                    pseudo-directory. </para>
+                <literallayout class="monospaced">photos/animals/dogs/corgi.jpg
+photos/animals/dogs/poodle.jpg
+photos/animals/dogs/terrier.jpg</literallayout>
+            </example>
+        </section>
+
+
+    </section>
+    <section xml:id="create-container">
+        <title>Create Container</title>
+        <para>&PUT; operations against a storage container are used to
+            create that container.</para>
+        <para>Containers are storage compartments for your data. The
+            URL encoded name must be less than 256 bytes and cannot
+            contain a forward slash '/' character.</para>
+        <para>Containers can be assigned custom metadata by including
+            additional HTTP headers on the &PUT; request. The custom
+            metadata is assigned to a container via HTTP headers
+            identified with the <code>X-Container-Meta-</code> prefix. </para>
+
+        <example>
+            <title>Create Container HTTP Request </title>
+            <literallayout class="monospaced"><xi:include href="samples/container-create-req.txt" parse="text"/></literallayout>
+        </example>
+        <para>No content is returned. A status code of 201 (Created)
+            indicates that the container was created as requested.
+            Container &PUT; requests are idempotent and a code of 202
+            (Accepted) is returned when the container already existed.
+            If you request a &PUT; to a container with an
+                <code>X-Container-Meta-</code> prefix in the header,
+            your &GET;/&HEAD; request responses carry the metadata
+            prefix from the container in subsequent requests.</para>
+        <example>
+            <title>Create Container HTTP Response</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-create-resp.txt" parse="text"/></literallayout>
+        </example>
+        <para>Using custom container metadata, you can create
+            information in the header to effectively "tag" a container
+            with metadata. The container metadata restrictions are the
+            same as object metadata: you can have 4096 bytes maximum
+            overall metadata, 90 distinct metadata items at the most.
+            Each may have a 128 character name length with a 256 max
+            value length each. Any valid UTF-8 http header value is
+            allowed for metadata, however we recommend that you
+            URL-encode any non-ASCII values using a "%" symbol,
+            followed by the two-digit hexadecimal representation of
+            the ISO-Latin code for the character.</para>
+
+        <example>
+            <title>Container Create Container with Metadata HTTP Request</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-create-metadata-req.txt" parse="text"/></literallayout>
+        </example>
+        <para>No content is returned. A status code of 201 (Created)
+            indicates that the container was created as requested.
+            Container &PUT; requests are idempotent and a code of 202
+            (Accepted) is returned if the container existed prior to
+            the request. If you request a &PUT; to a container with an
+                <code>X-Container-Meta-</code> prefix in the header,
+            your &GET;/&HEAD; request responses carry the metadata
+            prefix from the container in subsequent requests.</para>
+        <example>
+            <title>Create Container with Metadata HTTP Response</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-create-metadata-resp.txt" parse="text"/></literallayout>
+        </example>
+    </section>
+    <section xml:id="delete-container">
+        <title>Delete Container</title>
+        <para>&DELETE; operations against a storage container
+            permanently remove it. The container must be empty before
+            it can be deleted. </para>
+        <para>A &HEAD; request against the container can be used to
+            determine if it contains any objects.</para>
+        <example>
+            <title>Delete Container HTTP Request</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-delete-req.txt" parse="text"/></literallayout>
+        </example>
+
+        <para>No content is returned. A status code of 204 (No
+            Content) indicates success, 404 (Not Found) is returned if
+            the requested container was not found, and a 409
+            (Conflict) if the container is not empty. No response body
+            is generated.</para>
+        <example>
+            <title>Delete Container HTTP Response</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-delete-resp.txt" parse="text"/></literallayout>
+        </example>
+    </section>
+    <section xml:id="retrieve-container-metadata">
+        <title>Get Container Metadata</title>
+        <para>&HEAD; operations against a storage container are used
+            to determine the number of objects, and the total bytes of
+            all objects stored in the container. Since the storage
+            system is designed to store large amounts of data, care
+            should be taken when representing the total bytes response
+            as an integer; when possible, convert it to a 64-bit
+            unsigned integer if your platform supports that primitive
+            type.</para>
+        <example>
+            <title>Get Container Metadata HTTP Request</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-get-metadata-req.txt" parse="text"/></literallayout>
+        </example>
+        <para>The HTTP return code will be 204 (No Content) if the
+            container exists, and 404 (Not Found) if it does not. The
+            object count and utilization are returned in the
+                <code>X-Container-Object-Count</code> and
+                <code>X-Container-Bytes-Used</code> headers
+            respectively.</para>
+        <example>
+            <title>Get Container Metadata HTTP Response</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-get-metadata-resp.txt" parse="text"/></literallayout>
+        </example>
+    </section>
+    <section xml:id="Update_Container_Metadata-d1e1900">
+        <title>Create or Update Container Metadata</title>
+        <para>You may create any custom or arbitrary metadata headers
+            as you find useful. They must, however, take the format
+                <code>X-Container-Meta-</code>. </para>
+        <para>To create or update the arbitrary container metadata,
+            use the &POST; query. Subsequent requests of the same
+            key/value pair overwrites the previous value. </para>
+        <example>
+            <title>Update Container Metadata HTTP Request</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-update-metadata-req.txt" parse="text"/></literallayout>
+        </example>
+        <para>No response body is returned. A status code of 204 (No
+            Content) indicates success; status 404 (Not Found) is
+            returned when the requested container does not exist. </para>
+        <example>
+            <title>Update Container Metadata HTTP Response</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-update-metadata-resp.txt" parse="text"/></literallayout>
+        </example>
+        <para>To confirm your metadata changes, perform a &HEAD;
+            request on the container. Do not send the metadata in your
+            &HEAD; request.</para>
+        <example>
+            <title>View Container Metadata HTTP Request</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-view-metadata-req.txt" parse="text"/></literallayout>
+        </example>
+        <example>
+            <title>View Container Metadata HTTP Response</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-view-metadata-resp.txt" parse="text"/></literallayout>
+        </example>
+        <!-- Note: using POST with null value should delete a metadata header, but
+            this method is not functional with all tools, so we are leaving it out for now.
+            A future patch may come where using "-" (dash) for the value will delete it.  dsh - 2012-0309 -->
+    </section>
+    <section xml:id="delete-container-metadata">
+        <title>Delete Container Metadata</title>
+        <para>To delete a metadata header send an empty value for that
+            particular header, such as
+                <code>X-Container-Meta-Book:</code>. </para>
+        <para>If the tool you're using to communicate with Object
+            Storage doesn't support sending empty headers (older
+            versions of curl) send the header
+                "X-Remove-Container-Meta-<replaceable>name</replaceable>:
+                <replaceable>arbitrary value</replaceable>". For
+            example, send a header like
+                <code>X-Remove-Container-Meta-Book: x</code>. The
+                <emphasis>value</emphasis> (x in this example) is
+            ignored.</para>
+        <example>
+            <title>Delete Container Metadata HTTP Request</title>
+            <literallayout class="monospaced"><xi:include href="samples/container-delete-metadata-req.txt" parse="text"/></literallayout>
+            <para>No response body is returned. A status code of 204
+                (No Content) indicates success. </para>
+        </example>
+    </section>
+</section>

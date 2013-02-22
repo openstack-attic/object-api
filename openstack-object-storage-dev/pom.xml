@@ -50,7 +50,7 @@
             <plugin>
                 <groupId>com.rackspace.cloud.api</groupId>
                 <artifactId>clouddocs-maven-plugin</artifactId>
-                <version>1.5.2</version>
+                <version>1.7.2</version>
                 <executions>
                     <execution>
                         <id>goal1</id>
@@ -90,24 +90,11 @@
                             <!-- The following elements sets the autonumbering of sections in output for chapter numbers but no numbered sections-->
                             <!--<sectionAutolabel>0</sectionAutolabel>
                             <sectionLabelIncludesComponentLabel>0</sectionLabelIncludesComponentLabel>-->
+                            <targetDirectory>target/docbkx/webhelp/openstack-object-storage</targetDirectory>
+                            <webhelpDirname>1.0</webhelpDirname>
+                            <pdfFilenameBase>bk-objectstorage-devguide-${release.path.name}</pdfFilenameBase>
                             <postProcess>
-                                <!-- Copies the figures to the correct location for webhelp -->
-                                <!-- No figures in this book -->
-                                
-                                <!-- Copies HTML to a release folder -->                                                                                <copy
-                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0">
-                                    <fileset
-                                        dir="${basedir}/target/docbkx/webhelp/os-objectstorage-devguide">
-                                        <include name="**/*" />
-                                    </fileset>
-                                </copy>
-                                
-                                <!--Moves PDFs to the needed placement -->
-                                
-                                <move failonerror="false"
-                                    file="${basedir}/target/docbkx/pdf/os-objectstorage-devguide.pdf"
-                                    tofile="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/os-objectstorage-devguide-1.0.pdf"/>
-                                
+                                <!-- Removes unnecessary copy of the guide output -->
                                 <delete
                                     dir="${basedir}/target/docbkx/webhelp/os-objectstorage-devguide"/>
                             </postProcess>

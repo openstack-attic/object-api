@@ -1,0 +1,3 @@
+GET /<api version>/<account>/<container>?format=xml HTTP/1.1
+Host: storage.swiftdrive.com
+X-Storage-Token: 182f9c0af0e828cfe3281767d29d19f4
