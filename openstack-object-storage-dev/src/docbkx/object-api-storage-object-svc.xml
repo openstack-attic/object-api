@@ -72,7 +72,7 @@ format="SVG" scale="60"/>
                 <td colspan="1">&DELETE;</td>
                 <td colspan="2"
                         >/<parameter>account</parameter>/<parameter>container</parameter>/<parameter>object</parameter></td>
-                <td colspan="3">Deletes container.</td>
+                <td colspan="3">Deletes object.</td>
             </tr>
             <tr>
                 <td colspan="1">&HEAD;</td>
