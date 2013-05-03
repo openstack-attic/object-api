@@ -56,14 +56,15 @@ format="SVG" scale="60"/>
             <tr>
                 <td colspan="1">&POST;</td>
                 <td colspan="2">/<parameter>account</parameter></td>
-                <td colspan="3">Creates or updates account metadata.</td>
+                <td colspan="3">Creates or updates account
+                    metadata.</td>
             </tr>
             <tr>
                 <td colspan="1">&POST;</td>
                 <td colspan="2">/<parameter>account</parameter></td>
                 <td colspan="3">Deletes account metadata.</td>
             </tr>
-          
+
         </tbody>
     </informaltable>
     <para>For example, the URL for the requests end with the OpenStack
@@ -80,10 +81,10 @@ format="SVG" scale="60"/>
             order for the name is based on a <link
                 xlink:href="http://www.sqlite.org/datatype3.html#collation"
                 >binary comparison</link>, a single built-in collating
-            sequence that compares string data using SQLite's memcmp()
-            function, regardless of text encoding. The following list
-            describes the optional query parameters that are supported
-            with this request.</para>
+            sequence that compares string data by using the SQLite
+            memcmp() function, regardless of text encoding. The
+            following list describes the optional query parameters
+            that are supported with this request.</para>
         <variablelist>
             <title>Query Parameters</title>
             <varlistentry>
@@ -203,10 +204,10 @@ pears</literallayout>
                 <literallayout class="monospaced"><xi:include href="samples/large-container-list-req.txt" parse="text"/></literallayout>
                 <literallayout class="monospaced">apples
 bananas</literallayout>
-                <para>Because we received two items back, we can assume
-                    there are more container names to list, so we make
-                    another request with a marker of the last item
-                    returned:</para>
+                <para>Because we received two items back, we can
+                    assume there are more container names to list, so
+                    we make another request with a marker of the last
+                    item returned:</para>
                 <literallayout class="monospaced"><xi:include href="samples/large-container-list-filter-req.txt" parse="text"/></literallayout>
                 <literallayout class="monospaced">kiwis
 oranges</literallayout>

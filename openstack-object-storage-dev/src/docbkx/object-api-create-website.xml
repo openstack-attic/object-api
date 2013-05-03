@@ -53,17 +53,17 @@ format="SVG" scale="60"/>
             <code>index.html</code>) displays your website. When
         someone initially enters your site, they don't have to specify
         the index file; index.html file displays automatically. If you
-        create sub-directories for your site--which you do by creating
-        pseudo-directories in your container--the index page displays
-        by default for each sub-directory. If your pseduo-directory
+        create sub-directories for your site by creating
+        pseudo-directories in your container, the index page displays
+        by default for each sub-directory. If your pseudo-directory
         does not have a file with the same name as your index file,
         visits to the sub-directory return a 404 error. </para>
-    <para> You also have the option of displaying a list of files in
+    <para>You also have the option of displaying a list of files in
         your pseudo-directory instead of a web page. You do this by
         setting the <code>X-Container-Meta-Web-Listings</code> header
         to <code>TRUE</code>. You may add style to your file listing
         by setting <code>X-Container-Meta-Web-Listings-CSS:</code> to
-        a stylesheet (i.e., <code>lists.css</code>). </para>
+        a style sheet (for example, <code>lists.css</code>). </para>
     <section xml:id="Examples_for_static_web-dle4025">
         <title>Static Web Middleware through swift</title>
         <example>
@@ -75,7 +75,6 @@ format="SVG" scale="60"/>
                 sub-directories. </para>
             <literallayout class="monospaced">swift post -r '.r:*' container</literallayout>
         </example>
-
         <example>
             <title>Set Site Index File</title>
             <para>Set the index file. In this case,
@@ -83,7 +82,6 @@ format="SVG" scale="60"/>
                 displayed when the site displays. </para>
             <literallayout class="monospaced">swift post -m 'web-index:index.html' container</literallayout>
         </example>
-
         <example>
             <title>Enable File Listing</title>
             <para>Turn on file listing. If you do not set the index
@@ -91,15 +89,12 @@ format="SVG" scale="60"/>
                 on styling the list with the CSS follow. </para>
             <literallayout class="monospaced">swift post -m 'web-listings: true' container</literallayout>
         </example>
-
         <example>
             <title>Enable CSS for File Listing</title>
             <para>Style the file listing. </para>
             <literallayout class="monospaced"><xi:include href="samples/file-listings-css-set-req.txt" parse="text"/></literallayout>
         </example>
     </section>
-
-
     <section xml:id="Set_Error_Pages_for_Static_Website-dle4005">
         <title>Set Error Pages for Static Website</title>
         <para>You can create and set custom error pages for visitors
@@ -107,7 +102,7 @@ format="SVG" scale="60"/>
             404 (Not Found) errors are supported. To do this, set the
             metadata header, <code>X-Container-Meta-Web-Error</code>. </para>
         <para> Error pages are served with the &lt;status&gt; code
-            pre-pended to the name of the error page you set. For
+            prepended to the name of the error page you set. For
             instance, if you set
                 <code>X-Container-Meta-Web-Error</code> to
                 <code>error.html</code>, 401 errors will display the
@@ -122,7 +117,7 @@ format="SVG" scale="60"/>
             <title>Set Error Pages for Static Website Request</title>
             <literallayout class="monospaced"><xi:include href="samples/error-page-set-req.txt" parse="text"/></literallayout>
         </example>
-        <para> Any 2<varname>xx</varname> response indicates success.
+        <para>Any 2<varname>xx</varname> response indicates success.
         </para>
     </section>
 </section>

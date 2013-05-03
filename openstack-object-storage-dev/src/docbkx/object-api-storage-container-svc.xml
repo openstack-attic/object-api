@@ -303,8 +303,8 @@ photos/plants/rose.jpg</literallayout>
                     that the returned values from a slash
                         <code>delimiter</code> query are not real
                     objects. They have a content-type of
-                    application/directory and are in a subdir section
-                    of json and xml results. </para>
+                    application/directory and are in a sub directory
+                    section of json and xml results. </para>
                 <literallayout class="monospaced">photos/</literallayout>
                 <para>Use the <code>prefix</code> parameter with the
                         <code>delimiter</code> parameter to view the
@@ -317,11 +317,10 @@ photos/plants/rose.jpg</literallayout>
                 <literallayout class="monospaced">photos/animals/
 photos/me.jpg
 photos/plants/            </literallayout>
-                <para>There is no limit to the amount of nested
-                    pseudo-directories you can create. In order to
-                    navigate through them, use a longer
-                        <code>prefix</code> parameter coupled with the
-                        <code>delimiter</code> parameter. In the
+                <para>You can create an unlimited number of nested
+                    pseudo-directories. To navigate through them, use
+                    a longer <code>prefix</code> parameter coupled
+                    with the <code>delimiter</code> parameter. In the
                     sample output below, there is a pseudo-directory
                     called <code>dogs</code> within the
                     pseudo-directory <code>animals</code>. In order to
@@ -336,8 +335,6 @@ photos/animals/dogs/poodle.jpg
 photos/animals/dogs/terrier.jpg</literallayout>
             </example>
         </section>
-
-
     </section>
     <section xml:id="create-container">
         <title>Create Container</title>
@@ -350,7 +347,6 @@ photos/animals/dogs/terrier.jpg</literallayout>
             additional HTTP headers on the &PUT; request. The custom
             metadata is assigned to a container via HTTP headers
             identified with the <code>X-Container-Meta-</code> prefix. </para>
-
         <example>
             <title>Create Container HTTP Request </title>
             <literallayout class="monospaced"><xi:include href="samples/container-create-req.txt" parse="text"/></literallayout>
@@ -378,9 +374,9 @@ photos/animals/dogs/terrier.jpg</literallayout>
             URL-encode any non-ASCII values using a "%" symbol,
             followed by the two-digit hexadecimal representation of
             the ISO-Latin code for the character.</para>
-
         <example>
-            <title>Container Create Container with Metadata HTTP Request</title>
+            <title>Container Create Container with Metadata HTTP
+                Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-create-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>No content is returned. A status code of 201 (Created)
@@ -392,7 +388,8 @@ photos/animals/dogs/terrier.jpg</literallayout>
             your &GET;/&HEAD; request responses carry the metadata
             prefix from the container in subsequent requests.</para>
         <example>
-            <title>Create Container with Metadata HTTP Response</title>
+            <title>Create Container with Metadata HTTP
+                Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-create-metadata-resp.txt" parse="text"/></literallayout>
         </example>
     </section>
@@ -407,7 +404,6 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <title>Delete Container HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-delete-req.txt" parse="text"/></literallayout>
         </example>
-
         <para>No content is returned. A status code of 204 (No
             Content) indicates success, 404 (Not Found) is returned if
             the requested container was not found, and a 409
