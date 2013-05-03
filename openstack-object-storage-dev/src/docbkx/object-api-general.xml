@@ -123,7 +123,7 @@ format="SVG" scale="60"/>
             All authentication and container/object operations can be
             performed with standard HTTP calls. See the <link
                 xlink:href="http://en.wikipedia.org/wiki/Representational_State_Transfer"
-                >Wikipedia article</link> on ReST for more
+                >Representational State Transfer</link> on ReST for more
             information</para>
         <para>The following constraints apply to the ReST API's HTTP
             requests:</para>
