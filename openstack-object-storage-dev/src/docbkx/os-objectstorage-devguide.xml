@@ -35,29 +35,24 @@
         xmlns:db="http://docbook.org/ns/docbook"
         version="5.0"
     xml:id="openstack-object-storage-dev-guide">
-  <?rax pdf.url="../os-objectstorage-devguide-1.0.pdf"?>
-  <title>OpenStack Object Storage Developer Guide</title>
+  <title>OpenStack Object Storage API Reference</title>
   <info>
     <author>
       <personname>
         <firstname/>
         <surname/>
       </personname>
-      <affiliation>
-        <orgname>OpenStack</orgname>
-      </affiliation>
     </author>
     <copyright>
       <year>2010</year>
       <year>2011</year>
       <year>2012</year>
       <year>2013</year>
-      <holder>OpenStack, LLC</holder>
+      <holder>OpenStack Foundation</holder>
     </copyright>
     <releaseinfo>API v1</releaseinfo>
     <productname>OpenStack Object Storage</productname>
-  <!--  <pubdate>2012-09-04</pubdate> -->
-    <pubdate>2013-02-22</pubdate>
+    <pubdate/>
     <legalnotice role="apache2">
       <annotation>
         <remark>Copyright details are filled in by the template.</remark>
@@ -67,11 +62,22 @@
       <para> This document is intended for software
         developers interested in developing applications using the
         OpenStack™ Object Storage Application Programming Interface
-          (<abbrev>API</abbrev>). </para>
+          (API). </para>
     </abstract>   
     <revhistory>
       <revision>
-        <date>2013-02-2</date>
+        <date>2013-05-23</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Updates for static large object support.
+              </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
+        <date>2013-02-02</date>
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
@@ -116,7 +122,7 @@
         </revdescription>
       </revision>
       <revision>
-        <date>2011-02--10</date>
+        <date>2011-02-10</date>
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
@@ -172,13 +178,6 @@
       </revision>
     </revhistory>
      
-    <cover>
-      <para>this is a placeholder for the front cover</para>
-    </cover>
-    <cover>
-      <para>this is a placeholder for the back cover</para>
-      
-    </cover>
   </info>
     
     <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->

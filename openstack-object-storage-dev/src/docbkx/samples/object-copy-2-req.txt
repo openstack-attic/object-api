@@ -1,4 +1,4 @@
-COPY /<api version>/&lt;account>/<container>/<sourceobject> HTTP/1.1
+COPY /<api version>/&lt;account>/<sourcecontainer>/<sourceobject> HTTP/1.1
 Host: <storage URL>
 X-Auth-Token: <some-auth-token>
-Destination: /<container>/<destobject>
+Destination: /<destcontainer>/<destobject>
