@@ -1,5 +1,5 @@
-PUT /<api version>/<account>/<container>/<destobject> HTTP/1.1
+PUT /<api version>/<account>/<destcontainer>/<destobject> HTTP/1.1
 Host: <storage URL>
 X-Auth-Token: <some-auth-token>
-X-Copy-From: /<container>/<sourceobject>
+X-Copy-From: /<sourcecontainer>/<sourceobject>
 Content-Length: 0                    
