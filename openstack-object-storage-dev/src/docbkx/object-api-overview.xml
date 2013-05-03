@@ -25,7 +25,7 @@ format="SVG" scale="60"/>
 </imageobject>
 </inlinemediaobject>'>
 ]>
-<preface xmlns="http://docbook.org/ns/docbook"
+<chapter xmlns="http://docbook.org/ns/docbook"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="ch_object-storage-dev-overview">
@@ -46,8 +46,8 @@ format="SVG" scale="60"/>
         it much easier for developers to integrate into their
         applications.</para>
     <para>For more details on the OpenStack Object Storage service, please refer to <link
-        xlink:href="http://swift.openstack.org"
-        >http://swift.openstack.org</link>
+        xlink:href="http://docs.openstack.org/developer/swift/"
+        >http://docs.openstack.org/developer/swift/</link>
     </para>
     <para>We welcome feedback, comments, and bug reports at <link
             xlink:href="http://bugs.launchpad.net/swift"
@@ -55,11 +55,12 @@ format="SVG" scale="60"/>
     <section xml:id="intended-audience-object-dev-guide">
         <title>Intended Audience</title>
         <para>This guide is intended to assist software developers who want to develop applications
-            using the OpenStack Object Storage API. It fully documents the ReST application programming
-            interface (API) that allows developers to interact with the storage components of
-            the OpenStack Object Storage system. To use the information provided here, you should first have a
-            general understanding of the OpenStack Object Storage service and have access to an installation of
-            OpenStack Object Storage. You should also be familiar with: </para>
+            using the OpenStack Object Storage API. It fully documents the ReST application
+            programming interface (API) that allows developers to interact with the storage
+            components of the OpenStack Object Storage system. To use the information provided here,
+            you should first have a general understanding of the OpenStack Object Storage service
+            and have access to an installation of OpenStack Object Storage. You should also be
+            familiar with: </para>
         <itemizedlist spacing="compact">
             <listitem>
                 <para>ReSTful web services</para>
@@ -68,15 +69,12 @@ format="SVG" scale="60"/>
                 <para>HTTP/1.1</para>
             </listitem>
         </itemizedlist>
-        <para>Rackspace also provides Rackspace-supported, language-specific APIs in several popular
-            programming languages. Currently, the supported APIs are C#/.NET, Java, PHP, Python,
-            and Ruby. These APIs utilize the ReST API and are provided to help developers
-            rapidly integrate OpenStack Object Storage support into their applications without
-            needing to write at the ReST interface. Each API includes its own documentation in
-            its native format. For example, the Java API includes JavaDocs and the C#/.NET API
-            includes a CHM file.</para>
-        
+        <para>You can also find language-specific APIs in several popular programming languages such
+            as C#/.NET, Java, PHP, Python, and Ruby. These APIs utilize the ReST API and are
+            provided to help developers rapidly integrate OpenStack Object Storage support into
+            their applications without needing to write at the ReST interface. Each API includes its
+            own documentation in its native format. For example, the Java API includes
+            JavaDocs.</para>
+
     </section>   
-<xi:include href="object-api-dochistory.xml"/>
-    <xi:include href="object-api-resources.xml"/>
-</preface>
+</chapter>
