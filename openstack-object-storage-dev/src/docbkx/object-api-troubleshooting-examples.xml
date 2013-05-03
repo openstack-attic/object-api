@@ -585,6 +585,112 @@ SittingBuster.jpg
 			</screen>
         </example>
 	</section>
+    <section>
+        <title>Creating Static Large Objects</title>
+        <para>Creation of a <link linkend="static-large-objects">static large object</link> is done
+            in several steps. First we divide the content into pieces and upload each piece into a
+            segment object. Then we create a manifest object. In this example, we will place the
+            segment objects into the "segments" container and the manifest object into the "images"
+            container. We are not required to do this, but using seperate containers is
+            convenient.</para>
+        <para>Assuming we've already divided our image into three files, lets upload them. We have
+            removed non-essential response headers so you can see the important details.</para>
+        <example>
+            <title>Uploading first segment</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-i</option> <option>-H "X-Auth-Token: 12345"</option> <option>-T ./piece1</option>
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/segments/terrier-jpg-one</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 4000000
+Etag: f7365c1419b4f349592c00bd0cfb9b9a
+</computeroutput>
+			</screen>
+        </example>
+        <example>
+            <title>Uploading second segment</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-i</option> <option>-H "X-Auth-Token: 12345"</option> <option>-T ./piece2</option>
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/segments/terrier-jpg-two</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 2000000
+Etag: ad81e97b10e870613aecb5ced52adbaa
+</computeroutput>
+			</screen>
+        </example>
+        <example>
+            <title>Uploading final segment</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-i</option> <option>-H "X-Auth-Token: 12345"</option> <option>-T ./piece3</option>
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/segments/terrier-jpg-three</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 201 Created
+Content-Length: 1000
+Etag: 00b046c9d74c3e8f93b320c5e5fdc2c3
+</computeroutput>
+			</screen>
+        </example>
+        <para>At this stage we are ready to create the manifest listing. Notice that the size and
+            ETag are copied from uploads above. Lets use an editor to create a file called
+                <code>manifest.json</code> with the following content:</para>
+        <example>
+            <title>Manifest List Example</title>
+            <screen>
+<computeroutput>
+    [
+        {
+            "path": "segments/terrier-jpg-one",
+            "etag": "f7365c1419b4f349592c00bd0cfb9b9a",
+            "size_bytes": 4000000
+        },
+        {
+            "path": "segments/terrier-jpg-two",
+            "etag": "ad81e97b10e870613aecb5ced52adbaa",
+            "size_bytes": 2000000
+        },
+            "path": "segments/terrier-jpg-three",
+            "etag": "00b046c9d74c3e8f93b320c5e5fdc2c3",
+            "size_bytes": 1000
+        {
+        }
+    ]
+</computeroutput>
+			</screen>
+        </example>
+        <para>The final operation is to upload this content into a manifest object. To indicate that
+            this is a manifest object, you need to specify the <code>?multipart-manifest=put</code>
+            query string.</para>
+        <example>
+            <title>Uploading manifest object</title>
+            <screen>
+<command>curl</command> <option>–X PUT</option> <option>-i</option> <option>-H "X-Auth-Token: 12345"</option> <option>-T ./manifest.json</option>
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/images/terrier-jpg?multipart-manifest=put</uri>
+            </screen>
+        </example>
+        <para>We can now examine our static large object.
+            Notice that the size is the total size of all the segments.</para>
+        <example>
+            <title>Examining a manifest object</title>
+            <screen>
+<command>curl</command> <option>–X HEAD</option> <option>-i</option> <option>-H "X-Auth-Token: 12345"</option>
+    <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/images/terrier-jpg</uri>
+            </screen>
+            <screen>
+<computeroutput>				
+HTTP/1.1 200 OK
+Content-Length: 6001000
+Etag: "0c922c37f915efb1c9b97e6328b3e660"
+</computeroutput>
+			</screen>
+        </example>
+    </section>
 	
     <section xml:id="paging-objects">
         <title>Paging Lists of Objects</title>
