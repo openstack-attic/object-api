@@ -7,9 +7,9 @@
     
     <groupId>org.openstack.docs</groupId>
     <artifactId>openstack-object-api-guide</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>OpenStack Guides</name>
+    <name>OpenStack Specifications</name>
     <!-- ################################################ -->
     <!-- USE "mvn clean generate-sources" to run this POM -->
     <!-- ################################################ -->
@@ -20,7 +20,9 @@
             <plugin>
                 <groupId>com.rackspace.cloud.api</groupId>
                 <artifactId>clouddocs-maven-plugin</artifactId>
-                <version>1.7.2</version>
+
+                <version>1.8.0</version>
+
                 <executions>
                     <execution>
                         <id>generate-webhelp</id>
@@ -34,29 +36,63 @@
                             <disqusShortname>openstackdocs</disqusShortname>
                             <enableGoogleAnalytics>1</enableGoogleAnalytics>
                             <googleAnalyticsId>UA-17511903-1</googleAnalyticsId>
-                            <generateToc>
-                                appendix  toc,title
+                            <generateToc> appendix  toc,title
                                 article/appendix  nop
                                 article   toc,title
-                                book      title,figure,table,example,equation
-                                chapter   toc,title
+                                book      toc,title,figure,table,example,equation
+                                chapter   toc
+                                section   toc
                                 part      toc,title
-                                preface   toc,title
+                                preface   toc
                                 qandadiv  toc
                                 qandaset  toc
                                 reference toc,title
                                 set       toc,title
                             </generateToc>
-                            <!-- The following elements sets the autonumbering of sections in output for chapter numbers but no numbered sections-->
-                            <!--<sectionAutolabel>0</sectionAutolabel>
-                            <sectionLabelIncludesComponentLabel>0</sectionLabelIncludesComponentLabel>-->
+
+                            <tocDepthSection>1</tocDepthSection>
+                            <targetDirectory>target/docbkx/webhelp/api/openstack-objectstorage</targetDirectory>
                             <webhelpDirname>1.0</webhelpDirname>
-                            <targetDirectory>${basedir}/target/docbkx/webhelp/api/openstack-object-storage</targetDirectory>
-                            <pdfFilenameBase>os-objectstorage-devguide-1.0</pdfFilenameBase>                  
+                            <pdfFilenameBase>os-objectstorage-devguide-1.0</pdfFilenameBase>
                             <postProcess>
-                                <!-- Removes unnecessary copy of the guide output -->
+                                <mkdir
+                                    dir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/"/>
+                                
+                                <!-- Copies schema to a folder and styling for the schemas so a browser can display them -->
+                               
+                                <copy
+                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/samples">
+                                    <fileset
+                                        dir="${basedir}/src/docbkx/samples">
+                                        <include name="**/*.*"/>
+                                    </fileset>
+                                </copy>
+                                
+                                <!--  <copy
+                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-compute/2/">
+                                    <fileset
+                                        dir="${basedir}/target/docbkx/webhelp/os-compute-devguide/">
+                                        <include name="**/*" />
+                                    </fileset>
+                                </copy>-->
+                                
+                                <!-- Copies wadl to a folder -->
+                                <copy
+                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/">
+                                    <fileset dir="${basedir}/src/">
+                                        <include name="**/*.wadl"/>
+                                    </fileset>
+                                </copy>
+                                <!--Moves PDFs to the needed placement -->
+                                <!--<move failonerror="false"
+                                    file="${basedir}/target/docbkx/pdf/os-compute-devguide.pdf"
+                                    tofile="${basedir}/target/docbkx/webhelp/api/openstack-compute/2/os-compute-devguide-2.pdf"/>
+                               -->
+                                
+                                <!--Deletes leftover uneeded directories -->
+>>>>>>> 8c3c2e8... Updated title to "Specification" for consistency
                                 <delete
-                                    dir="${basedir}/target/docbkx/webhelp/os-objectstorage-devguide"/>
+                                    dir="${basedir}/target/docbkx/webhelp/os-object-storage-devguide"/>
                             </postProcess>
                         </configuration>
                     </execution>
