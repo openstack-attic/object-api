@@ -30,7 +30,7 @@ format="SVG" scale="60"/>
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="ch_object-storage-dev-overview">
     
-    <title>Overview</title>
+    <title>Preface</title>
     <para>OpenStack Object Storage is an affordable, redundant,
         scalable, and dynamic storage service offering. The core
         storage system is designed to provide a safe, secure,
@@ -77,4 +77,6 @@ format="SVG" scale="60"/>
             includes a CHM file.</para>
         
     </section>   
+<xi:include href="object-api-dochistory.xml"/>
+    <xi:include href="object-api-resources.xml"/>
 </preface>
