@@ -1,0 +1,10 @@
+Verified+2: Jenkins
+Code-Review+1: Donagh McCabe <donagh.mccabe@hp.com>
+Approved+1: Anne Gentle <anne@openstack.org>
+Code-Review+2: Anne Gentle <anne@openstack.org>
+Code-Review+2: David Goetz <david.goetz@rackspace.com>
+Submitted-by: Jenkins
+Submitted-at: Tue, 04 Jun 2013 18:39:54 +0000
+Reviewed-on: https://review.openstack.org/28159
+Project: openstack/object-api
+Branch: refs/heads/master
