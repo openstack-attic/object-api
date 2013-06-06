@@ -50,7 +50,7 @@
                             </generateToc>
 
                             <tocDepthSection>1</tocDepthSection>
-                            <targetDirectory>target/docbkx/webhelp/api/openstack-objectstorage</targetDirectory>
+                            <targetDirectory>target/docbkx/webhelp/api/openstack-object-storage</targetDirectory>
                             <webhelpDirname>1.0</webhelpDirname>
                             <pdfFilenameBase>os-objectstorage-devguide-1.0</pdfFilenameBase>
                             <postProcess>
@@ -89,7 +89,7 @@
                                -->
                                 
                                 <!--Deletes leftover uneeded directories -->
->>>>>>> 8c3c2e8... Updated title to "Specification" for consistency
+
                                 <delete
                                     dir="${basedir}/target/docbkx/webhelp/os-object-storage-devguide"/>
                             </postProcess>
