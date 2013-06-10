@@ -42,39 +42,37 @@ format="SVG" scale="60"/>
   <itemizedlist>
     <listitem>
       <para>Container names cannot exceed 256 bytes and cannot contain
-        a '/' character.</para>
+        the <literal>/</literal> character.</para>
     </listitem>
     <listitem>
-      <para>Object names cannot exceed 1024 bytes and have no
+      <para>Object names cannot exceed 1024 bytes, and have no
         character restrictions.</para>
     </listitem>
     <listitem>
-      <para>Object and container names must be URL-encoded and UTF-8
-        encoded.</para>
+      <para>Object and container names must be URL-encoded and UTF-8-encoded.</para>
     </listitem>
   </itemizedlist>
   <para><!--<info>Added paragraph to forecast info structure -\- dsh -2012-03-09 </info>-->The
     following sections describe the actions that you can perform in
-    the storage system. <itemizedlist>
-      <listitem>
-        <para><xref linkend="storage-account-services"/> describes the
-          actions that you can perform at the account level of the
-          storage system. </para>
-      </listitem>
-      <listitem>
-        <para><xref linkend="storage-container-services"/> describes
-          the actions that you can perform on containers. </para>
-      </listitem>
-      <listitem>
-        <para><xref linkend="Create_Static_Website-dle4000"/>
-          describes how to use your swift account to create a static
-          website. </para>
-      </listitem>
-      <listitem>
-        <para><xref linkend="storage-object-services"/> describes the
-          actions that you can perform on objects. </para>
-      </listitem>
-    </itemizedlist></para>
+    the storage system. </para>
+  <itemizedlist>
+    <listitem>
+      <para><xref linkend="storage-account-services"/>. Actions that
+        you can perform at the account level of the storage system. </para>
+    </listitem>
+    <listitem>
+      <para><xref linkend="storage-container-services"/>. Actions that
+        you can perform on containers. </para>
+    </listitem>
+    <listitem>
+      <para><xref linkend="Create_Static_Website-dle4000"/>. How to
+        use your swift account to create a static website. </para>
+    </listitem>
+    <listitem>
+      <para><xref linkend="storage-object-services"/>. Actions that
+        you can perform on objects. </para>
+    </listitem>
+  </itemizedlist>
   <xi:include href="object-api-storage_account_svc.xml"/>
   <xi:include href="object-api-storage-container-svc.xml"/>
   <xi:include href="object-api-create-website.xml"/>

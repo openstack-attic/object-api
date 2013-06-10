@@ -76,9 +76,9 @@ format="SVG" scale="60"/>
     <section xml:id="s_listcontainers">
         <title>List Containers</title>
         <para>&GET; operations against the <code>X-Storage-Url</code>
-            for an account are performed to retrieve a list of
-            existing storage containers ordered by name. The sort
-            order for the name is based on a <link
+            for an account are performed to list storage containers
+            sorted by name. The sort order for the name is based on a
+                <link
                 xlink:href="http://www.sqlite.org/datatype3.html#collation"
                 >binary comparison</link>, a single built-in collating
             sequence that compares string data by using the SQLite

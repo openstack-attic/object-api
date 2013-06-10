@@ -67,6 +67,16 @@
     </abstract>
     <revhistory>
       <revision>
+        <date>2013-06-10</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Corrected delete container to be delete object. </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
         <date>2013-05-29</date>
         <revdescription>
           <itemizedlist spacing="compact">
