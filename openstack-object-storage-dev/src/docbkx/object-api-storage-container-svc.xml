@@ -6,7 +6,7 @@
 <!ENTITY hellip "&#x2026;">
 
 <!-- Useful for describing APIs -->
-<!ENTITY COPY    '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY COPY   '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
 <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
 <!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
 <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
@@ -164,11 +164,11 @@ format="SVG" scale="60"/>
             <literallayout class="monospaced"><xi:include href="samples/object-list-req.txt" parse="text"/></literallayout>
         </example>
         <para>A list of objects is returned in the response body, one
-            object name per line. A 204 (No Content) HTTP return code
-            will be passed back if the container is empty. If the
-            container does not exist, a 404 code will return. If an
-            incorrect account is specified, the HTTP return code will
-            be 404 (Not Found).</para>
+            object name per line. The response will have a 2xx HTTP status
+            code (between 200 and 299 inclusive) if the container is
+            empty. If the container does not exist, or if an incorrect
+            account is specified, then a response with a 404 (Not Found)
+            status code will be returned.</para>
         <example>
             <title>List Objects HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-list-resp.txt" parse="text"/></literallayout>
@@ -278,8 +278,9 @@ reddelicious</literallayout>
                     storage container, use &GET; without a
                         <code>delimiter</code> or <code>prefix</code>. </para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups</literallayout>
-                <para>The system returns status code 200 (OK) and the
-                    requested list of the objects. </para>
+                <para>The system returns status code 2xx (between 200
+                    and 299, inclusive) and the requested list of the
+                    objects. </para>
                 <literallayout class="monospaced">photos/animals/cats/persian.jpg
 photos/animals/cats/siamese.jpg
 photos/animals/dogs/corgi.jpg
@@ -296,24 +297,26 @@ photos/plants/rose.jpg</literallayout>
                     pseudo-directories, use the parameter slash
                         (<literal>/</literal>). </para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups?delimiter=/</literallayout>
-                <para>The system returns status code 200 (OK) and the
-                    requested matching objects. Because we use the
-                    slash, only the pseudo-directory
-                        <code>photos/</code> displays. Keep in mind
-                    that the returned values from a slash
-                        <code>delimiter</code> query are not real
-                    objects. They have a content-type of
-                    <literal>application/directory</literal> and are in the <literal>subdir</literal>
-                    section of json and xml results. </para>
+                <para>The system returns status code 2xx (between 200
+                    and 299, inclusive) and the requested matching
+                    objects. Because we use the slash, only the
+                    pseudo-directory <code>photos/</code> displays. Keep
+                    in mind that the returned values from a slash
+                    <code>delimiter</code> query are not real objects.
+                    They have a content-type of
+                    <literal>application/directory</literal> and are in
+                    the <literal>subdir</literal> section of json and xml
+                    results. </para>
                 <literallayout class="monospaced">photos/</literallayout>
                 <para>Use the <code>prefix</code> parameter with the
                         <code>delimiter</code> parameter to view the
                     objects inside a pseudo-directory, including
                     further nested pseudo-directories. </para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/&#38;delimiter=/</literallayout>
-                <para>The system returns status code 200 (OK) and the
-                    objects and pseudo-directories within the top
-                    level pseudo-directory. </para>
+                <para>The system returns status code 2xx (between 200
+                    and 299, inclusive) and the objects and
+                    pseudo-directories within the top level
+                    pseudo-directory. </para>
                 <literallayout class="monospaced">photos/animals/
 photos/me.jpg
 photos/plants/            </literallayout>
@@ -327,9 +330,10 @@ photos/plants/            </literallayout>
                     navigate directly to the files contained within
                         <code>dogs</code>, enter the below command. </para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/animals/dogs/&#38;delimiter=/         </literallayout>
-                <para>The system returns status code 200 (OK) and the
-                    objects and pseudo-directories within the nested
-                    pseudo-directory. </para>
+                    <para>The system returns status code 2xx (between 200
+                    and 299, inclusive) and the objects and
+                    pseudo-directories within the nested pseudo-directory.
+                    </para>
                 <literallayout class="monospaced">photos/animals/dogs/corgi.jpg
 photos/animals/dogs/poodle.jpg
 photos/animals/dogs/terrier.jpg</literallayout>
@@ -404,11 +408,11 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <title>Delete Container HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-delete-req.txt" parse="text"/></literallayout>
         </example>
-        <para>No content is returned. A status code of 204 (No
-            Content) indicates success, 404 (Not Found) is returned if
-            the requested container was not found, and a 409
-            (Conflict) if the container is not empty. No response body
-            is generated.</para>
+        <para>No content is returned. A status code of 2xx (between
+            200 and 299, inclusive) indicates success, 404 (Not Found) is
+            returned if the requested container was not found, and a 409
+            (Conflict) if the container is not empty. No response body is
+            generated.</para>
         <example>
             <title>Delete Container HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-delete-resp.txt" parse="text"/></literallayout>
@@ -428,11 +432,11 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <title>Get Container Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-get-metadata-req.txt" parse="text"/></literallayout>
         </example>
-        <para>The HTTP return code will be 204 (No Content) if the
-            container exists, and 404 (Not Found) if it does not. The
-            object count and utilization are returned in the
-                <code>X-Container-Object-Count</code> and
-                <code>X-Container-Bytes-Used</code> headers
+        <para>The HTTP status code will be 2xx (between 200 and 299,
+            inclusive) if the container exists, and 404 (Not Found) if it
+            does not. The object count and utilization are returned in the
+            <code>X-Container-Object-Count</code> and
+            <code>X-Container-Bytes-Used</code> headers
             respectively.</para>
         <example>
             <title>Get Container Metadata HTTP Response</title>
@@ -451,9 +455,10 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <title>Update Container Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-update-metadata-req.txt" parse="text"/></literallayout>
         </example>
-        <para>No response body is returned. A status code of 204 (No
-            Content) indicates success; status 404 (Not Found) is
-            returned when the requested container does not exist. </para>
+        <para>No response body is returned. A status code of 2xx
+            (between 200 and 299, inclusive) indicates success; status 404
+            (Not Found) is returned when the requested container does not
+            exist. </para>
         <example>
             <title>Update Container Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-update-metadata-resp.txt" parse="text"/></literallayout>
@@ -490,8 +495,8 @@ photos/animals/dogs/terrier.jpg</literallayout>
         <example>
             <title>Delete Container Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-delete-metadata-req.txt" parse="text"/></literallayout>
-            <para>No response body is returned. A status code of 204
-                (No Content) indicates success. </para>
+            <para>No response body is returned. A status code of 2xx
+                (between 200 and 299, inclusive) indicates success. </para>
         </example>
     </section>
 </section>
