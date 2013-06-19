@@ -165,10 +165,10 @@ format="SVG" scale="60"/>
         </example>
         <para>A list of objects is returned in the response body, one
             object name per line. The response will have a 2xx HTTP status
-            code (between 200 and 299 inclusive) if the container is
-            empty. If the container does not exist, or if an incorrect
-            account is specified, then a response with a 404 (Not Found)
-            status code will be returned.</para>
+            code (between 200 and 299 inclusive). If the container does
+            not exist, or if an incorrect account is specified, then a
+            response with a 404 (Not Found) status code will be
+            returned.</para>
         <example>
             <title>List Objects HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-list-resp.txt" parse="text"/></literallayout>
