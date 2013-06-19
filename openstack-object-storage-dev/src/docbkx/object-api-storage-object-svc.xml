@@ -5,7 +5,7 @@
 <!ENTITY hellip "&#x2026;">
 
 <!-- Useful for describing APIs -->
-<!ENTITY COPY    '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY COPY   '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
 <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
 <!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
 <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
@@ -145,9 +145,9 @@ format="SVG" scale="60"/>
             <literallayout class="monospaced"><xi:include href="samples/object-get-req.txt" parse="text"/></literallayout>
         </example>
         <para>The object's data is returned in the response body.
-            Object metadata is returned as HTTP headers. A status of
-            200 (Ok) indicates success; status 404 (Not Found) is
-            returned if no such object exists.</para>
+            Object metadata is returned as HTTP headers. A status of 2xx
+            (between 200 and 299, inclusive) indicates success; status 404
+            (Not Found) is returned if no such object exists.</para>
         <example>
             <title>Get Object Details HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-resp.txt" parse="text"/></literallayout>
@@ -432,9 +432,10 @@ format="SVG" scale="60"/>
                     Response</title>
                 <literallayout class="monospaced">s</literallayout>
             </example>
-            <para>No response body is returned. A status code of 201
-                (Created) indicates a successful write; status 411
-                (Length Required) denotes a missing
+            <para>No response body is returned. A status code of 2xx
+                (between 200 and 299, inclusive) indicates a
+                successful write; status 411 (Length Required)
+                denotes a missing
                     <code>Content-Length</code> or
                     <code>Content-Type</code> header in the request.
                 If the MD5 checksum of the data written to the storage
@@ -748,8 +749,8 @@ format="SVG" scale="60"/>
             &lt;timestamp&gt; is when the it was initially created as
             a current version. </para>
         <para>Any return status in the 2xx range, such as 202
-            (Accepted), notes success. Status codes in the 4xx or 5xx
-            range note failure. You should retry your request if you
+            (Accepted), denotes success. Status codes in the 4xx or 5xx
+            range denote failure. You should retry your request if you
             receive an error. Please note, however, that if you have
             specified a container that does not exist as your
             non-current version container, a status of 412
@@ -910,9 +911,10 @@ format="SVG" scale="60"/>
             <title>Object Delete HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/object-delete-req.txt" parse="text"/></literallayout>
         </example>
-        <para>No response body is returned. A status code of 204 (No
-            Content) indicates success; status code 404 (Not Found) is
-            returned when the object does not exist.</para>
+        <para>No response body is returned. A status code of 2xx (
+            between 200 and 299, inclusive) indicates success; status code
+            404 (Not Found) is returned when the object does not
+            exist.</para>
         <example>
             <title>Object Delete HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-delete-resp.txt" parse="text"/></literallayout>
@@ -929,20 +931,9 @@ format="SVG" scale="60"/>
             <literallayout class="monospaced"><xi:include href="samples/object-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>No response body is returned. Metadata is returned as
-            HTTP headers. A status code of 200 (OK) indicates success;
-            status 404 (Not Found) is returned when the object does
-            not exist. </para>
-        <para>The &HEAD; return code for the object is different from
-            that of the container. &HEAD; requests do not return a
-            message body in the response, so anything in the 2xx
-            response code range notes success. When a &HEAD; query is
-            run against the container, it queries the container
-            databases, and it does not retrieve the content of them,
-            thus the 204 (No Content) return code. However, when a
-            &HEAD; query is run against the object, it returns an "OK"
-            response because it can view the content. In other words,
-            the object &HEAD; query has a container length, but the
-            container &HEAD; query has zero content length. </para>
+            HTTP headers. A status code of 2xx (between 200 and 299,
+            inclusive) indicates success; status 404 (Not Found) is
+            returned when the object does not exist. </para>
         <example>
             <title>Get Object Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-metadata-resp.txt" parse="text"/></literallayout>
@@ -970,9 +961,10 @@ format="SVG" scale="60"/>
             <title>Update Object Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/object-update-metadata-req.txt" parse="text"/></literallayout>
         </example>
-        <para>No response body is returned. A status code of 202
-            (Accepted) indicates success; status 404 (Not Found) is
-            returned if the requested object does not exist. </para>
+        <para>No response body is returned. A status code of 2xx
+            (between 200 and 299, inclusive) indicates success; status 404
+            (Not Found) is returned if the requested object does not
+            exist. </para>
         <example>
             <title>Update Object Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-update-metadata-resp.txt" parse="text"/></literallayout>
