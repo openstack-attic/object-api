@@ -184,7 +184,9 @@ format="SVG" scale="60"/>
             additional HTTP headers on the &PUT; request.</para>
         <para>The object can be created with custom metadata via HTTP
             headers identified with the <code>X-Object-Meta-</code>
-            prefix.</para>
+            prefix, or arbitary headers set with the
+            <literal>allowed_headers</literal> option in the object-server
+            configuration.</para>
         <example>
             <title>Create or Update Object HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/object-create-req.txt" parse="text"/></literallayout>
