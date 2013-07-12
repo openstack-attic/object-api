@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Approved+1: Tom Fifield <tom@openstack.org>
+Code-Review+2: Tom Fifield <tom@openstack.org>
+Code-Review+2: Samuel Merritt <sam@swiftstack.com>
+Submitted-by: Jenkins
+Submitted-at: Fri, 12 Jul 2013 05:29:19 +0000
+Reviewed-on: https://review.openstack.org/35024
+Project: openstack/object-api
+Branch: refs/heads/master
