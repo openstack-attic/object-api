@@ -63,7 +63,7 @@
     <abstract>
       <para>This reference is for software developers who develop
         applications by using the OpenStack™ Object Storage
-        Application Programming Interface (API) v1. </para>
+        Application Programming Interface (API) v1.</para>
     </abstract>
     <revhistory>
       <revision>
@@ -71,7 +71,7 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Clarify UTF-8 and URL-encoding of container and object names in headers. </para>
+              <para>Clarify UTF-8 and URL-encoding of container and object names in headers.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -81,7 +81,7 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Corrected delete container to be delete object. </para>
+              <para>Corrected delete container to be delete object.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -91,7 +91,7 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Updates for static large object support. </para>
+              <para>Updates for static large object support.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -102,7 +102,7 @@
           <itemizedlist spacing="compact">
             <listitem>
               <para>Moved code samples into separate files for content
-                sharing. </para>
+                sharing.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -113,7 +113,7 @@
           <itemizedlist spacing="compact">
             <listitem>
               <para>Fixed bug 1049362 - Adds back metadata deletion
-                information. </para>
+                information.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -124,7 +124,7 @@
           <itemizedlist spacing="compact">
             <listitem>
               <para>Fixed bugs 1009706 - Added Object Versioning and
-                Static Web. </para>
+                Static Web.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -136,7 +136,7 @@
             <listitem>
               <para>Fixed bugs 890435 and 907563 - Add/Update
                 Container Metadata and Expiring Objects. Changed to
-                Maven 1.0.10. </para>
+                Maven 1.0.10.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -147,7 +147,7 @@
           <itemizedlist spacing="compact">
             <listitem>
               <para>Revised to change first to last in the first range
-                example for fetching a portion of an object. </para>
+                example for fetching a portion of an object.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -162,7 +162,7 @@
                 and revised account examples and URLs for generic
                 implementations. It's not a changed requirement that
                 Container and Object names are required to be UTF-8,
-                but it's pointed out in the documentation. </para>
+                but it's pointed out in the documentation.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -174,8 +174,7 @@
             <listitem>
               <para>Removed references to ACL (Access Control List).
                 Fixed error in examples referring to X-Auth-Key where
-                it should be X-Auth-Token. Added section numbers.
-              </para>
+                it should be X-Auth-Token. Added section numbers.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -185,9 +184,9 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para> Expanded authentication information for UK
+              <para>Expanded authentication information for UK
                 release. Added "delimiter" as a Query Parameter and
-                server-side object copy example. </para>
+                server-side object copy example.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -197,18 +196,16 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Initial Release. </para>
+              <para>Initial Release.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
       </revision>
     </revhistory>
-
   </info>
-
   <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->
-  <xi:include href="object-api-overview.xml"/>
-  <xi:include href="object-api-general.xml"/>
-  <xi:include href="object-api-storage-services.xml"/>
-  <xi:include href="object-api-troubleshooting-examples.xml"/>
+  <xi:include href="ch_object-api-overview.xml"/>
+  <xi:include href="ch_object-api-general.xml"/>
+  <xi:include href="ch_object-api-storage-services.xml"/>
+  <xi:include href="ch_object-api-troubleshooting-examples.xml"/> 
 </book>

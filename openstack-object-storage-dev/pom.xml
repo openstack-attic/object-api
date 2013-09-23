@@ -8,103 +8,69 @@
     <artifactId>openstack-object-api-guide</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>OpenStack Specifications</name>
+    <name>OpenStack API References</name>
+    <properties>
+        <!-- This is set by Jenkins according to the branch. -->
+        <release.path.name>local</release.path.name>
+        <comments.enabled>1</comments.enabled>
+    </properties>
     <!-- ################################################ -->
     <!-- USE "mvn clean generate-sources" to run this POM -->
     <!-- ################################################ -->
-    
     <build>
         <plugins>
-            
             <plugin>
                 <groupId>com.rackspace.cloud.api</groupId>
                 <artifactId>clouddocs-maven-plugin</artifactId>
-
-                <version>1.8.0</version>
-
+                <version>1.11.0</version>
                 <executions>
+                    <!-- Configuration for OpenStack End User Guide -->
                     <execution>
-                        <id>generate-webhelp</id>
+                        <id>os-objectstorage</id>
                         <goals>
                             <goal>generate-webhelp</goal>
                         </goals>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <!-- These parameters only apply to webhelp -->
-                            <enableDisqus>1</enableDisqus>
-                            <disqusShortname>os-object-api</disqusShortname>
-                            <enableGoogleAnalytics>1</enableGoogleAnalytics>
-                            <googleAnalyticsId>UA-17511903-1</googleAnalyticsId>
-                            <generateToc> appendix  toc,title
-                                article/appendix  nop
-                                article   toc,title
-                                book      toc,title,figure,table,example,equation
-                                chapter   toc
-                                section   toc
-                                part      toc,title
-                                preface   toc
-                                qandadiv  toc
-                                qandaset  toc
+                            <includes> bk_os-objectstorage-devguide.xml</includes>
+                            <generateToc>
+                                appendix toc
+                                article/appendix nop
+                                article toc,title
+                                book toc,title,figure,equation
+                                chapter toc
+                                section toc
+                                part toc,title
+                                preface toc
+                                qandadiv toc
+                                qandaset toc
                                 reference toc,title
-                                set       toc,title
-                            </generateToc>
-
-                            <tocDepthSection>1</tocDepthSection>
+                                set toc,title </generateToc>
                             <targetDirectory>target/docbkx/webhelp/api/openstack-object-storage</targetDirectory>
                             <webhelpDirname>1.0</webhelpDirname>
                             <pdfFilenameBase>os-objectstorage-devguide-1.0</pdfFilenameBase>
-                            <postProcess>
-                                <mkdir
-                                    dir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/"/>
-                                
-                                <!-- Copies schema to a folder and styling for the schemas so a browser can display them -->
-                               
-                                <copy
-                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/samples">
-                                    <fileset
-                                        dir="${basedir}/src/docbkx/samples">
-                                        <include name="**/*.*"/>
-                                    </fileset>
-                                </copy>
-                                
-                                <!--  <copy
-                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-compute/2/">
-                                    <fileset
-                                        dir="${basedir}/target/docbkx/webhelp/os-compute-devguide/">
-                                        <include name="**/*" />
-                                    </fileset>
-                                </copy>-->
-                                
-                                <!-- Copies wadl to a folder -->
-                                <copy
-                                    todir="${basedir}/target/docbkx/webhelp/api/openstack-object-storage/1.0/">
-                                    <fileset dir="${basedir}/src/">
-                                        <include name="**/*.wadl"/>
-                                    </fileset>
-                                </copy>
-                                <!--Moves PDFs to the needed placement -->
-                                <!--<move failonerror="false"
-                                    file="${basedir}/target/docbkx/pdf/os-compute-devguide.pdf"
-                                    tofile="${basedir}/target/docbkx/webhelp/api/openstack-compute/2/os-compute-devguide-2.pdf"/>
-                               -->
-                                
-                                <!--Deletes leftover uneeded directories -->
-
-                                <delete
-                                    dir="${basedir}/target/docbkx/webhelp/os-object-storage-devguide"/>
-                            </postProcess>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <!-- These parameters apply to pdf and webhelp -->
+                    
+                    <chapterAutolabel>1</chapterAutolabel>
+                    <appendixAutolabel>1</appendixAutolabel>
+                    <sectionAutolabel>0</sectionAutolabel>
+                    <tocSectionDepth>1</tocSectionDepth>
+                    <formalProcedures>0</formalProcedures>
+                    <highlightSource>false</highlightSource>
                     <xincludeSupported>true</xincludeSupported>
-                    <sourceDirectory>src/docbkx</sourceDirectory>
-                    <includes>
-                        os-objectstorage-devguide.xml
-                    </includes>
-                    <profileSecurity>reviewer</profileSecurity>
+                    <showXslMessages>true</showXslMessages>
+                    <sourceDirectory>.</sourceDirectory>
+                    <feedbackEmail>diane.fleming@rackspace.com</feedbackEmail>
+                    <security>external</security>
                     <branding>openstack</branding>
+                    <enableDisqus>${comments.enabled}</enableDisqus>
+                    <disqusShortname>os-object-api</disqusShortname>
+                    <enableGoogleAnalytics>1</enableGoogleAnalytics>
+                    <googleAnalyticsId>UA-17511903-1</googleAnalyticsId>
+                    <suppressFooterNavigation>0</suppressFooterNavigation>
                 </configuration>
             </plugin>
         </plugins>
