@@ -67,6 +67,19 @@
     </abstract>
     <revhistory>
       <revision>
+        <date>2013-09-23</date>
+        <revdescription>
+          <itemizedlist>
+            <!--   <listitem>
+              <para>Added <xref linkend="RBAC"/>.</para>
+            </listitem> -->
+            <listitem>
+              <para>Added a section that describes how to enable public access to an Object Storage account.</para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
         <date>2013-06-10</date>
         <revdescription>
           <itemizedlist spacing="compact">
@@ -193,12 +206,12 @@
         </revdescription>
       </revision>
     </revhistory>
-
   </info>
-
   <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->
-  <xi:include href="object-api-overview.xml"/>
-  <xi:include href="object-api-general.xml"/>
-  <xi:include href="object-api-storage-services.xml"/>
-  <xi:include href="object-api-troubleshooting-examples.xml"/>
+  <xi:include href="ch_object-api-overview.xml"/>
+  <xi:include href="ch_object-api-general.xml"/>
+  <xi:include href="ch_object-api-storage-services.xml"/>
+<!-- moved to Cloud Administrator Guide -->
+  <!--<xi:include href="ch_object-api-public-access.xml"/> -->
+  <xi:include href="ch_object-api-troubleshooting-examples.xml"/>
 </book>

@@ -30,12 +30,7 @@ format="SVG" scale="60"/>
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="doc_history">
     <title>Document Change History</title>
-    <para>This version of the guide was forked from the <citetitle>Rackspace Cloud Files Developer
-        Guide</citetitle>.
-    </para>
-    <!-- *** --> 
-    
-    <?rax revhistory?>  
-    
-    <!-- *** -->     
+        <para>This version of the document replaces and obsoletes
+            all previous versions. The following table describes the latest changes:</para>
+        <?rax revhistory?>
 </section>
