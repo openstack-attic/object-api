@@ -73,8 +73,8 @@ format="SVG" scale="60"/>
         you can perform on objects. </para>
     </listitem>
   </itemizedlist>
-  <xi:include href="object-api-storage_account_svc.xml"/>
-  <xi:include href="object-api-storage-container-svc.xml"/>
-  <xi:include href="object-api-create-website.xml"/>
-  <xi:include href="object-api-storage-object-svc.xml"/>
+  <xi:include href="section_object-api-storage_account_svc.xml"/>
+  <xi:include href="section_object-api-storage-container-svc.xml"/>
+  <xi:include href="section_object-api-create-website.xml"/>
+  <xi:include href="section_object-api-storage-object-svc.xml"/>
 </chapter>
