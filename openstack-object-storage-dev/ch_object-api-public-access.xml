@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter [
+        <!-- Some useful entities borrowed from HTML -->
+        <!ENTITY ndash  "&#x2013;">
+        <!ENTITY mdash  "&#x2014;">
+        <!ENTITY hellip "&#x2026;">
+        <!-- Useful for describing APIs -->
+        <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+        <!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+        <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+        <!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+        <!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+  <!ENTITY OBJSTOR 'Object Storage'>
+        <!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+                 <imageobject>
+                  <imagedata fileref="img/Check_mark_23x20_02.svg"
+                             format="SVG" scale="60"/>
+                  </imageobject>
+                </inlinemediaobject>'> 
+         <!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+                  <imageobject>
+                   <imagedata fileref="img/Arrow_east.svg"
+                              format="SVG" scale="60"/>
+                  </imageobject>
+                </inlinemediaobject>'>
+]>
+<chapter xmlns="http://docbook.org/ns/docbook"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:svg="http://www.w3.org/2000/svg"
+  xmlns:m="http://www.w3.org/1998/Math/MathML"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:db="http://docbook.org/ns/docbook" version="5.0"
+  xml:id="public_account_access">
+<?dbhtml stop-chunking?>
+  <title>Enable Public Access to an Object Storage Account</title>
+  <para>You can enable others to post objects to or get objects from
+    your Object Storage account. By using the following methods, you
+    can give users access to your account without supplying your
+    password or login information.</para>
+  <section xml:id="TempURL-d1a4450">
+    <title>TempURL</title>
+    <para>Use the Temporary URL (TempURL) feature to create
+      time-limited Internet addresses that enable users to access to
+      your &OBJSTOR; account. Using TempURL, users can get objects
+      from or put objects in your &OBJSTOR; account for a set period
+      of time. Your account does not have to be CDN-enabled to enable
+      temporary public access through a TempURL.</para>
+    <para>For example, to enable users to download files from or
+      upload files to your &OBJSTOR; account or web site, you can
+      supply users with a time-limited TempURL. After the time period
+      expires, users can no longer access objects through the address.
+      You need not worry about time running out when someone downloads
+      a large object. If the time expires while someone is retrieving
+      a file, the download continues until it completes. Only the link
+      expires.</para>
+    <para>When you create a TempURL, &OBJSTOR; validates a &GET;- or
+      &PUT;-accessible URL, which is time-limited.</para>
+    <note>
+      <para>The TempURL is the same as TempURL Secret, and is set by
+        using the TempURL metadata key described in the following
+        section. The TempURL is the actual URL.</para>
+    </note>
+    <procedure xml:id="Set_Account_Metadata-d1a4460">
+      <title>To create a temporary URL for your account</title>
+      <step>
+        <title>Set the account metadata key</title>     
+       
+<para>Export the API version and your tenant ID to the following environment variables:</para>
+<screen><prompt>$</prompt> <userinput>export api_version="&lt;api_version&gt;</userinput>
+<prompt>$</prompt> <userinput>export account="&lt;tenant_id&gt;"</userinput></screen>
+          <para>On your &OBJSTOR; account, set the
+            <code>X-Account-Meta-Temp-URL-Key</code> header to a key
+          that only you know. The key is used to generate and
+          authenticate the temporary URLs. There are no restrictions
+          on its value.</para>
+        <example>
+          <title>Set account metadata key for public access</title><literallayout class="monospaced">POST /$api_version/$account HTTP/1.1
+Host: storage.clouddrive.com
+X-Auth-Token: &lt;your auth token&gt;
+X-Account-Meta-Temp-Url-Key: &lt;your key&gt;</literallayout>
+        </example>
+        <para>A
+            <returnvalue>2<replaceable>nn</replaceable></returnvalue>
+          response indicates success.</para>
+        <note>
+          <para>After you set the
+              <code>X-Account-Meta-Temp-URL-Key</code> key, do not
+            change it if you want others to still access your account
+            through the temporary URL. If you change this key, the
+            temporary URL stops working within 60 seconds, which is
+            the cache time for a key.</para>
+        </note>
+      </step>
+      <step>
+        <title>Create an HMAC-SHA1 (RFC 2104) signature</title>
+        <para>To create a temporary URL, define the method of access,
+          &GET; or &PUT;, the path to the object, and the expiry in
+          UNIX epoch notation.</para>
+       <!-- <para>The following examples show how to create a temporary
+          URL for the <filename>my_cat.jpg</filename> object that
+          lasts for 60 seconds. The <code>key</code> is
+            <code>X-Account-Meta-Temp-Url-Key</code>.</para>
+        <example>
+          <title>Create TempURL &mdash; Python</title>
+          <literallayout class="monospaced">import hmac
+from hashlib import sha1
+from sys import argv
+from time import time
+
+if len(argv) != 5:
+  print 'Syntax: &lt;method&gt; &lt;url&gt; &lt;seconds&gt; &lt;key&gt;'
+  print 'Example: GET https://storage101.dfw1.clouddrive.com/v1/' \
+      'MossoCloudFS_12345678-9abc-def0-1234-56789abcdef0/' \
+      'container/my_cat.jpg 60 my_shared_secret_key'
+else:
+  method, url, seconds, key = argv[1:]
+  method = method.upper()
+  base_url, object_path = url.split('/v1/')
+  object_path = '/v1/' + object_path
+  seconds = int(seconds)
+  expires = int(time() + seconds)
+  hmac_body = '%s\n%s\n%s' % (method, expires, object_path)
+  sig = hmac.new(key, hmac_body, sha1).hexdigest()
+  print '%s%s?temp_url_sig=%sAMP;temp_url_expires=%s' % \
+      (base_url, object_path, sig, expires)</literallayout>
+        </example>
+
+
+        <example>
+          <title>Create TempURL &mdash; PHP</title>
+          <literallayout class="monospaced">&lt;?php
+  if ($argc != 5) {
+      echo "Syntax: &lt;method&gt; &lt;url&gt; &lt;seconds&gt; &lt;key&gt;";
+      echo "Example: GET https://storage101.dfw1.clouddrive.com/v1/" .
+           "MossoCloudFS_12345678-9abc-def0-1234-56789abcdef0/" .
+           "container/my_cat.jpg 60 my_shared_secret_key";
+  } else {
+    $method = $argv[1];
+    $url = $argv[2];
+    $seconds = $argv[3];
+    $key = $argv[4];
+    $method = strtoupper($method);
+    list($base_url, $object_path) =  split("/v1/", $url);
+    $object_path = "/v1/$object_path";
+    $seconds = (int)$seconds;
+    $expires = (int)(time() + $seconds);
+    $hmac_body = "$method\n$expires\n$object_path";
+    $sig = hash_hmac("sha1", $hmac_body, $key);
+    echo "$base_url$object_path?" .
+         "temp_url_sig=$sig&amp;temp_url_expires=$expires";
+  }
+  ?&gt;</literallayout>
+        </example>
+        <example>
+          <title>Create TempURL &mdash; Ruby</title>
+          <literallayout class="monospaced">  require "openssl"
+
+  unless ARGV.length == 4
+      puts "Syntax: &lt;method&gt; &lt;url&gt; &lt;seconds&gt; &lt;key&gt;"
+      puts ("Example: GET https://storage101.dfw1.clouddrive.com/v1/" +
+          "MossoCloudFS_12345678-9abc-def0-1234-56789abcdef0/" +
+          "container/path/to/object.file 60 my_shared_secret_key")
+  else
+      method, url, seconds, key = ARGV
+      method = method.upcase
+      base_url, object_path = url.split(/\/v1\//)
+      object_path = '/v1/' + object_path
+      seconds = seconds.to_i
+      expires = (Time.now + seconds).to_i
+      hmac_body = "#{method}\n#{expires}\n#{object_path}"
+      sig = OpenSSL::HMAC.hexdigest("sha1", key, hmac_body)
+      puts ("#{base_url}#{object_path}?" +
+          "temp_url_sig=#{sig}&amp;temp_url_expires=#{expires}")
+  end</literallayout>
+        </example>-->
+      </step>
+      <step>
+        <title>Give users the temporary URL</title>
+        <para>Give users the full URL to the object, just as you would
+          with a normal request.</para>
+        <para>In following example, the signature might be
+            <literal>da39a3ee5e6b4b0d3255bfef95601890afd80709</literal>
+          and the expiry might translate to
+            <literal>1323479485</literal> because the signature and
+          expiry depend on the time the code is run.</para>
+        <para>On your web site, you would provide a link to the
+          following URL:</para>
+        <literallayout class="monospaced">https://storage.clouddrive.com/v1/AUTH_account/container/my_cat.jpg?
+             temp_url_sig=da39a3ee5e6b4b0d3255bfef95601890afd80709&amp;
+             temp_url_expires=1323479485</literallayout>
+        <para>If you do not provide users with the exact TempURL, they
+          receive <returnvalue>401 (Unauthorized)</returnvalue>
+          status errors. &HEAD; queries are allowed if &GET; or &PUT;
+          are allowed.</para>
+      </step>
+      <step>
+        <title>To override TempURL file names</title>
+        <para>TempURLs support the <parameter>filename</parameter>
+          query parameter. Use this parameter to override the
+            <literal>Content-Disposition</literal> header and define
+          which to which file name the browser should save the
+          file.</para>
+        <para>The following example shows a TempURL without the file
+          name override:</para>
+        <example>
+          <title>TempURL without file name override</title>
+          <literallayout class="monospaced">https://cf-cluster.example.com/v1/AUTH_account/container/object?<?sbr?>temp_url_sig=da39a3ee5e6b4b0d3255bfef95601890afd80709&amp;temp_url_expires<?sbr?>=1323479485</literallayout>
+        </example>
+      </step>
+      <step>
+        <para>The following example appends
+            <code>&amp;filename=bob.txt</code> to the TempURL, which
+          instructs the browser to save the file as
+            <code>bob.txt</code>:</para>
+        <example>
+          <title>TempURL with file name override</title>
+          <literallayout class="monospaced">https://cf-cluster.example.com/v1/AUTH_account/container/object?<?sbr?>temp_url_sig=da39a3ee5e6b4b0d3255bfef95601890afd80709&amp;temp_url_expires<?sbr?>=1323479485&amp;filename=bob.txt</literallayout>
+        </example>
+      </step>
+    </procedure>
+  </section>
+  <section xml:id="FormPost-d1a555">
+    <title>FormPost</title>
+    <para>FormPost enables users to upload objects to your &OBJSTOR;
+      account through a web form. FormPost translates a browser form
+      request into a object &PUT; in &OBJSTOR;. After you enable
+      FormPost on your account, you create a form in your web site
+      using the guidelines below.</para>
+    <para>As with all objects in &OBJSTOR;, the object file size limit
+      is 5 GB. If your users try to upload an object larger than 5 GB,
+      a file size error occurs.</para>
+    <procedure xml:id="Set_Account_Metadata-d1a666">
+      <title>To use FormPost to give users access to your
+        account</title>
+      <step>
+        <title>Set the account metadata key</title>
+        <para>On your &OBJSTOR; account, set the
+            <code>X-Account-Meta-Temp-URL-Key</code> metadata header
+          to a key that only you know. This key is used to encode your
+          account, so it can be an arbitrary sequence.</para>
+        <example>
+          <title>Set account metadata key for public access</title>
+          <literallayout class="monospaced">POST /&lt;api version&gt;/&lt;account&gt; HTTP/1.1
+Host: storage.clouddrive.com
+X-Auth-Token: &lt;your auth key&gt;
+X-Account-Meta-Temp-Url-Key: &lt;your key&gt;</literallayout>
+        </example>
+        <para>A
+            <returnvalue>2<replaceable>nn</replaceable></returnvalue>
+          response indicates success.</para>
+        <note>
+          <para>After you set the key, do not change it if you still
+            want others to access your account through the temporary
+            URL. If you change the key, the temporary URL stops
+            working within 60 seconds, which is the cache time for a
+            key.</para>
+        </note>
+      </step>
+      <step>
+        <title>Create the form</title>
+        <para>To enable users to communicate between your web site and
+          your &OBJSTOR; account, create a form by using the following
+          format in your web site:</para>
+        <example>
+          <title>Layout of web form</title>
+          <literallayout class="monospaced">  &lt;form action="&lt;CF-url&gt;" method="POST" enctype="multipart/form-data"&gt;
+    &lt;input type="hidden" name="redirect" value="&lt;redirect-url&gt;" /&gt;
+    &lt;input type="hidden" name="max_file_size" value="&lt;bytes&gt;" /&gt;
+    &lt;input type="hidden" name="max_file_count" value="&lt;count&gt;" /&gt;
+    &lt;input type="hidden" name="expires" value="&lt;unix-timestamp&gt;" /&gt;
+    &lt;input type="hidden" name="signature" value="&lt;hmac&gt;" /&gt;
+    &lt;input type="file" name="file1" />&lt;br /&gt;
+    &lt;input type="submit" /&gt;
+  &lt;/form&gt;</literallayout>
+        </example>
+        <para>Set the following parameters in the web form:</para>
+        <itemizedlist>
+          <listitem>
+            <para><code>form action="&lt;CF-url&gt;"</code>. Required.
+              The &OBJSTOR; URL (CF-url) to the destination where
+              files are to be uploaded. </para>
+            <para>For instance:
+                <code>https://storage.clouddrive.com/v1/CF_xer7_34/container</code>. </para>
+            <para>The &lt;CF-url&gt; prefix is appended to the front
+              of the name of each uploaded object. Your users upload
+              directly to root of the container.</para>
+            <para>You can also assign a specific prefix to each user
+              to separate uploads, as follows:
+                <code>https://storage.clouddrive.com/v1/CF_xer7_34/container/user_prefix</code>.
+            </para>
+          </listitem>
+          <listitem>
+            <para><code>method="POST"</code>. Required. Must be
+                <code>POST</code>.</para>
+          </listitem>
+          <listitem>
+            <para><code> enctype="multipart/form-data"</code>.
+              Required. Must be
+              <code>multipart/form-data</code>.</para>
+          </listitem>
+          <listitem>
+            <para><code>name="redirect"
+                value="&lt;redirect-url&gt;"</code>. Optional. The URL
+              of the web page that displays after the form completes
+              processing. </para>
+            <para>Status and message query parameters are added to the
+              URL. </para>
+            <para>Status parameters define the HTTP status code for
+              the upload
+                (<returnvalue>2<replaceable>nn</replaceable></returnvalue>
+              indicates success). </para>
+            <para>Message query parameters define text the provides
+              further information if an error occurs, such as
+                <literal>max_file_size exceeded</literal>.</para>
+            <note>
+              <para>Although <code>redirect</code> is optional for the
+                form, it must be present in the HMAC body.</para>
+            </note>
+          </listitem>
+          <listitem>
+            <para><code>name="max_file_size"
+                value="&lt;bytes&gt;"</code>. Required. Indicates the
+              largest single file upload allowed, in bytes. This value
+              must not exceed 5 GB.</para>
+          </listitem>
+          <listitem>
+            <para><code>name="max_file_count"
+                value="&lt;count&gt;"</code>. Required. The maximum
+              number of files that can be uploaded with the
+              form.</para>
+          </listitem>
+          <listitem>
+            <para><code>name="expires"
+                value="&lt;unix-timestamp&gt;"</code>. Required. A
+              UNIX timestamp that defines the expiry. Time must be in
+              Unix epoch format.</para>
+            <note>
+              <para><code>expires</code> in the web form must match
+                  <code>expires</code> in the HMAC.</para>
+            </note>
+          </listitem>
+          <listitem>
+            <para><code>name="signature" value="&lt;hmac&gt;"</code>.
+              Required. The HMAC-SHA1 signature of the form. The
+              following sample code shows how to compute the signature
+              in Python:</para>
+            <example>
+              <title>Generate signature for form post</title>
+              <literallayout class="monospaced">  import hmac
+  from hashlib import sha1
+  from time import time
+  path = '/v1/account/container/object_prefix'
+  redirect = 'https://myserver.com/some-page'
+  max_file_size = 104857600
+  max_file_count = 10
+  expires = int(time() + 600)
+  key = 'mykey'
+  hmac_body = '%s\n%s\n%s\n%s\n%s' % (path, redirect,
+      max_file_size, max_file_count, expires)
+  signature = hmac.new(key, hmac_body, sha1).hexdigest()</literallayout>
+            </example>
+            <para>Be certain to use the full path in your &OBJSTOR;
+              account, from the<literal> /v1/</literal> onward. In the
+              example, <code>key</code> is the value of the
+                <code>X-Account-Meta-Temp-URL-Key</code> header set
+              for the account. The <code>max_file_count</code> used in
+              generating the signature must match the one in the web
+              form.</para>
+          </listitem>
+          <listitem>
+            <para><code>type="file" name="file1"</code>. Required.
+              Defines the form file field. At least one entry is
+              required to enable your users to select and upload a
+              file, but you can include additional fields for multiple
+              files. The number of entries should not, however, exceed
+              the <code>max_file_count</code> value. Each
+                <code>type="file"</code> field must have a different
+              name.</para>
+            <note>
+              <para>The <code>type="file"</code> fields must be at the
+                end of the form code for &OBJSTOR; to process the
+                uploads properly.</para>
+            </note>
+          </listitem>
+        </itemizedlist>
+      </step>
+    </procedure>
+  </section>
+</chapter>

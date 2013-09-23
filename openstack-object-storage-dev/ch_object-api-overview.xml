@@ -25,7 +25,7 @@ format="SVG" scale="60"/>
 </imageobject>
 </inlinemediaobject>'>
 ]>
-<chapter xmlns="http://docbook.org/ns/docbook"
+<preface xmlns="http://docbook.org/ns/docbook"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="ch_object-storage-dev-overview">
@@ -81,4 +81,5 @@ format="SVG" scale="60"/>
             its own documentation in its native format. For example,
             the Java API includes Javadoc documentation.</para>
     </section>
-</chapter>
+<xi:include href="section_object-api-dochistory.xml"/>
+</preface>
