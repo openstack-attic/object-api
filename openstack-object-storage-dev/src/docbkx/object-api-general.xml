@@ -152,12 +152,10 @@ format="SVG" scale="60"/>
                 <para>Maximum length of object name: 1024 bytes</para>
             </listitem>
         </itemizedlist>
-        <para>Container and object names should be properly
-            URL-encoded prior to interacting with the ReST interface
-            (the language APIs handle URL encoding/decoding) and the
-            container and object names must be UTF-8 encoded. The
-            length restrictions should be checked against the
-            URL-encoded string.</para>
+        <para>Container and object names must be UTF-8 encoded and then should be properly
+            URL-encoded prior to interacting with the ReST interface (the language APIs handle URL
+            encoding/decoding). The length restrictions should be checked against the URL-encoded
+            string.</para>
         <para>Each ReST request against the OpenStack Object Storage
             system requires the inclusion of a specific
                 <firstterm>authorization token</firstterm> HTTP header

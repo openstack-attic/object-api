@@ -67,6 +67,16 @@
     </abstract>
     <revhistory>
       <revision>
+        <date>2013-09-28</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Clarify UTF-8 and URL-encoding of container and object names in headers. </para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
         <date>2013-06-10</date>
         <revdescription>
           <itemizedlist spacing="compact">

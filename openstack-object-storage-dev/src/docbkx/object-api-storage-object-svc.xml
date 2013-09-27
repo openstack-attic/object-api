@@ -404,17 +404,14 @@ format="SVG" scale="60"/>
                 manifest object streams all the segments concatenated.
                 There is no limit to the number of segments that can
                 be a part of a single large object.</para>
-            <para>To ensure the download works correctly, you must
-                upload all the object segments to the same container,
-                ensure each object name has a common prefix where
-                their names sort in the order they should be
-                concatenated. You also create and upload a manifest
-                file. The manifest file is simply a zero-byte file
-                with the extra X-Object-Manifest:
-                &lt;container&gt;/&lt;prefix&gt; header, where
-                &lt;container&gt; is the container the object segments
-                are in and &lt;prefix&gt; is the common prefix for all
-                the segments. </para>
+            <para>To ensure the download works correctly, you must upload all the object segments to
+                the same container, ensure each object name has a common prefix where their names
+                sort in the order they should be concatenated. You also create and upload a manifest
+                file. The manifest file is simply a zero-byte file with the extra X-Object-Manifest:
+                &lt;container&gt;/&lt;prefix&gt; header, where &lt;container&gt; is the container
+                the object segments are in and &lt;prefix&gt; is the common prefix for all the
+                segments. The container and common prefix must be UTF-8 encoded and URL-encoded in
+                the X-Object-Manifest header.</para>
             <para>It is best to upload all the segments first and then
                 create or update the manifest. With this method, the
                 full object will not be available for downloading
@@ -723,19 +720,16 @@ format="SVG" scale="60"/>
             "non-current version" container. Each of the non-current
             versions of an object has a time stamp appended to it, so
             you know when it was created. </para>
-        <para>To enable Object Versioning, your cloud provider has to
-            set <code>allow_versions</code> to <code>TRUE</code> in
-            their container config. Then, create a container where
-            your non-current versions will be written. Next, set the
-            metadata <code>X-Versions-Location</code> header on the
-            container that holds the current versions of your objects.
-            Set the metadata header to point to the new non-current
-            version container you created. This is where your
-            non-current versions will be stored. Once this is done,
-            each object in your current-version container will have
-            Object Versioning enabled; changes to the objects
-            automatically create non-current versions in the separate
-            container. </para>
+        <para>To enable Object Versioning, your cloud provider has to set
+                <code>allow_versions</code> to <code>TRUE</code> in their container config. Then,
+            create a container where your non-current versions will be written. Next, set the
+            metadata <code>X-Versions-Location</code> header on the container that holds the current
+            versions of your objects. Set the metadata header to point to the new non-current
+            version container you created. The name of the container must be UTF-8 encoded and then
+            URL-encoded before putting into the <code>X-Versions-Location</code> header. This is
+            where your non-current versions will be stored. Once this is done, each object in your
+            current-version container will have Object Versioning enabled; changes to the objects
+            automatically create non-current versions in the separate container. </para>
         <para>Nothing is written to the non-current version container
             when you initially &PUT; an object into the
             current-version container. Only when you make edits to the
@@ -835,15 +829,13 @@ format="SVG" scale="60"/>
             you can save the step of re-uploading the content and thus
             also save the associated bandwidth charges, if any were to
             apply.</para>
-        <para>There are two ways to copy an existing object to another
-            object in OpenStack Object Storage. One way is to do a
-            &PUT; to the new object (the target) location, but add the
-                <code>“X-Copy-From”</code> header to designate the
-            source of the data. The header value should be the
-            container and object name of the source object in the form
-            of “/container/object”. Also, the <code>X-Copy-From</code>
-            &PUT; requests require a Content-Length header, even if it
-            is zero (0).</para>
+        <para>There are two ways to copy an existing object to another object in OpenStack Object
+            Storage. One way is to do a &PUT; to the new object (the target) location, but add the
+                <code>“X-Copy-From”</code> header to designate the source of the data. The header
+            value should be the container and object name of the source object in the form of
+            “/container/object”. The container and object name must be UTF-8 encoded and then
+            URL-encoded. Also, the <code>X-Copy-From</code> &PUT; requests require a Content-Length
+            header, even if it is zero (0).</para>
         <example>
             <title>Object Copy Method 1</title>
             <literallayout class="monospaced"><xi:include href="samples/object-copy-1-req.txt" parse="text"/></literallayout>
