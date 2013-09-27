@@ -367,17 +367,15 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <title>Create Container HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-create-resp.txt" parse="text"/></literallayout>
         </example>
-        <para>Using custom container metadata, you can create
-            information in the header to effectively "tag" a container
-            with metadata. The container metadata restrictions are the
-            same as object metadata: you can have 4096 bytes maximum
-            overall metadata, 90 distinct metadata items at the most.
-            Each may have a 128 character name length with a 256 max
-            value length each. Any valid UTF-8 http header value is
-            allowed for metadata, however we recommend that you
-            URL-encode any non-ASCII values using a "%" symbol,
-            followed by the two-digit hexadecimal representation of
-            the ISO-Latin code for the character.</para>
+        <para>Using custom container metadata, you can create information in the header to
+            effectively tag a container with metadata. The container metadata restrictions are the
+            same as object metadata: you can have 4096 bytes maximum overall metadata, 90 distinct
+            metadata items at the most. Each may have a 128 character name length with a maximum of
+            256 bytes in the value. Any valid UTF-8 encoded string value is allowed for metadata. In
+            addition for custom metadata, we <emphasis role="italic">recommend</emphasis> that you
+            URL-encode the header value. However, for non-custom metadata (such as
+            X-Versions-Location), you <emphasis role="italic">must</emphasis> UTF-8 encode and then
+            URL-encode values that contain a container or object name.</para>
         <example>
             <title>Container Create Container with Metadata HTTP
                 Request</title>

@@ -49,7 +49,8 @@ format="SVG" scale="60"/>
         character restrictions.</para>
     </listitem>
     <listitem>
-      <para>Object and container names must be URL-encoded and UTF-8-encoded.</para>
+      <para>Object and container names must be UTF-8 encoded and then URL-encoded to interact with
+        the ReST API.</para>
     </listitem>
   </itemizedlist>
   <para><!--<info>Added paragraph to forecast info structure -\- dsh -2012-03-09 </info>-->The
