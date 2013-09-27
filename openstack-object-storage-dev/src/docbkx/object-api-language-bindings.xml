@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section  xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="language-specific-api-bindings">
+    <title>Language-Specific API Bindings</title>
+    <para>A set of supported API bindings in several popular languages are available from the
+        Rackspace Cloud Files product, which uses OpenStack Object Storage code for its
+        implementation. These bindings provide a layer of abstraction on top of the base REST
+        API, allowing programmers to work with a container and object model instead of working
+        directly with HTTP requests and responses. These bindings are free (as in beer and as in
+        speech) to download, use, and modify. They are all licensed under the MIT License as
+        described in the COPYING file packaged with each binding. If you do make any
+        improvements to an API, you are encouraged (but not required) to submit those changes
+        back to us.</para>
+    <para>The API bindings for Rackspace Cloud Files are hosted at <link
+        xlink:href="http://github.com/rackspace">http://github.com/rackspace</link>. Feel
+        free to coordinate your changes through github or, if you prefer, send your changes to
+        cloudfiles@rackspacecloud.com. Just make sure to indicate which language and version you
+        modified and send a unified diff.</para>
+    <para>Each binding includes its own documentation (either HTML, PDF, or CHM). They also
+        include code snippets and examples to help you get started. The currently supported API
+        binding for OpenStack Object Storage are:</para>
+    <itemizedlist>
+        <listitem>
+            <para>PHP (requires 5.x and the modules: cURL, FileInfo, mbstring)</para>
+        </listitem>
+        <listitem>
+            <para>Python (requires 2.4 or newer)</para>
+        </listitem>
+        <listitem>
+            <para>Java (requires JRE v1.5 or newer)</para>
+        </listitem>
+        <listitem>
+            <para>C#/.NET (requires .NET Framework v3.5)</para>
+        </listitem>
+        <listitem>
+            <para>Ruby (requires 1.8 or newer and mime-tools module)</para>
+        </listitem>
+    </itemizedlist>
+    <para>There are no other supported language-specific bindings at this time. You are welcome
+        to create your own language API bindings and we can help answer any questions during
+        development and give you full credit for your work.</para>
+</section>

@@ -163,14 +163,12 @@ format="SVG" scale="60"/>
             are not required to include the ETag header, but it is
             recommended to ensure that the storage system successfully
             stored your object's content.</para>
-        <para>You can cause an object to expire after a certain date
-            by using the <code>X-Delete-At</code> or
-                <code>X-Delete-After</code> headers during an object
-            &PUT; operation. When Cloud Files detects one of these
-            headers, the system automatically stops serving that
-            object at the specified time and shortly after the
-            expiration date, it removes the object from the storage
-            system. </para>
+        <para>You can cause an object to expire after a certain date by using
+            the <code>X-Delete-At</code> or <code>X-Delete-After</code> headers
+            during an object &PUT; operation. When Object Storage detects one of
+            these headers, the system automatically stops serving that object at
+            the specified time and shortly after the expiration date, it removes
+            the object from the storage system. </para>
         <para>The HTTP response will include the MD5 checksum of the
             data written to the storage system. If you do not send the
             ETag in the request, you should compare the value returned
@@ -581,13 +579,12 @@ format="SVG" scale="60"/>
     </section>
     <section xml:id="assigning-cors-headers-to-requests">
         <title>Assigning CORS Headers to Requests</title>
-        <para>CORS is a specification that stands for Cross-Origin
-            Resource Sharing. It defines how browsers and servers
-            communicate across origins using HTTP headers, such as
-            those assigned by Cloud Files API requests. These headers
-            are supported with the Cloud Files API. You can read more
-            about the definition of the Access-Control- response
-            headers and Origin response header at <link
+        <para>CORS is a specification that stands for Cross-Origin Resource
+            Sharing. It defines how browsers and servers communicate across
+            origins using HTTP headers, such as those assigned by Object Storage
+            API requests. These headers are supported with the Object Storage
+            API. You can read more about the definition of the Access-Control-
+            response headers and Origin response header at <link
                 xlink:href="http://www.w3.org/TR/access-control/"
                 >www.w3.org/TR/access-control/</link>.<itemizedlist>
                 <listitem>
@@ -618,11 +615,10 @@ format="SVG" scale="60"/>
         <para>You can assign these headers to objects only. </para>
         <example>
             <title>Assign CORS Header HTTP Request</title>
-            <para>In the example, the origin header is assigned that
-                indicates where the file came from. This allows you to
-                provide security that requests to your Cloud Files
-                repository are indeed from the correct
-                origination:</para>
+            <para>In the example, the origin header is assigned that indicates
+                where the file came from. This allows you to provide security
+                that requests to your Object Storage repository are indeed from
+                the correct origination:</para>
             <literallayout class="monospaced"><xi:include href="samples/object-assign-cors-header-req.txt" parse="text"/></literallayout>
         </example>
     </section>
