@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Approved+1: Diane Fleming <diane.fleming@rackspace.com>
+Code-Review+2: Diane Fleming <diane.fleming@rackspace.com>
+Submitted-by: Jenkins
+Submitted-at: Mon, 07 Oct 2013 20:05:36 +0000
+Reviewed-on: https://review.openstack.org/47917
+Project: openstack/object-api
+Branch: refs/heads/master
