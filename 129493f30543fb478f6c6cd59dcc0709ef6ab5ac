@@ -1,0 +1,8 @@
+Verified+2: Jenkins
+Approved+1: Andreas Jaeger <jaegerandi@gmail.com>
+Code-Review+2: Andreas Jaeger <jaegerandi@gmail.com>
+Submitted-by: Jenkins
+Submitted-at: Sat, 12 Oct 2013 07:37:54 +0000
+Reviewed-on: https://review.openstack.org/48679
+Project: openstack/object-api
+Branch: refs/heads/master
