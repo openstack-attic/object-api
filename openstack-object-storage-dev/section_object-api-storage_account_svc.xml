@@ -133,8 +133,8 @@ format="SVG" scale="60"/>
             <literallayout class="monospaced"><xi:include href="samples/containers-list-req.txt" parse="text"/></literallayout>
         </example>
         <para>A list of containers is returned in the response body,
-            one container per line. The HTTP response's status code will
-            be 2xx (between 200 and 299, inclusive).</para>
+            one container per line. The HTTP response's status code
+            will be 2xx (between 200 and 299, inclusive).</para>
         <example>
             <title>List Containers HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/containers-list-resp.txt" parse="text"/></literallayout>
@@ -246,8 +246,9 @@ kiwis</literallayout>
             <literallayout class="monospaced"><xi:include href="samples/account-get-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>The HTTP return code will be 2xx (between 200 and 299,
-            inclusive) if the request succeeds. A 401 (Unauthorized) will
-            be returned for an invalid account or access key.</para>
+            inclusive) if the request succeeds. A 401 (Unauthorized)
+            will be returned for an invalid account or access
+            key.</para>
         <example>
             <title>Get Account Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/account-get-metadata-resp.txt" parse="text"/></literallayout>
@@ -255,17 +256,17 @@ kiwis</literallayout>
     </section>
     <section xml:id="create-update-account-metadata">
         <title>Create or Update Account Metadata</title>
-        <para> You can associate custom metadata headers with the
+        <para>You can associate custom metadata headers with the
             account level URI. These headers must take the format
                 <code>X-Account-Meta-*</code>. </para>
-        <para> To create or update an account metadata header use the
+        <para>To create or update an account metadata header use the
             &POST; query. Subsequent requests for the same key/value
             pair overwrite the previous value. </para>
         <example>
             <title>Update Account Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/account-update-metadata-req.txt" parse="text"/></literallayout>
         </example>
-        <para> No response body is returned. A status code of 2xx
+        <para>No response body is returned. A status code of 2xx
             (between 200 and 299, inclusive) indicates success. </para>
         <example>
             <title>Update Account Metadata HTTP Response</title>
@@ -285,21 +286,22 @@ kiwis</literallayout>
     </section>
     <section xml:id="delete-account-metadata">
         <title>Delete Account Metadata</title>
-        <para>To delete a metadata header send an empty value for that
-            particular header, such as
-                <code>X-Account-Meta-Book</code>. </para>
-        <para>If the tool you're using to communicate with Swift
-            doesn't support sending empty headers (such as older
-            versions of cURL) send the header
-                "X-Remove-Account-Meta-<replaceable>name</replaceable>:
-                <replaceable>arbitrary value</replaceable>", such as
-                <code>X-Remove-Account-Meta-Book: x</code>. The
-                <emphasis>value</emphasis> is ignored.</para>
+        <para>To delete a metadata header, send an empty value for
+            that particular header, such as for the
+                <code>X-Account-Meta-Book</code> header. </para>
+        <para>If the tool you use to communicate with Object Storage,
+            such as older versions of cURL, does not support empty
+            headers, send the
+                <literal>X-Remove-Account-Meta-</literal><replaceable>name</replaceable><literal>:</literal>
+            <replaceable>arbitrary value</replaceable> header. For
+            example, <code>X-Remove-Account-Meta-Book: x</code>. The
+                <replaceable>arbitrary value</replaceable> is
+            ignored.</para>
         <example>
             <title>Delete Account Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/account-delete-metadata-req.txt" parse="text"/></literallayout>
-            <para> No response body is returned. A status code of 2xx
-                (between 200 and 299, inclusive) indicates success.</para>
+            <para>No response body is returned. A status code from 200
+                to 299 indicates success.</para>
         </example>
     </section>
 </section>
