@@ -67,11 +67,23 @@
     </abstract>
     <revhistory>
       <revision>
+        <date>2013-10-16</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Updated the description of the delete account
+                metadata method.</para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
         <date>2013-09-28</date>
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Clarify UTF-8 and URL-encoding of container and object names in headers.</para>
+              <para>Clarify UTF-8 and URL-encoding of container and
+                object names in headers.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -81,7 +93,8 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Corrected delete container to be delete object.</para>
+              <para>Corrected delete container to be delete
+                object.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -160,9 +173,9 @@
               <para>Revised for OpenStack Object Storage use by
                 removing CDN references, Rackspace Cloud references,
                 and revised account examples and URLs for generic
-                implementations. It's not a changed requirement that
-                Container and Object names are required to be UTF-8,
-                but it's pointed out in the documentation.</para>
+                implementations. Container and Object names are not
+                required to be UTF-8, but it is pointed out in the
+                documentation.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -174,7 +187,8 @@
             <listitem>
               <para>Removed references to ACL (Access Control List).
                 Fixed error in examples referring to X-Auth-Key where
-                it should be X-Auth-Token. Added section numbers.</para>
+                it should be X-Auth-Token. Added section
+                numbers.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -192,7 +206,7 @@
         </revdescription>
       </revision>
       <revision>
-        <date>2008-05-5</date>
+        <date>2008-05-05</date>
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
@@ -207,5 +221,5 @@
   <xi:include href="ch_object-api-overview.xml"/>
   <xi:include href="ch_object-api-general.xml"/>
   <xi:include href="ch_object-api-storage-services.xml"/>
-  <xi:include href="ch_object-api-troubleshooting-examples.xml"/> 
+  <xi:include href="ch_object-api-troubleshooting-examples.xml"/>
 </book>
