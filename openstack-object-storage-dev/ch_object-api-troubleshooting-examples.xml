@@ -574,7 +574,7 @@ total 504
             <screen>
 <command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
-    <option>-T JingleRocky.jpg"</option> \
+    <option>-T JingleRocky.jpg</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
             </screen>
             <screen>
