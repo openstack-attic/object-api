@@ -564,7 +564,7 @@ total 504
 -rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
 -rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg
 </computeroutput>
-		</screen>
+            </screen>
         </example>
         <para>In order to put one of them in a container called "dogs"
             with cURL, you'd do this:</para>
@@ -574,11 +574,11 @@ total 504
             <screen>
 <command>curl</command> <option>–X PUT</option> <option>-i</option> \
     <option>-H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae"</option> \
-    <option>-T JingleRocky.jpg"</option> \
+    <option>-T JingleRocky.jpg</option> \
     <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</uri>
             </screen>
             <screen>
-<computeroutput>				
+<computeroutput>
 HTTP/1.1 201 Created
 Content-Length: 118
 Content-Type: text/html; charset=UTF-8
