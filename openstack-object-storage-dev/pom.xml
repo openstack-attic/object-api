@@ -16,6 +16,7 @@
     <!-- USE "mvn clean generate-sources" to run this POM -->
     <!-- ################################################ -->
     <build>
+        <sourceDirectory>.</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>com.rackspace.cloud.api</groupId>
