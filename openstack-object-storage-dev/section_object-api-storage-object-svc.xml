@@ -115,29 +115,36 @@ format="SVG" scale="60"/>
                 <para>If-Unmodified-Since</para>
             </listitem>
         </itemizedlist>
-        <para>It is also possible to fetch a portion of data using the
-            HTTP <code>Range</code> header. At this time, OpenStack
-            Object Storage does not support the full specification for
-                <code>Range</code> but basic support is provided.
-            OpenStack Object Storage only allows a single range that
-            includes OFFSET and/or LENGTH. We support a sub-set of
-                <code>Range</code> and do not adhere to the full
-            RFC-2616 specification. We support specifying
-            OFFSET-LENGTH where either OFFSET or LENGTH can be
-            optional (not both at the same time). The following are
-            supported forms of the header:</para>
+        <para>It is also possible to fetch portions of data using the
+            HTTP <code>Range</code> header.
+            OpenStack Object Storage allows one or many ranges
+            separated by a comma that includes FIRST-BYTE-OFFSET and/or
+            LAST-BYTE-OFFSET. FIRST-BYTE-OFFSET and LAST_BYTE_OFFSET
+            are both optionals (not both at the same time).
+            The following are supported forms of the header:</para>
         <itemizedlist>
             <listitem>
                 <para><code>Range: bytes=-5</code> - last five bytes
                     of the object</para>
             </listitem>
             <listitem>
-                <para><code>Range: bytes=10-15</code> - the five bytes
-                    after a 10-byte offset</para>
+                <para><code>Range: bytes=4-6</code> - the bytes between
+                    the 4-byte and the 6-byte bytes 4 and 6 included</para>
             </listitem>
             <listitem>
-                <para><code>Range: bytes=32-</code> - all data after
-                    the first 32 bytes of the object</para>
+                <para><code>Range: bytes=2-2</code> - returns
+                    the byte 2.</para>
+            </listitem>
+            <listitem>
+                <para><code>Range: bytes=6-</code> - all data after
+                    the 6-byte of the object including byte 6</para>
+            </listitem>
+            <listitem>
+                <para><code>Range: bytes=1-3,2-5</code> - the bytes from
+                    byte 1 to byte 3 included and the bytes from
+                    the byte 2 to byte 5 included. The <code>Content-Type</code>
+                    of the response is then <code>multipart/byteranges</code>
+                </para>
             </listitem>
         </itemizedlist>
         <example>
@@ -151,7 +158,31 @@ format="SVG" scale="60"/>
         <example>
             <title>Get Object Details HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-resp.txt" parse="text"/></literallayout>
-            <literallayout class="monospaced">[ ... ]</literallayout>
+        </example>
+        <para>The following examples are based on an object containing 10 bytes of data "0123456789".</para>
+        <example>
+            <title>Get Object Details HTTP Request Using Range</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-get-range-req.txt" parse="text"/></literallayout>
+        </example>
+        <example>
+            <title>Get Object Details HTTP Response When Using Range</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-get-range-resp.txt" parse="text"/></literallayout>
+        </example>
+        <example>
+            <title>Get Object Details HTTP Request Using Range</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-get-range-req.txt" parse="text"/></literallayout>
+        </example>
+        <example>
+            <title>Get Object Details HTTP Response When Using Range</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-get-range-resp.txt" parse="text"/></literallayout>
+        </example>
+        <example>
+            <title>Get Object Details HTTP Request Using Multiple Ranges</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-get-ranges-req.txt" parse="text"/></literallayout>
+        </example>
+        <example>
+            <title>Get Object Details HTTP Response When Using Muliple Ranges</title>
+            <literallayout class="monospaced"><xi:include href="samples/object-get-ranges-resp.txt" parse="text"/></literallayout>
         </example>
     </section>
     <section xml:id="create-update-object">
