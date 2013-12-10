@@ -64,9 +64,26 @@ format="SVG" scale="60"/>
                 <td colspan="2">/<parameter>account</parameter></td>
                 <td colspan="3">Deletes account metadata.</td>
             </tr>
-
         </tbody>
     </informaltable>
+    <variablelist>
+        <title>Optional headers for &HEAD; and &GET;</title>
+        <varlistentry>
+            <term><code>X-Newest</code></term>
+            <listitem>
+                <para>To ensure that Object Storage returns the latest
+                    version of the container, set the optional
+                        <code>X-newest</code> header to
+                        <code>True</code> in &HEAD; and &GET;
+                    requests. If set to <code>True</code>, Object
+                    Storage queries all replicas and returns the most
+                    recent one. If you omit this header, Object
+                    Storage responds faster after it finds one valid
+                    replica. This header is useful if you need strong
+                    consistency.</para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
     <para>For example, the URL for the requests end with the OpenStack
         Object Storage account string, as follows:</para>
     <example>
@@ -145,7 +162,7 @@ format="SVG" scale="60"/>
                     <code>format=json</code> argument is appended to
                 the storage account URL, the service serves extended
                 container information serialized in the chosen format.
-                The sample responses are formatted for readability. </para>
+                The sample responses are formatted for readability.</para>
             <para>The following HTTP request asks for a JSON response,
                 so the response returns an HTTP header and a JSON
                 response.</para>
@@ -220,7 +237,7 @@ oranges</literallayout>
                     list.</para>
                 <para>By using <code>end_marker</code> we can limit
                     the result set to container names less than the
-                    given value. </para>
+                    given value.</para>
                 <literallayout class="monospaced"><xi:include href="samples/large-container-list-filter-end-marker-req.txt" parse="text"/></literallayout>
                 <literallayout class="monospaced">apples
 bananas
@@ -258,16 +275,16 @@ kiwis</literallayout>
         <title>Create or Update Account Metadata</title>
         <para>You can associate custom metadata headers with the
             account level URI. These headers must take the format
-                <code>X-Account-Meta-*</code>. </para>
+                <code>X-Account-Meta-*</code>.</para>
         <para>To create or update an account metadata header use the
             &POST; query. Subsequent requests for the same key/value
-            pair overwrite the previous value. </para>
+            pair overwrite the previous value.</para>
         <example>
             <title>Update Account Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/account-update-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>No response body is returned. A status code of 2xx
-            (between 200 and 299, inclusive) indicates success. </para>
+            (between 200 and 299, inclusive) indicates success.</para>
         <example>
             <title>Update Account Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/account-update-metadata-resp.txt" parse="text"/></literallayout>
@@ -288,7 +305,7 @@ kiwis</literallayout>
         <title>Delete Account Metadata</title>
         <para>To delete a metadata header, send an empty value for
             that particular header, such as for the
-                <code>X-Account-Meta-Book</code> header. </para>
+                <code>X-Account-Meta-Book</code> header.</para>
         <para>If the tool you use to communicate with Object Storage,
             such as older versions of cURL, does not support empty
             headers, send the

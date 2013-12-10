@@ -69,6 +69,24 @@ format="SVG" scale="60"/>
             </tr>
         </tbody>
     </informaltable>
+    <variablelist>
+        <title>Optional headers for HEAD and GET</title>
+        <varlistentry>
+            <term><code>X-Newest</code></term>
+            <listitem>
+                <para>To ensure that Object Storage returns the latest
+                    version of the container, set the optional
+                        <code>X-newest</code> header to
+                        <code>True</code> in &HEAD; and &GET;
+                    requests. If set to <code>True</code>, Object
+                    Storage queries all replicas and returns the most
+                    recent one. If you omit this header, Object
+                    Storage responds faster after it finds one valid
+                    replica. This header is useful if you need strong
+                    consistency.</para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
     <para>All operations follow this format:</para>
     <example>
         <title>Storage Container Services HTTP Request</title>
@@ -164,11 +182,11 @@ format="SVG" scale="60"/>
             <literallayout class="monospaced"><xi:include href="samples/object-list-req.txt" parse="text"/></literallayout>
         </example>
         <para>A list of objects is returned in the response body, one
-            object name per line. The response will have a 2xx HTTP status
-            code (between 200 and 299 inclusive). If the container does
-            not exist, or if an incorrect account is specified, then a
-            response with a 404 (Not Found) status code will be
-            returned.</para>
+            object name per line. The response will have a 2xx HTTP
+            status code (between 200 and 299 inclusive). If the
+            container does not exist, or if an incorrect account is
+            specified, then a response with a 404 (Not Found) status
+            code will be returned.</para>
         <example>
             <title>List Objects HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-list-resp.txt" parse="text"/></literallayout>
@@ -245,7 +263,7 @@ reddelicious</literallayout>
                     list.</para>
                 <para>By using <code>end_marker</code> we can limit
                     the result set to object names less than the given
-                    value. </para>
+                    value.</para>
                 <literallayout class="monospaced"><xi:include href="samples/objects-list-end-marker-req.txt" parse="text"/></literallayout>
             </example>
         </section>
@@ -268,19 +286,18 @@ reddelicious</literallayout>
                     in the example, but that it is a part of the
                     object URLs. For instance, the URL of the picture
                         <code>me.jpg</code> is
-                        <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/backups/photos/me.jpg</uri>.
-                </para>
+                        <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/backups/photos/me.jpg</uri>.</para>
             </note>
             <example>
                 <title>List Pseudo-Hierarchical Folders/Directories
                     Request</title>
                 <para>To display a list of all the objects in the
                     storage container, use &GET; without a
-                        <code>delimiter</code> or <code>prefix</code>. </para>
+                        <code>delimiter</code> or <code>prefix</code>.</para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups</literallayout>
                 <para>The system returns status code 2xx (between 200
                     and 299, inclusive) and the requested list of the
-                    objects. </para>
+                    objects.</para>
                 <literallayout class="monospaced">photos/animals/cats/persian.jpg
 photos/animals/cats/siamese.jpg
 photos/animals/dogs/corgi.jpg
@@ -295,28 +312,28 @@ photos/plants/rose.jpg</literallayout>
                     results. Any character may be used as a delimiter.
                     However, to use <code>delimiter</code> with
                     pseudo-directories, use the parameter slash
-                        (<literal>/</literal>). </para>
+                        (<literal>/</literal>).</para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups?delimiter=/</literallayout>
                 <para>The system returns status code 2xx (between 200
                     and 299, inclusive) and the requested matching
                     objects. Because we use the slash, only the
-                    pseudo-directory <code>photos/</code> displays. Keep
-                    in mind that the returned values from a slash
-                    <code>delimiter</code> query are not real objects.
-                    They have a content-type of
-                    <literal>application/directory</literal> and are in
-                    the <literal>subdir</literal> section of json and xml
-                    results. </para>
+                    pseudo-directory <code>photos/</code> displays.
+                    Keep in mind that the returned values from a slash
+                        <code>delimiter</code> query are not real
+                    objects. They have a content-type of
+                        <literal>application/directory</literal> and
+                    are in the <literal>subdir</literal> section of
+                    json and xml results.</para>
                 <literallayout class="monospaced">photos/</literallayout>
                 <para>Use the <code>prefix</code> parameter with the
                         <code>delimiter</code> parameter to view the
                     objects inside a pseudo-directory, including
-                    further nested pseudo-directories. </para>
+                    further nested pseudo-directories.</para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/&#38;delimiter=/</literallayout>
                 <para>The system returns status code 2xx (between 200
                     and 299, inclusive) and the objects and
                     pseudo-directories within the top level
-                    pseudo-directory. </para>
+                    pseudo-directory.</para>
                 <literallayout class="monospaced">photos/animals/
 photos/me.jpg
 photos/plants/            </literallayout>
@@ -328,12 +345,12 @@ photos/plants/            </literallayout>
                     called <code>dogs</code> within the
                     pseudo-directory <code>animals</code>. In order to
                     navigate directly to the files contained within
-                        <code>dogs</code>, enter the below command. </para>
+                        <code>dogs</code>, enter the below command.</para>
                 <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/animals/dogs/&#38;delimiter=/         </literallayout>
-                    <para>The system returns status code 2xx (between 200
+                <para>The system returns status code 2xx (between 200
                     and 299, inclusive) and the objects and
-                    pseudo-directories within the nested pseudo-directory.
-                    </para>
+                    pseudo-directories within the nested
+                    pseudo-directory.</para>
                 <literallayout class="monospaced">photos/animals/dogs/corgi.jpg
 photos/animals/dogs/poodle.jpg
 photos/animals/dogs/terrier.jpg</literallayout>
@@ -350,7 +367,7 @@ photos/animals/dogs/terrier.jpg</literallayout>
         <para>Containers can be assigned custom metadata by including
             additional HTTP headers on the &PUT; request. The custom
             metadata is assigned to a container via HTTP headers
-            identified with the <code>X-Container-Meta-</code> prefix. </para>
+            identified with the <code>X-Container-Meta-</code> prefix.</para>
         <example>
             <title>Create Container HTTP Request </title>
             <literallayout class="monospaced"><xi:include href="samples/container-create-req.txt" parse="text"/></literallayout>
@@ -367,15 +384,20 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <title>Create Container HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-create-resp.txt" parse="text"/></literallayout>
         </example>
-        <para>Using custom container metadata, you can create information in the header to
-            effectively tag a container with metadata. The container metadata restrictions are the
-            same as object metadata: you can have 4096 bytes maximum overall metadata, 90 distinct
-            metadata items at the most. Each may have a 128 character name length with a maximum of
-            256 bytes in the value. Any valid UTF-8 encoded string value is allowed for metadata. In
-            addition for custom metadata, we <emphasis role="italic">recommend</emphasis> that you
-            URL-encode the header value. However, for non-custom metadata (such as
-            X-Versions-Location), you <emphasis role="italic">must</emphasis> UTF-8 encode and then
-            URL-encode values that contain a container or object name.</para>
+        <para>Using custom container metadata, you can create
+            information in the header to effectively tag a container
+            with metadata. The container metadata restrictions are the
+            same as object metadata: you can have 4096 bytes maximum
+            overall metadata, 90 distinct metadata items at the most.
+            Each may have a 128 character name length with a maximum
+            of 256 bytes in the value. Any valid UTF-8 encoded string
+            value is allowed for metadata. In addition for custom
+            metadata, we <emphasis role="italic">recommend</emphasis>
+            that you URL-encode the header value. However, for
+            non-custom metadata (such as X-Versions-Location), you
+                <emphasis role="italic">must</emphasis> UTF-8 encode
+            and then URL-encode values that contain a container or
+            object name.</para>
         <example>
             <title>Container Create Container with Metadata HTTP
                 Request</title>
@@ -399,7 +421,7 @@ photos/animals/dogs/terrier.jpg</literallayout>
         <title>Delete Container</title>
         <para>&DELETE; operations against a storage container
             permanently remove it. The container must be empty before
-            it can be deleted. </para>
+            it can be deleted.</para>
         <para>A &HEAD; request against the container can be used to
             determine if it contains any objects.</para>
         <example>
@@ -407,10 +429,10 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <literallayout class="monospaced"><xi:include href="samples/container-delete-req.txt" parse="text"/></literallayout>
         </example>
         <para>No content is returned. A status code of 2xx (between
-            200 and 299, inclusive) indicates success, 404 (Not Found) is
-            returned if the requested container was not found, and a 409
-            (Conflict) if the container is not empty. No response body is
-            generated.</para>
+            200 and 299, inclusive) indicates success, 404 (Not Found)
+            is returned if the requested container was not found, and
+            a 409 (Conflict) if the container is not empty. No
+            response body is generated.</para>
         <example>
             <title>Delete Container HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-delete-resp.txt" parse="text"/></literallayout>
@@ -431,10 +453,10 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <literallayout class="monospaced"><xi:include href="samples/container-get-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>The HTTP status code will be 2xx (between 200 and 299,
-            inclusive) if the container exists, and 404 (Not Found) if it
-            does not. The object count and utilization are returned in the
-            <code>X-Container-Object-Count</code> and
-            <code>X-Container-Bytes-Used</code> headers
+            inclusive) if the container exists, and 404 (Not Found) if
+            it does not. The object count and utilization are returned
+            in the <code>X-Container-Object-Count</code> and
+                <code>X-Container-Bytes-Used</code> headers
             respectively.</para>
         <example>
             <title>Get Container Metadata HTTP Response</title>
@@ -445,18 +467,18 @@ photos/animals/dogs/terrier.jpg</literallayout>
         <title>Create or Update Container Metadata</title>
         <para>You may create any custom or arbitrary metadata headers
             as you find useful. They must, however, take the format
-                <code>X-Container-Meta-</code>. </para>
+                <code>X-Container-Meta-</code>.</para>
         <para>To create or update the arbitrary container metadata,
             use the &POST; query. Subsequent requests of the same
-            key/value pair overwrites the previous value. </para>
+            key/value pair overwrites the previous value.</para>
         <example>
             <title>Update Container Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-update-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>No response body is returned. A status code of 2xx
-            (between 200 and 299, inclusive) indicates success; status 404
-            (Not Found) is returned when the requested container does not
-            exist. </para>
+            (between 200 and 299, inclusive) indicates success; status
+            404 (Not Found) is returned when the requested container
+            does not exist.</para>
         <example>
             <title>Update Container Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-update-metadata-resp.txt" parse="text"/></literallayout>
@@ -480,7 +502,7 @@ photos/animals/dogs/terrier.jpg</literallayout>
         <title>Delete Container Metadata</title>
         <para>To delete a metadata header send an empty value for that
             particular header, such as
-                <code>X-Container-Meta-Book:</code>. </para>
+                <code>X-Container-Meta-Book:</code>.</para>
         <para>If the tool you're using to communicate with Object
             Storage doesn't support sending empty headers (older
             versions of curl) send the header
@@ -494,7 +516,8 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <title>Delete Container Metadata HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/container-delete-metadata-req.txt" parse="text"/></literallayout>
             <para>No response body is returned. A status code of 2xx
-                (between 200 and 299, inclusive) indicates success. </para>
+                (between 200 and 299, inclusive) indicates success.
+</para>
         </example>
     </section>
 </section>

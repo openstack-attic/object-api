@@ -42,7 +42,6 @@ format="SVG" scale="60"/>
         object. You can work with the segments and manifests directly
         with HTTP requests.</para>
     <informaltable rules="all">
-
         <thead>
             <tr>
                 <td colspan="1">Verb</td>
@@ -89,6 +88,24 @@ format="SVG" scale="60"/>
             </tr>
         </tbody>
     </informaltable>
+    <variablelist>
+        <title>Optional headers for &HEAD; and &GET;</title>
+        <varlistentry>
+            <term><code>X-Newest</code></term>
+            <listitem>
+                <para>To ensure that Object Storage returns the latest
+                    version of the container, set the optional
+                    <code>X-newest</code> header to
+                    <code>True</code> in &HEAD; and &GET;
+                    requests. If set to <code>True</code>, Object
+                    Storage queries all replicas and returns the most
+                    recent one. If you omit this header, Object
+                    Storage responds faster after it finds one valid
+                    replica. This header is useful if you need strong
+                    consistency.</para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
     <section xml:id="retrieve-object">
         <title>Get Object Details</title>
         <para>&GET; operations against an object are used to retrieve
@@ -100,7 +117,7 @@ format="SVG" scale="60"/>
         <para>RFC 2616: <link
                 xlink:href="http://www.ietf.org/rfc/rfc2616.txt"
                 >http://www.ietf.org/rfc/rfc2616.txt</link>
-        </para>
+</para>
         <itemizedlist>
             <listitem>
                 <para>If-Match</para>
@@ -157,7 +174,7 @@ format="SVG" scale="60"/>
     <section xml:id="create-update-object">
         <title>Create or Update Object</title>
         <para>&PUT; operations are used to write, or overwrite, an
-            object's content and metadata. </para>
+            object's content and metadata.</para>
         <para>You can ensure end-to-end data integrity by including an
             MD5 checksum of your object's data in the ETag header. You
             are not required to include the ETag header, but it is
@@ -168,7 +185,7 @@ format="SVG" scale="60"/>
             during an object &PUT; operation. When Object Storage detects one of
             these headers, the system automatically stops serving that object at
             the specified time and shortly after the expiration date, it removes
-            the object from the storage system. </para>
+            the object from the storage system.</para>
         <para>The HTTP response will include the MD5 checksum of the
             data written to the storage system. If you do not send the
             ETag in the request, you should compare the value returned
@@ -219,7 +236,7 @@ format="SVG" scale="60"/>
                 transfer will be less than 5GB or for splitting it
                 into 5GB chunks, each in its own storage object. If
                 you have files that are larger than 5GB see <xref
-                    linkend="large-object-creation"/>. </para>
+                    linkend="large-object-creation"/>.</para>
             <example>
                 <title>Upload Unspecified Quantity of Content HTTP
                     Request</title>
@@ -266,13 +283,13 @@ format="SVG" scale="60"/>
                 source segment objects exceeds 5GB, the &COPY;
                 operation will fail. However, as explained later, you
                 can make a duplicate of the manifest object. This new
-                object may be larger than 5GB. </para>
+                object may be larger than 5GB.</para>
         </note>
         <para>There are two types of manifest object as follows:<itemizedlist>
                 <listitem>
                     <para>Static Large Objects. The manifest object
                         content is an ordered list of the names of the
-                        segment objects in json format. </para>
+                        segment objects in json format.</para>
                 </listitem>
                 <listitem>
                     <para>Dynamic Large Objects. The manifest object
@@ -495,7 +512,7 @@ format="SVG" scale="60"/>
                             including the
                                 <code>?multipart-manifest=put</code>
                             query string at the end of the manifest
-                            object name. </para>
+                            object name.</para>
                     </listitem>
                 </orderedlist>The body of the &PUT; request on the
                 manifest object comprises a json list, where each
@@ -520,7 +537,7 @@ format="SVG" scale="60"/>
                             that object</para>
                     </listitem>
                 </itemizedlist>
-            </para>
+</para>
             <example>
                 <title>Static Large Object Manifest List</title>
                 <para>This is an example containing three segment
@@ -561,7 +578,7 @@ format="SVG" scale="60"/>
                     <code>?multipart-manifest=get</code>. The
                 resulting list will not be identically formatted as
                 the manifest you originally used in the &PUT;
-                operation. </para>
+                operation.</para>
             <para>If you use the &DELETE; operation on a manifest
                 object, the manifest object is deleted -- the segment
                 objects are not affected. However, if you add the
@@ -612,7 +629,7 @@ format="SVG" scale="60"/>
                     <para>Origin</para>
                 </listitem>
             </itemizedlist></para>
-        <para>You can assign these headers to objects only. </para>
+        <para>You can assign these headers to objects only.</para>
         <example>
             <title>Assign CORS Header HTTP Request</title>
             <para>In the example, the origin header is assigned that indicates
@@ -670,7 +687,7 @@ format="SVG" scale="60"/>
             <!--  Exchanged POSIX in / favor of Epoch for the / sake of clarity dsh 02-06-12 -->By
             setting the header to a specific Epoch time, you indicate
             when you want the object to expire, not be served, and be
-            deleted completely from the storage system. </para>
+            deleted completely from the storage system.</para>
         <para>The <code>X-Delete-After</code> header takes an integer
             number of seconds and calculates the amount of time from
             now that you want the object to be deleted. The proxy
@@ -715,7 +732,7 @@ format="SVG" scale="60"/>
             in that container copy the prior object to a separate
             "non-current version" container. Each of the non-current
             versions of an object has a time stamp appended to it, so
-            you know when it was created. </para>
+            you know when it was created.</para>
         <para>To enable Object Versioning, your cloud provider has to set
                 <code>allow_versions</code> to <code>TRUE</code> in their container config. Then,
             create a container where your non-current versions will be written. Next, set the
@@ -725,13 +742,13 @@ format="SVG" scale="60"/>
             URL-encoded before putting into the <code>X-Versions-Location</code> header. This is
             where your non-current versions will be stored. Once this is done, each object in your
             current-version container will have Object Versioning enabled; changes to the objects
-            automatically create non-current versions in the separate container. </para>
+            automatically create non-current versions in the separate container.</para>
         <para>Nothing is written to the non-current version container
             when you initially &PUT; an object into the
             current-version container. Only when you make edits to the
             objects via &PUT; will you create non-current versions.
             These non-current versions are labeled according to the
-            schema below. </para>
+            schema below.</para>
         <para>
             <emphasis>Naming Schema:</emphasis> Non-current versions
             are assigned the name
@@ -739,7 +756,7 @@ format="SVG" scale="60"/>
             length is the 3-character zero-padded hexadecimal
             character length of the &lt;object_name&gt; and
             &lt;timestamp&gt; is when the it was initially created as
-            a current version. </para>
+            a current version.</para>
         <para>Any return status in the 2xx range, such as 202
             (Accepted), denotes success. Status codes in the 4xx or 5xx
             range denote failure. You should retry your request if you
@@ -748,28 +765,28 @@ format="SVG" scale="60"/>
             non-current version container, a status of 412
             (Precondition Failed) returns when you edit the versioned
             object. If you receive this error, check that the
-            container exists. </para>
+            container exists.</para>
         <para>A &GET; to a versioned object returns the current
             version of the object without having to do any request
-            redirects or metadata lookups. </para>
+            redirects or metadata lookups.</para>
         <para>A &POST; to a versioned object only updates the object's
             metadata; it does not create a new version of the object.
             In other words, new versions are only created when the
-            content of the object changes. </para>
+            content of the object changes.</para>
         <para>A &DELETE; to a versioned object removes the current
             version of the object and replaces it with the next-most
             current version, moving it from the non-current container
             to the current. This next-most current version carries
             with it any metadata last set on it. If want to completely
             remove an object and you have five total versions of it,
-            you must &DELETE; it five times. </para>
+            you must &DELETE; it five times.</para>
         <note>
             <para> A large-object manifest file cannot be versioned,
-                but it may point to versioned segments. </para>
+                but it may point to versioned segments.</para>
         </note>
         <para> To turn off Object Versioning on your current version
             container, remove its <code>X-Versions-Location</code>
-            metadata by sending an empty key value. </para>
+            metadata by sending an empty key value.</para>
         <example>
             <title>Object Versioning with cURL</title>
             <para>Make sure a version-storing container exists,
@@ -780,7 +797,7 @@ format="SVG" scale="60"/>
                 also add the <code>X-Versions-Location</code> header
                 to an existing container. In this example, the name of
                 the container is “versions”; the location for the
-                current version is the container "current". </para>
+                current version is the container "current".</para>
             <para>Create a container named versions.</para>
             <literallayout class="monospaced">  curl -i -XPUT -H "X-Auth-Token: &lt;token&gt;" http://&lt;storage_url&gt;/versions</literallayout>
             <para>Create a container named current with the
@@ -790,23 +807,23 @@ format="SVG" scale="60"/>
   curl -i -XPUT -H "X-Auth-Token: &lt;token&gt;" \
       -H "X-Versions-Location: versions" http://&lt;storage_url&gt;/current
         </literallayout>
-            <para>Create an object (the first version): </para>
+            <para>Create an object (the first version):</para>
             <literallayout class="monospaced">
   curl -i -XPUT --data-binary 1 -H "X-Auth-Token: &lt;token&gt;" \
       http://&lt;storage_url&gt;/current/myobject
             </literallayout>
-            <para>Now create a new version of that object: </para>
+            <para>Now create a new version of that object:</para>
             <literallayout class="monospaced">
   curl -i -XPUT --data-binary 2 -H "X-Auth-Token: &lt;token&gt;" \
       http://&lt;storage_url&gt;/current/myobject
             </literallayout>
-            <para>See a listing of the older versions of the object: </para>
+            <para>See a listing of the older versions of the object:</para>
             <literallayout class="monospaced">
   curl -i -H "X-Auth-Token: &lt;token&gt;" \
       http://&lt;storage_url&gt;/versions?prefix=008myobject/
             </literallayout>
             <para>Now delete the current version of the object and see
-                that the older version is gone: </para>
+                that the older version is gone:</para>
             <literallayout class="monospaced">
   curl -i -XDELETE -H "X-Auth-Token: &lt;token&gt;" \
       http://&lt;storage_url&gt;/current/myobject
@@ -840,7 +857,7 @@ format="SVG" scale="60"/>
             &COPY; to the existing object, and include the
             “Destination” header to specify the target of the copy.
             The header value is the container and new object name in
-            the form of “/container/object”. </para>
+            the form of “/container/object”.</para>
         <example>
             <title>Object Copy Method 2</title>
             <literallayout class="monospaced"><xi:include href="samples/object-copy-2-req.txt" parse="text"/></literallayout>
@@ -875,7 +892,7 @@ format="SVG" scale="60"/>
             conflicting keys on the target (new) object. One
             interesting use case is to copy an object to itself and
             set the content type to a new value. This is the only way
-            to change the content type of an existing object. </para>
+            to change the content type of an existing object.</para>
     </section>
     <section xml:id="delete-object">
         <title>Delete Object</title>
@@ -896,7 +913,7 @@ format="SVG" scale="60"/>
             deleted within one day of the expiration time and the
             object is not served immediately after the expiration
             time. Refer to <link linkend="Expiring_Objects-e1e3228"
-                >Expiring Objects</link> for more details. </para>
+                >Expiring Objects</link> for more details.</para>
         <example>
             <title>Object Delete HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/object-delete-req.txt" parse="text"/></literallayout>
@@ -923,7 +940,7 @@ format="SVG" scale="60"/>
         <para>No response body is returned. Metadata is returned as
             HTTP headers. A status code of 2xx (between 200 and 299,
             inclusive) indicates success; status 404 (Not Found) is
-            returned when the object does not exist. </para>
+            returned when the object does not exist.</para>
         <example>
             <title>Get Object Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-metadata-resp.txt" parse="text"/></literallayout>
@@ -942,7 +959,7 @@ format="SVG" scale="60"/>
             storage objects (see &PUT;). Also refer to <link
                 linkend="copy-object">copying an object</link> when
             you need to update metadata or other headers such as
-            Content-Type or CORS headers. </para>
+            Content-Type or CORS headers.</para>
         <para>Key names must be prefixed with
                 <code>X-Object-Meta-</code>. A &POST; request will
             delete all existing metadata added with a previous
@@ -954,7 +971,7 @@ format="SVG" scale="60"/>
         <para>No response body is returned. A status code of 2xx
             (between 200 and 299, inclusive) indicates success; status 404
             (Not Found) is returned if the requested object does not
-            exist. </para>
+            exist.</para>
         <example>
             <title>Update Object Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-update-metadata-resp.txt" parse="text"/></literallayout>
