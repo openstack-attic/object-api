@@ -115,14 +115,14 @@ format="SVG" scale="60"/>
                 <para>If-Unmodified-Since</para>
             </listitem>
         </itemizedlist>
-        <para>It is also possible to fetch a portion of data using the
+        <para>It is also possible to fetch portions of data using the
             HTTP <code>Range</code> header. At this time, OpenStack
             Object Storage does not support the full specification for
-                <code>Range</code> but basic support is provided.
-            OpenStack Object Storage only allows a single range that
-            includes OFFSET and/or LENGTH. We support a sub-set of
-                <code>Range</code> and do not adhere to the full
-            RFC-2616 specification. We support specifying
+            <code>Range</code> but basic support is provided.
+            OpenStack Object Storage allows one or many ranges
+            separated by a comma that includes OFFSET and/or LENGTH.
+            We support a sub-set of <code>Range</code> and do not adhere to
+            the full RFC-2616 specification. We support specifying
             OFFSET-LENGTH where either OFFSET or LENGTH can be
             optional (not both at the same time). The following are
             supported forms of the header:</para>
@@ -138,6 +138,13 @@ format="SVG" scale="60"/>
             <listitem>
                 <para><code>Range: bytes=32-</code> - all data after
                     the first 32 bytes of the object</para>
+            </listitem>
+            <listitem>
+                <para><code>Range: bytes=10-15,25-30</code> - the five
+                    bytes after a 10-byte offset and the five bytes
+                    after the 25-byte offset. The <code>Content-Type</code>
+                    of the response is then <code>multipart/byteranges</code>
+                </para>
             </listitem>
         </itemizedlist>
         <example>
