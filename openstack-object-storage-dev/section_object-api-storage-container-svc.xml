@@ -69,6 +69,22 @@ format="SVG" scale="60"/>
             </tr>
         </tbody>
     </informaltable>
+    <variablelist>
+        <title>Optional headers for HEAD and GET</title>
+        <varlistentry>
+            <term><code>X-Newest</code></term>
+            <listitem>
+                <para>The optional <code>X-newest</code> header set to
+                    <code>True</code> can be specified in the
+                    HEAD and GET requests to ensure Swift will return the latest version
+                    of the container. If set to True Swift will query all the
+                    replicas to return the most recent one. Without this header
+                    Swift will respond faster once it find one valid replica.
+                    This header is useful if you need strong consistency.
+                </para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
     <para>All operations follow this format:</para>
     <example>
         <title>Storage Container Services HTTP Request</title>
