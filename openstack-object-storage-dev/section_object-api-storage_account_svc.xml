@@ -67,6 +67,24 @@ format="SVG" scale="60"/>
 
         </tbody>
     </informaltable>
+    <variablelist>
+        <title>Optional headers for HEAD and GET</title>
+        <varlistentry>
+            <term><code>X-Newest</code></term>
+            <listitem>
+                <para>Set the optional <code>X-newest</code> header to
+                    <code>True</code> in HEAD and GET requests to have
+                    Object Storage return the latest version of the account.
+                    If set to <code>True</code>, Object Storage queries all
+                    replicas to return the most recent one. Without this header,
+                    Object Storage responds faster after it finds one valid replica.
+                    Because setting this header to <code>True</code> is more
+                    expensive for the back end, use it only when it is
+                    absolutely needed.
+                </para>
+            </listitem>
+        </varlistentry>
+    </variablelist>
     <para>For example, the URL for the requests end with the OpenStack
         Object Storage account string, as follows:</para>
     <example>
