@@ -109,14 +109,12 @@ format="SVG" scale="60"/>
     </variablelist>
     <section xml:id="retrieve-object">
         <title>Get Object Details</title>
-        <para>&GET; operations against an object are used to retrieve
-            the object's data.</para>
-        <para>Note that you can perform conditional &GET; requests by
-            using certain HTTP headers as documented in RFC 2616.
-            OpenStack Object Storage supports the following
-            headers:</para>
-        <para>RFC 2616: <link
-                xlink:href="http://www.ietf.org/rfc/rfc2616.txt"
+        <para>&GET; operations against an object are used to retrieve the
+            object's data.</para>
+        <para>Note that you can perform conditional &GET; requests by using
+            certain HTTP headers as documented in RFC 2616. OpenStack Object
+            Storage supports the following headers:</para>
+        <para>RFC 2616: <link xlink:href="http://www.ietf.org/rfc/rfc2616.txt"
                 >http://www.ietf.org/rfc/rfc2616.txt</link>
         </para>
         <itemizedlist>
@@ -133,39 +131,43 @@ format="SVG" scale="60"/>
                 <para>If-Unmodified-Since</para>
             </listitem>
         </itemizedlist>
-        <para>It is also possible to fetch a portion of data using the
-            HTTP <code>Range</code> header. At this time, OpenStack
-            Object Storage does not support the full specification for
-                <code>Range</code> but basic support is provided.
-            OpenStack Object Storage only allows a single range that
-            includes OFFSET and/or LENGTH. We support a sub-set of
-                <code>Range</code> and do not adhere to the full
-            RFC-2616 specification. We support specifying
-            OFFSET-LENGTH where either OFFSET or LENGTH can be
-            optional (not both at the same time). The following are
-            supported forms of the header:</para>
+        <para>It is also possible to fetch a portion of data using the HTTP
+                <code>Range</code> header. At this time, OpenStack Object
+            Storage does not support the full specification for
+                <code>Range</code> but basic support is provided. OpenStack
+            Object Storage only allows a single range that includes OFFSET
+            and/or LENGTH. We support a sub-set of <code>Range</code> and do not
+            adhere to the full RFC-2616 specification. We support specifying
+            OFFSET-LENGTH where either OFFSET or LENGTH can be optional (not
+            both at the same time). The following are supported forms of the
+            header:</para>
         <itemizedlist>
             <listitem>
-                <para><code>Range: bytes=-5</code> - last five bytes
-                    of the object</para>
+                <para><code>Range: bytes=-5</code> - last five bytes of the
+                    object</para>
             </listitem>
             <listitem>
-                <para><code>Range: bytes=10-15</code> - the five bytes
-                    after a 10-byte offset</para>
+                <para><code>Range: bytes=10-15</code> - the five bytes after a
+                    10-byte offset</para>
             </listitem>
             <listitem>
-                <para><code>Range: bytes=32-</code> - all data after
-                    the first 32 bytes of the object</para>
+                <para><code>Range: bytes=32-</code> - all data after the first
+                    32 bytes of the object</para>
             </listitem>
         </itemizedlist>
         <example>
             <title>Get Object Details HTTP Request</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-req.txt" parse="text"/></literallayout>
         </example>
-        <para>The object's data is returned in the response body.
-            Object metadata is returned as HTTP headers. A status of 2xx
-            (between 200 and 299, inclusive) indicates success; status 404
-            (Not Found) is returned if no such object exists.</para>
+        <para>The object's data is returned in the response body. Object
+            metadata is returned as HTTP headers. A status of 2xx (between 200
+            and 299, inclusive) indicates success; status 404 (Not Found) is
+            returned if no such object exists. In this document, the [...] in
+            the example response shows a truncated response, an example of a PDF
+            would contain: <code> ?????18?h=?R?{??=?m?$`% ???U?E??}?M?g
+                ??J?s@???glΈ????'?0r??h?dR6?0r6?[?٤_???I+??1????v???\/;?x"? ?
+                PҨ?ja?=1?(욛Y???q??%ZI???E??}??:?????Aغye???k[????M???q???8}?M,??U?iS?O?O?t?x??=?_?y
+                ??:?OT|??{?^g???8??~Ж?????e??%V˻!?c?-:??_?@?jo???U??xn???A??</code></para>
         <example>
             <title>Get Object Details HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-resp.txt" parse="text"/></literallayout>
