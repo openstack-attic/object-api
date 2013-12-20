@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">  
@@ -8,6 +9,7 @@
     <packaging>jar</packaging>
     <name>OpenStack Object Storage API v1 Reference</name>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- This is set by Jenkins according to the branch. -->
         <release.path.name>local</release.path.name>
         <comments.enabled>1</comments.enabled>
