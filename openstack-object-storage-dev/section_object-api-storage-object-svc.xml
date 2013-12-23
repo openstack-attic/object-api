@@ -80,15 +80,15 @@
             <term><code>X-Newest</code></term>
             <listitem>
                 <para>Set the optional <code>X-newest</code> header to
-                    <code>True</code> in HEAD and GET requests to have
-                    Object Storage return the latest version of the object.
-                    If set to <code>True</code>, Object Storage queries all
-                    replicas to return the most recent one. Without this header,
-                    Object Storage responds faster after it finds one valid replica.
-                    Because setting this header to <code>True</code> is more
-                    expensive for the back end, use it only when it is
-                    absolutely needed.
-                </para>
+                        <code>True</code> in HEAD and GET requests to
+                    have Object Storage return the latest version of
+                    the object. If set to <code>True</code>, Object
+                    Storage queries all replicas to return the most
+                    recent one. Without this header, Object Storage
+                    responds faster after it finds one valid replica.
+                    Because setting this header to <code>True</code>
+                    is more expensive for the back end, use it only
+                    when it is absolutely needed.</para>
             </listitem>
         </varlistentry>
     </variablelist>
@@ -151,7 +151,24 @@
                 <tr>
                     <td>
                         <para><code>Range: bytes=-5</code></para></td>
-                    <td><para>The last 5 bytes.</para>
+                    <td><para>The last five bytes.</para>
+                    </td>
+                </tr>
+                <tr>
+                    <td><para><code>Range:
+                        bytes=10-15</code></para></td>
+                    <td>The five bytes of data after a 10-byte
+                        offset.</td>
+                </tr>
+                <tr>
+                    <td><para><code>Range:
+                            bytes=10-15,-5</code></para></td>
+                    <td><para>A multi-part response that contains the
+                            last five bytes and the five bytes of data
+                            after a 10-byte offset.</para>
+                        <para>The <code>Content-Type</code> of the
+                            response is then
+                                <code>multipart/byteranges</code>.</para>
                     </td>
                 </tr>
                 <tr>
@@ -171,14 +188,15 @@
                 <tr>
                     <td>
                         <para><code>Range: bytes=6-</code></para></td>
-                    <td><para>Byte 6 byte and after.</para>
+                    <td><para>Byte 6 and after.</para>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <para><code>Range:
                         bytes=1-3,2-5</code></para></td>
-                    <td><para>Bytes 1 to 3 inclusive, and bytes 2 to 5
+                    <td><para>A multi-part response that contains
+                            bytes 1 to 3 inclusive, and bytes 2 to 5
                             inclusive.</para>
                         <para>The <code>Content-Type</code> of the
                             response is then
@@ -334,8 +352,8 @@
                 object as the source, the new object is a "normal"
                 object (not segmented). If the total size of the
                 source segment objects exceeds 5 GB, the &COPY;
-                operation fails. However, as explained later, you
-                can make a duplicate of the manifest object. This new
+                operation fails. However, as explained later, you can
+                make a duplicate of the manifest object. This new
                 object can be larger than 5 GB.</para>
         </note>
         <para>The manifest object type are:</para>
