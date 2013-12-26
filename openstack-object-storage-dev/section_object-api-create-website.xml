@@ -57,41 +57,41 @@ format="SVG" scale="60"/>
         pseudo-directories in your container, the index page displays
         by default for each sub-directory. If your pseudo-directory
         does not have a file with the same name as your index file,
-        visits to the sub-directory return a 404 error. </para>
+        visits to the sub-directory return a 404 error.</para>
     <para>You also have the option of displaying a list of files in
         your pseudo-directory instead of a web page. You do this by
         setting the <code>X-Container-Meta-Web-Listings</code> header
         to <code>TRUE</code>. You may add style to your file listing
         by setting <code>X-Container-Meta-Web-Listings-CSS:</code> to
-        a style sheet (for example, <code>lists.css</code>). </para>
+        a style sheet (for example, <code>lists.css</code>).</para>
     <section xml:id="Examples_for_static_web-dle4025">
         <title>Static Web Middleware through swift</title>
         <example>
             <title>Make Container Publicly Readable</title>
-            <para> Make the container publicly readable. Once the
+            <para>Make the container publicly readable. Once the
                 container is publicly readable, you may access your
                 objects directly, but you will need to set the index
                 file to browse the main site URL and its
-                sub-directories. </para>
+                sub-directories.</para>
             <literallayout class="monospaced">swift post -r '.r:*' container</literallayout>
         </example>
         <example>
             <title>Set Site Index File</title>
             <para>Set the index file. In this case,
                     <code>index.html</code> is the default file
-                displayed when the site displays. </para>
+                displayed when the site displays.</para>
             <literallayout class="monospaced">swift post -m 'web-index:index.html' container</literallayout>
         </example>
         <example>
             <title>Enable File Listing</title>
             <para>Turn on file listing. If you do not set the index
                 file, list the objects in the container. Instructions
-                on styling the list with the CSS follow. </para>
+                on styling the list with the CSS follow.</para>
             <literallayout class="monospaced">swift post -m 'web-listings: true' container</literallayout>
         </example>
         <example>
             <title>Enable CSS for File Listing</title>
-            <para>Style the file listing. </para>
+            <para>Style the file listing.</para>
             <literallayout class="monospaced"><xi:include href="samples/file-listings-css-set-req.txt" parse="text"/></literallayout>
         </example>
     </section>
@@ -100,8 +100,8 @@ format="SVG" scale="60"/>
         <para>You can create and set custom error pages for visitors
             to your website; currently, only 401 (Unauthorized) and
             404 (Not Found) errors are supported. To do this, set the
-            metadata header, <code>X-Container-Meta-Web-Error</code>. </para>
-        <para> Error pages are served with the &lt;status&gt; code
+            metadata header, <code>X-Container-Meta-Web-Error</code>.</para>
+        <para>Error pages are served with the &lt;status&gt; code
             prepended to the name of the error page you set. For
             instance, if you set
                 <code>X-Container-Meta-Web-Error</code> to
@@ -110,9 +110,9 @@ format="SVG" scale="60"/>
             will display <code>404error.html</code>. You must have
             both of these pages created in your container when you set
             the <code>X-Container-Meta-Web-Error</code> metadata, or
-            your site will display generic error pages. </para>
+            your site will display generic error pages.</para>
         <para>Set the <code>X-Container-Meta-Web-Error</code> metadata
-            once for your entire static website. </para>
+            once for your entire static website.</para>
         <example>
             <title>Set Error Pages for Static Website Request</title>
             <literallayout class="monospaced"><xi:include href="samples/error-page-set-req.txt" parse="text"/></literallayout>

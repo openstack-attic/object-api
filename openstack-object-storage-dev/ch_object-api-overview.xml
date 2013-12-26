@@ -37,7 +37,7 @@ format="SVG" scale="60"/>
         data. You can store an unlimited quantity of files and each
         file can be as large as 5 GBs, plus with large object
         creation, you can upload and store objects of virtually any
-        size. </para>
+        size.</para>
     <para>OpenStack Object Storage allows users to store and retrieve
         files and content through a simple Web Service interface
         (ReST: Representational State Transfer). There are also
@@ -51,7 +51,7 @@ format="SVG" scale="60"/>
     </para>
     <para>We welcome feedback, comments, and bug reports at <link
             xlink:href="http://bugs.launchpad.net/swift"
-            >http://bugs.launchpad.net/swift</link>. </para>
+            >http://bugs.launchpad.net/swift</link>.</para>
     <section xml:id="intended-audience-object-dev-guide">
         <title>Intended Audience</title>
         <para>This guide is intended to assist software developers who
@@ -63,7 +63,7 @@ format="SVG" scale="60"/>
             here, you should first have a general understanding of the
             OpenStack Object Storage service and have access to an
             installation of OpenStack Object Storage. You should also
-            be familiar with: </para>
+            be familiar with:</para>
         <itemizedlist spacing="compact">
             <listitem>
                 <para>ReSTful web services</para>

@@ -44,11 +44,11 @@ format="SVG" scale="60"/>
             token HTTP x-header, defined as <code>X-Auth-Token</code>.
             Clients obtain this token, along with the Cloud Servers
             API URL, by first using an authentication service and
-            supplying a valid username and API access key. </para>
+            supplying a valid username and API access key.</para>
         <simplesect>
             <title>Request</title>
             <para>To authenticate, you must supply your username and
-                API access key in x-headers: </para>
+                API access key in x-headers:</para>
             <para>
                 <itemizedlist spacing="compact">
                     <listitem>
@@ -71,13 +71,13 @@ format="SVG" scale="60"/>
                             Keystone), or you can use your own
                             authentication system. Place your access
                             key in the <code>X-Auth-Key</code>
-                            x-header. </para>
+                            x-header.</para>
                     </listitem>
                 </itemizedlist>
             </para>
             <para> </para>
             <example>
-                <title>Authentication HTTP Request </title>
+                <title>Authentication HTTP Request</title>
                 <literallayout class="monospaced"><xi:include href="samples/auth-req.txt" parse="text"/></literallayout>
             </example>
         </simplesect>

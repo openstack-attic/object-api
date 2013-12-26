@@ -458,7 +458,7 @@
                         header in a &PUT; operation. This creates a
                         new manifest object that shares the same set
                         of segment objects as the original manifest
-                        object. </td>
+                        object.</td>
                 </tr>
             </tbody>
         </table>
@@ -845,10 +845,10 @@
             remove an object and you have five total versions of it,
             you must &DELETE; it five times.</para>
         <note>
-            <para> A large-object manifest file cannot be versioned,
+            <para>A large-object manifest file cannot be versioned,
                 but it may point to versioned segments.</para>
         </note>
-        <para> To turn off Object Versioning on your current version
+        <para>To turn off Object Versioning on your current version
             container, remove its <code>X-Versions-Location</code>
             metadata by sending an empty key value.</para>
         <example>
