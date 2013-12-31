@@ -14,10 +14,12 @@
     xmlns:m="http://www.w3.org/1998/Math/MathML"
     xmlns:html="http://www.w3.org/1999/xhtml"
     xmlns:db="http://docbook.org/ns/docbook" version="5.0"
-    xml:id="object-storage-tempurl">
+    xml:id="tempurl">
     <?dbhtml stop-chunking?>
     <title>Temporary URL middleware</title>
-    <para>A temporary URL gives users temporary access to objects. For
+    <para>To discover whether your Object Storage system supports
+        this feature, see <xref linkend="discoverability"
+        />. Alternatively, check with your service provider.</para><para>A temporary URL gives users temporary access to objects. For
         example, a website might want to provide a link to download a
         large object in Object Storage, but the Object Storage account
         has no public access. The website can generate a URL that

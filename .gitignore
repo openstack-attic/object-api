@@ -1,16 +1,23 @@
-.DS_Store?
+.DS_Store
+*.xpr
+.idea
 
 # Build results
 target/
 publish-docs/
 
-# NetBeans user-specific build actions
-nbactions.xml
+# Ignore Vagrant Related Files
+acceptance_config.yml
+boxes/*
+/.vagrant
 
 # Testenvironment
-.tox
+.tox/
 
 # Editors
 *~
 .*.swp
 .bak
+
+# NetBeans user-specific build actions
+nbactions.xml
