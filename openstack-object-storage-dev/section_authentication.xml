@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="authentication-object-dev-guide">
+    <title>Authentication</title>
+    <para>The owner of an Object Storage account controls access to
+        that account and its containers and objects.</para>
+    <para>By default, you have no access to accounts, containers, or
+        objects. However, an account owner can grant account,
+        container, and object access to users through access control lists
+        (ACLs). For more information about ACLs, see <xref
+            linkend="special-metadata-acls"/>.</para>
+    <para>As the account owner, you can modify the account metadata
+        and create, modify, and delete containers and objects.</para>
+    <para>To identity yourself as the owner of an account, include an
+        authentication token in the <literal>X-Auth-Token</literal>
+        header in your API requests. If you omit this header or supply
+        an incorrect authentication token, your access is
+        restricted.</para>
+    <para>The following table describes the authentication services
+        that you can use:</para>
+    <informaltable rules="all">
+        <thead>
+            <tr>
+                <th>Authentication service</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <para>OpenStack Identity Service
+                    (Keystone)</para></td>
+                <td><para>The Object Storage account name is the same
+                        as the tenant ID.</para><para>For information about the
+                        Identity Service, see <xref
+                            linkend="get_auth_token_keystone"
+                        />.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <para>Tempauth middleware</para></td>
+                <td><para>Object Storage includes this middleware.
+                        User and account management is performed in
+                        the Object Storage system itself.</para>
+                    <para>For information about Tempauth, see <xref
+                            linkend="get_auth_token_tempauth"/>.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <para>swauth (in GitHub) or other custom
+                        middleware</para></td>
+                <td><para>This custom middleware is modeled on
+                        Tempauth, so usage is typically similar to
+                        Tempauth.</para><para>Specifically, you use the
+                            <literal>X-Auth-Token</literal> header to
+                        pass an authentication token to an API
+                        request.</para>
+                    <para>Authentication tokens expire after a time
+                        period that the Identity Service defines.</para><para>When
+                        a token expires, use of the token causes
+                        requests to fail with a
+                            <errorcode>401</errorcode>
+                        <errortext>Unauthorized</errortext> response.
+                        To continue, you must obtain a new
+                        token.</para>
+                </td>
+            </tr>
+        </tbody>
+    </informaltable>
+</section>
