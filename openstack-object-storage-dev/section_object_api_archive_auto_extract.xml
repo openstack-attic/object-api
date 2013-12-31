@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="archive-auto-extract">
+    <title>Auto-extract archive files</title>
+    <para>Use the auto-extract archive feature to upload a tar(1)
+        archive file. </para>
+    <para>The Object Storage system extracts files from the archive
+        file and creates an object.</para>
+    <section xml:id="archive-auto-extract-put">
+        <title>Auto-extract archive PUT request</title>
+        <para>To upload an archive file, you make a &PUT; request. Add
+            the
+                    <parameter>extract-archive=<replaceable>format</replaceable></parameter>
+            query parameter to indicate that you are uploading a
+            tar(1) archive file instead of normal content. </para>
+        <para>Valid values for the <replaceable>format</replaceable>
+            variable are <literal>tar</literal>,
+                <literal>tar.gz</literal>, or
+                <literal>tar.bz2</literal>.</para>
+        <para>The path you specify in the &PUT; request is a prefix
+            for the resulting object names. For example, if the first
+            object in the tar(1) archive is
+                <filename>/home/file1.txt</filename>, a path of
+                <filename>/v1/12345678912345/mybackup/castor/</filename>
+            results in an object name of
+                <filename>castor/home/file1.txt</filename> in the
+                <literal>mybackup</literal> container in the
+                <literal>12345678912345</literal> account. </para>
+        <para>In the &PUT; request, you can specify the path
+            for:</para>
+        <itemizedlist>
+            <listitem>
+                <para>An account</para>
+            </listitem>
+            <listitem>
+                <para>A specific container</para>
+            </listitem>
+            <listitem>
+                <para>A specific object prefix</para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section xml:id="archive-auto-extract-create">
+        <title>Create an archive for auto-extract</title>
+        <para>You must use the tar(1) utility to create the tar(1)
+            archive file.</para>
+        <para>You can upload only regular files and you cannot upload
+            other items, such as empty directories, symbolic links,
+            and so on.</para>
+        <para>You must UTF-8-encode the member names.</para>
+        <para>The archive auto-extract feature supports these
+            formats:</para>
+        <itemizedlist>
+            <listitem>
+                <para>The POSIX.1-1988 (ustar) format.</para>
+            </listitem>
+            <listitem>
+                <para>The GNU tar format, including longname and
+                    longlink extensions and the sparse
+                    extension.</para>
+            </listitem>
+            <listitem>
+                <para>The POSIX.1-2001 (pax) format.</para>
+                <para>You can compress the archive by using gzip(1) or
+                    bzip2(1).</para>
+                <para>Use the <parameter>extract-archive</parameter>
+                    query parameter to specify the format. Specify
+                        <literal>tar</literal>,
+                        <literal>tar.gz</literal>, or
+                        <literal>tar.bz2</literal> as the
+                    format.</para>
+            </listitem>
+        </itemizedlist>
+    </section>
+    <section xml:id="archive-auto-extract-response">
+        <title>Auto-extract archive response: JSON</title>
+        <para>When the request is processed by the system, you are in
+            effect performing multiple sub-operations. Even if all
+            sub-operations fail, the operation will return a 201
+            Created status. You must examine the response body to
+            determine which members failed to result in an object
+            creation. You can use the Accept request header to
+            indicate the format of the response body as follows: -
+            text/plain. Plain text. This is the default if the Accept
+            header is not specified. - application/json. Format as
+            JSON - application/xml or text/xml. Format as XML See
+            (xref to Response Body for Bulk Operations) for more
+            information.</para>
+    </section>
+</section>
