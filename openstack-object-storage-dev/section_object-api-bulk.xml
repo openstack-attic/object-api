@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="bulk_operations">
+    <title>Bulk operations</title>
+    <section xml:id="bulk-delete">
+        <title>Bulk Delete</title>
+        <para>With bulk delete you can delete up to 10,000
+            (configurable) objects or containers in one request. The
+            objects to be deleted are listed in the body of a DELETE
+            operation. The ?bulk-delete query parameter is used to
+            indicate that you are performing a bulk delete operation
+            instead of a normal delete. Bulk Delete Request Body
+            ------------------------------- To indicate that you are
+            performing a bulk delete operation, add the ?bulk-delete
+            query parameter to the path. The path should be the
+            account (e.g., /v1/12345678912345) containing the objects
+            and containers. The Content-Type request header must be
+            set to text/plain. The request body comprises a list of
+            object or container names, seperated by a newline
+            character. In addition: - The names must be UFT-8 encoded
+            and then URL-encoded. - To indicate an object, specify the
+            container and object name as follows:
+            {container-name}/{object-name} - To indicate a container,
+            specify the container name as follows: {container-name} -
+            A container must be empty. If it contains objects, the
+            container will not be deleted. - At most 10,000
+            (configurable) items can be in the list Bulk Delete
+            Response -------------------------- When the request is
+            processed by the system, you are in effect performing
+            multiple sub-operations. Even if all sub-operations fail,
+            the operation will return a 200 status. You must examine
+            the response body to determine which members failed to
+            result in an object deletion. You can use the Accept
+            request header to indicate the format of the response body
+            as follows: - text/plain. Plain text. This is the default
+            if the Accept header is not specified. - application/json.
+            Format as JSON - application/xml or text/xml. Format as
+            XML. See (xref to Response Body for Bulk Operations) for
+            more information. Response Body for Bulk Operations
+            =========================== Some bulk operations such as
+            Bulk Delete and Archive Auto Extraction perform multiple
+            sub-operations. While some of the operations may succeed,
+            other may fail. To indicate which sub-operations have
+            succeeded and failed, the bulk operation returns a
+            response body containing more details.</para>
+
+        <para>You can use the Accept request header to indicate the
+            format of the response body. The response body contains
+            the following information:</para>
+        <para>- The number of files actually deleted or created
+            (depending on context) - The number of not found objects
+            (for Bulk Delete only) - Errors. This is a list of object
+            name and associated error status for the objects that
+            failed to create or delete. The format depends on the
+            Accept header.</para>
+        <para>The following example shows a text/plain response body
+            where there are no failures. This example is from the
+            Archive Auto Extraction operation.</para>
+        <screen><computeroutput>Number Files Created: 10
+    Errors:</computeroutput></screen>
+        <para>The following example shows a text/plain response where
+            there are some failures. In this example, the Object
+            Storage system has been configured to reject certain
+            character strings so the 400 Bad Request error occurs for
+            objects using the restricted strings.</para>
+        <screen><computeroutput>Number Files Created: 8
+Errors:
+/v1/12345678912345/mycontainer/home/xx%3Cyy, 400 Bad Request
+/v1/12345678912345/mycontainer/../image.gif, 400 Bad Request</computeroutput></screen>
+        <para>This is the same failure response in application/json
+            format. This example output has been reformatted with
+            whitespace to make it clearer -- the actual response has
+            no such whitespace.</para>
+        <programlisting language="json">{
+"Number Files Created": 1,
+"Errors": [
+["/v1/12345678912345/mycontainer/home/xx%3Cyy", "400 Bad Request"],
+["/v1/12345678912345/mycontainer/../image.gif", "400 Bad Request"]
+]
+}</programlisting>
+        <para>The following example shows an example response to a
+            Bulk Delete request in application/xml format. In this
+            example, the <literal>mycontainer</literal> container is not empty so cannot
+            be deleted.</para>
+        <programlisting language="xml"><xi:include parse="text" href="samples/bulk-delete-response.xml"/></programlisting>
+    </section>
+</section>
