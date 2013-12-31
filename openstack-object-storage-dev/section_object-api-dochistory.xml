@@ -29,7 +29,7 @@ format="SVG" scale="60"/>
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="doc_history">
-    <title>Document Change History</title>
+    <title>Document change history</title>
         <para>This version of the document replaces and obsoletes
             all previous versions. The following table describes the latest changes:</para>
         <?rax revhistory?>
