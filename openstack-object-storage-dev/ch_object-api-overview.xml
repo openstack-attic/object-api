@@ -53,7 +53,7 @@ format="SVG" scale="60"/>
             xlink:href="http://bugs.launchpad.net/swift"
             >http://bugs.launchpad.net/swift</link>.</para>
     <section xml:id="intended-audience-object-dev-guide">
-        <title>Intended Audience</title>
+        <title>Intended audience</title>
         <para>This guide is intended to assist software developers who
             want to develop applications using the OpenStack Object
             Storage API. It fully documents the ReST application
