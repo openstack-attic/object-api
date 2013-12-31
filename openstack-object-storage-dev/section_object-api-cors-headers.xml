@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="cors-headers">
+    <title>Assign CORS headers to requests</title>
+    <para>Cross-Origin Resource Sharing (CORS) is a specification that
+        defines how browsers and servers communicate across origins by
+        using HTTP headers, such as those assigned by Object Storage
+        API requests. The Object
+        Storage API supports these headers. For more information, see <link
+            xlink:href="http://www.w3.org/TR/access-control/"
+            >www.w3.org/TR/access-control/</link>.</para>
+    <itemizedlist>
+        <listitem>
+            <para>Access-Control-Allow-Credentials</para>
+        </listitem>
+        <listitem>
+            <para>Access-Control-Allow-Methods</para>
+        </listitem>
+        <listitem>
+            <para>Access-Control-Allow-Origin</para>
+        </listitem>
+        <listitem>
+            <para>Access-Control-Expose-Headers</para>
+        </listitem>
+        <listitem>
+            <para>Access-Control-Max-Age</para>
+        </listitem>
+        <listitem>
+            <para>Access-Control-Request-Headers</para>
+        </listitem>
+        <listitem>
+            <para>Access-Control-Request-Method</para>
+        </listitem>
+        <listitem>
+            <para>Origin</para>
+        </listitem>
+    </itemizedlist>
+    <para>You can assign these headers to only objects.</para>
+    <example>
+        <title>Assign CORS header request: HTTP</title>
+        <para>This example assigns the file origin to the <literal>Origin</literal> header, which
+            ensures that the file originated from a reputable source:</para>
+        <literallayout class="monospaced"><xi:include href="samples/object-assign-cors-header-req.txt" parse="text"/></literallayout>
+    </example>
+</section>
