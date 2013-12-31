@@ -48,7 +48,7 @@ format="SVG" scale="60"/>
         please refer to <link
             xlink:href="http://docs.openstack.org/developer/swift/"
             >http://docs.openstack.org/developer/swift/</link>
-    </para>
+   </para>
     <para>We welcome feedback, comments, and bug reports at <link
             xlink:href="http://bugs.launchpad.net/swift"
             >http://bugs.launchpad.net/swift</link>.</para>
