@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY GET   '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="discoverability">
+    <title>Discoverability</title>
+    <para>By default, Object Storage does not support all features
+        that this document describes. </para>
+    <para>These features are:</para>
+    <itemizedlist>
+        <listitem>
+            <para><xref linkend="form-post"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="tempurl"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="expire-objects"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="static-website"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="large-object-creation"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="container-sync"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="container-quotas"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="bulk-delete"/></para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="archive-auto-extract"/></para>
+        </listitem>
+    </itemizedlist>
+    <para>To discover which features your Object Storage system
+        supports, use the <literal>/info</literal> request. However,
+        your service provider might have disabled the
+            <literal>/info</literal> request, or you might be using an
+        older version that does not support the
+            <literal>/info</literal> request.</para>
+    <para>To use the <literal>/info</literal> request, send a &GET;
+        request using the <literal>/info</literal> path to the Object
+        Store endpoint as shown in this example: curl
+        https://23.253.72.207/info Here is a truncated example of a
+        response body:</para>
+    <programlisting language="json">{
+   "swift":{
+      "version":"1.11.0"
+   },
+   "staticweb":{
+
+   },
+   "tempurl":{
+
+   }
+}</programlisting>
+    <para>This output indicates that the Object Storage system
+        supports the static website and temporary URL features.</para>
+</section>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="ch_object-storage-dev-general-api">
+    <title>Object Storage API concepts and features</title>
+    <xi:include href="section_object-api-overview.xml"/>
+    <section xml:id="run_curl_commands">
+        <title>Environment variables required to run examples</title>
+        <para>To run the cURL command examples for the Object Storage
+            API requests, set these environment variables:</para>
+        <itemizedlist>
+            <listitem>
+                <para><literal>publicURL</literal>. The public URL
+                    that is the HTTP endpoint from where you can
+                    access Object Storage. It includes the Object
+                    Storage API version number and your account name.
+                    For example,
+                        <code>https://23.253.72.207/v1/my_account</code>.</para>
+            </listitem>
+            <listitem>
+                <para><literal>token</literal>. The authentication
+                    token for Object Storage.</para>
+            </listitem>
+        </itemizedlist>
+        <para>To obtain these values, run the <command>swift stat
+                -v</command> command.</para>
+        <para>As shown in this example, the public URL appears in the
+                <literal>StorageURL</literal> field, and the token
+            appears in the <literal>Auth Token</literal> field:</para>
+        <programlisting>StorageURL: https://23.253.72.207/v1/my_account
+Auth Token: {token}
+Account: my_account
+Containers: 2
+Objects: 3
+Bytes: 47
+Meta Book: MobyDick
+X-Timestamp: 1389453423.35964
+X-Trans-Id: txee55498935404a2caad89-0052dd3b77
+Content-Type: text/plain; charset=utf-8
+Accept-Ranges: bytes</programlisting>
+    </section>
+    <xi:include href="section_object-api-discoverability.xml"/>
+    <xi:include href="section_object-api-authentication.xml"/>
+    <xi:include href="section_object-api-response-formats.xml"/>
+    <xi:include href="section_object-api-versioning.xml"/>
+    <xi:include href="section_object-api-create-large-objects.xml"/>
+    <xi:include href="section_object-api-cors-headers.xml"/>
+    <xi:include href="section_object-api-compress-files.xml"/>
+    <xi:include href="section_object-api-browser-bypass.xml"/>
+    <xi:include href="section_object-api-expire-objects.xml"/>
+    <xi:include href="section_object-api-pseudo-hier-folders.xml"/>
+    <xi:include href="section_object-api-large-lists.xml"/>
+    <xi:include href="section_object-api-archive-auto-extract.xml"/>
+    <xi:include href="section_object-api-bulk-delete.xml"/>
+    <xi:include href="section_object-api-container-sync.xml"/>
+    <xi:include href="section_object-api-container-quotas.xml"/>
+    <xi:include href="section_object-api-tempurl.xml"/>
+    <xi:include href="section_object-api-formpost.xml"/>
+    <xi:include href="section_object-api-create-website.xml"/>
+</chapter>

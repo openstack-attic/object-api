@@ -1,56 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE section [
-<!-- Some useful entities borrowed from HTML -->
-<!ENTITY ndash  "&#x2013;">
-<!ENTITY mdash  "&#x2014;">
-<!ENTITY hellip "&#x2026;">
-
-<!-- Useful for describing APIs -->
-<!ENTITY COPY    '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
-<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
-<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
-<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
-<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
-<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
-
-<!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
-<imageobject>
-<imagedata fileref="img/Check_mark_23x20_02.svg"
-format="SVG" scale="60"/>
-</imageobject>
-</inlinemediaobject>'>
-
-<!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
-<imageobject>
-<imagedata fileref="img/Arrow_east.svg"
-format="SVG" scale="60"/>
-</imageobject>
-</inlinemediaobject>'>
-]>
 <section xmlns="http://docbook.org/ns/docbook"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
-    xml:id="Create_Static_Website-dle4000">
-    <title>Create Static Website</title>
-    <para>You can use your swift account to create a static website.
-        This mode is normally only active for anonymous requests. To
-        use it with authenticated requests, set the header
-            <code>X-Web-Mode</code> to <code>TRUE</code> on the
-        request. The <code>staticweb</code> filter should be added to
-        the pipeline in your <code>/etc/swift/proxy-server.conf</code>
-        file just after any auth middleware. Beneath the pipeline, the
-            <code>staticweb</code> middleware configuration must be
-        added. For example:
-        <literallayout class="monospaced"><xi:include href="samples/proxy-server-excerpt.conf" parse="text"/></literallayout>
-        Your publicly readable containers will be checked for two
-        headers, <code>X-Container-Meta-Web-Index</code> and
-            <code>X-Container-Meta-Web-Error</code>. (The latter
+    xml:id="static-website">
+    <title>Create static website</title>
+    <para>To discover whether your Object Storage system supports
+        this feature, see <xref linkend="discoverability"
+        />. Alternatively, check with your service provider.</para>
+    <para>You can use your Object Storage account to create a static
+        website. This mode is normally only active for anonymous
+        requests, which provide no authentication token. To use it
+        with authenticated requests, set the header
+            <literal>X-Web-Mode</literal> to <literal>TRUE</literal>
+        on the request. To determine whether the static website
+        feature is enabled, contact your service provider.</para>
+    <para>For example:</para>
+    <programlisting language="ini"><xi:include href="samples/proxy-server-excerpt.conf" parse="text"/></programlisting>
+    <para>Your publicly readable containers are checked for two
+        headers, <literal>X-Container-Meta-Web-Index</literal> and
+            <literal>X-Container-Meta-Web-Error</literal>. (The latter
         header is discussed below, under <link
             linkend="Set_Error_Pages_for_Static_Website-dle4005">Set
             Error Pages for Static Website</link>.) With
-            <code>X-Container-Meta-Web-Index</code>, you determine the
-        index file (or default page served, such as
-            <code>index.html</code>) displays your website. When
+            <literal>X-Container-Meta-Web-Index</literal>, you
+        determine the index file (or default page served, such as
+            <literal>index.html</literal>) displays your website. When
         someone initially enters your site, they don't have to specify
         the index file; index.html file displays automatically. If you
         create sub-directories for your site by creating
@@ -60,39 +34,41 @@ format="SVG" scale="60"/>
         visits to the sub-directory return a 404 error.</para>
     <para>You also have the option of displaying a list of files in
         your pseudo-directory instead of a web page. You do this by
-        setting the <code>X-Container-Meta-Web-Listings</code> header
-        to <code>TRUE</code>. You may add style to your file listing
-        by setting <code>X-Container-Meta-Web-Listings-CSS:</code> to
-        a style sheet (for example, <code>lists.css</code>).</para>
+        setting the <literal>X-Container-Meta-Web-Listings</literal>
+        header to <literal>TRUE</literal>. You may add style to your
+        file listing by setting
+            <literal>X-Container-Meta-Web-Listings-CSS:</literal> to a
+        style sheet (for example,
+        <literal>lists.css</literal>).</para>
     <section xml:id="Examples_for_static_web-dle4025">
         <title>Static Web Middleware through swift</title>
         <example>
             <title>Make Container Publicly Readable</title>
             <para>Make the container publicly readable. Once the
                 container is publicly readable, you may access your
-                objects directly, but you will need to set the index
-                file to browse the main site URL and its
+                objects directly, but you must set the index file to
+                browse the main site URL and its
                 sub-directories.</para>
-            <literallayout class="monospaced">swift post -r '.r:*' container</literallayout>
+            <screen><prompt>$</prompt> <userinput>swift post -r '.r:*' container</userinput></screen>
         </example>
         <example>
             <title>Set Site Index File</title>
             <para>Set the index file. In this case,
-                    <code>index.html</code> is the default file
+                    <literal>index.html</literal> is the default file
                 displayed when the site displays.</para>
-            <literallayout class="monospaced">swift post -m 'web-index:index.html' container</literallayout>
+            <screen><prompt>$</prompt> <userinput>swift post -m 'web-index:index.html' container</userinput></screen>
         </example>
         <example>
             <title>Enable File Listing</title>
             <para>Turn on file listing. If you do not set the index
                 file, list the objects in the container. Instructions
                 on styling the list with the CSS follow.</para>
-            <literallayout class="monospaced">swift post -m 'web-listings: true' container</literallayout>
+            <screen><prompt>$</prompt> <userinput>swift post -m 'web-listings: true' container</userinput></screen>
         </example>
         <example>
             <title>Enable CSS for File Listing</title>
             <para>Style the file listing.</para>
-            <literallayout class="monospaced"><xi:include href="samples/file-listings-css-set-req.txt" parse="text"/></literallayout>
+            <programlisting language="ini"><xi:include href="samples/file-listings-css-set-req.txt" parse="text"/></programlisting>
         </example>
     </section>
     <section xml:id="Set_Error_Pages_for_Static_Website-dle4005">
@@ -100,24 +76,27 @@ format="SVG" scale="60"/>
         <para>You can create and set custom error pages for visitors
             to your website; currently, only 401 (Unauthorized) and
             404 (Not Found) errors are supported. To do this, set the
-            metadata header, <code>X-Container-Meta-Web-Error</code>.</para>
+            metadata header,
+                <literal>X-Container-Meta-Web-Error</literal>.</para>
         <para>Error pages are served with the &lt;status&gt; code
-            prepended to the name of the error page you set. For
+            pre-pended to the name of the error page you set. For
             instance, if you set
-                <code>X-Container-Meta-Web-Error</code> to
-                <code>error.html</code>, 401 errors will display the
-            page <code>401error.html</code>. Similarly, 404 errors
-            will display <code>404error.html</code>. You must have
-            both of these pages created in your container when you set
-            the <code>X-Container-Meta-Web-Error</code> metadata, or
-            your site will display generic error pages.</para>
-        <para>Set the <code>X-Container-Meta-Web-Error</code> metadata
-            once for your entire static website.</para>
+                <literal>X-Container-Meta-Web-Error</literal> to
+                <literal>error.html</literal>, 401 errors will display
+            the page <literal>401error.html</literal>. Similarly, 404
+            errors will display <literal>404error.html</literal>. You
+            must have both of these pages created in your container
+            when you set the
+                <literal>X-Container-Meta-Web-Error</literal>
+            metadata, or your site will display generic error
+            pages.</para>
+        <para>Set the <literal>X-Container-Meta-Web-Error</literal>
+            metadata once for your entire static website.</para>
         <example>
             <title>Set Error Pages for Static Website Request</title>
-            <literallayout class="monospaced"><xi:include href="samples/error-page-set-req.txt" parse="text"/></literallayout>
+            <programlisting language="ini"><xi:include href="samples/error-page-set-req.txt" parse="text"/></programlisting>
         </example>
-        <para>Any 2<varname>xx</varname> response indicates success.
+        <para>Any 2<varname>nn</varname> response indicates success.
         </para>
     </section>
 </section>
