@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="serialized-list-output">
+    <title>Serialized list output</title>
+    <para>If you append the <code>format=xml</code> or
+            <code>format=json</code> argument to the storage account
+        or container URL for a list containers or list objects
+        request, instead of returning a list of names, the service
+        returns more information in the requested format.</para>
+    <para>Instead of using the <code>?format</code> argument, you can
+        use the <literal>Accept</literal> request header to select a
+        format. These values are the valid <literal>Accept</literal>
+        header values:</para>
+    <itemizedlist>
+        <listitem>
+            <para><code>text/plain</code>. The default.</para>
+        </listitem>
+        <listitem>
+            <para><code>application/json</code>. Same as
+                    <code>?format=json</code>.</para>
+        </listitem>
+        <listitem>
+            <para><code>application/xml</code>. Same as
+                    <code>?format=xml</code>.</para>
+        </listitem>
+    </itemizedlist>
+    <para>The following example HTTP request asks for a JSON response.
+        The response returns an HTTP header and JSON response, which
+        is formatted for readability.</para>
+    <example>
+        <title>Get containers details request: HTTP and JSON</title>
+        <screen><userinput>GET /&lt;api version>/&lt;account>?format=json HTTP/1.1
+Host: storage.swiftdrive.com
+Content-Length: 0
+X-Storage-Token: 182f9c0af0e828cfe3281767d29d19f4</userinput></screen>
+    </example>
+    <example>
+        <title>Get containers details response: HTTP and JSON</title>
+        <screen><computeroutput>HTTP/1.1 200 OK
+Date: Tue, 25 Nov 2008 19:39:13 GMT
+Server: Apache
+Content-Type: application/json; charset=utf-8</computeroutput></screen>
+        <programlisting language="json">[
+   {"name":"test_container_1", "count":2, "bytes":78},
+   {"name":"test_container_2", "count":1, "bytes":17}
+]</programlisting>
+    </example>
+    <para>The following HTTP request asks for an XML response. The
+        response returns an HTTP header and an XML response, which is
+        formatted for readability.</para>
+    <example>
+        <title>Get containers details request: HTTP and XML</title>
+        <screen><userinput>HTTP/1.1 200 OK
+Date: Tue, 25 Nov 2008 19:42:35 GMT
+Server: Apache
+Content-Type: application/xml; charset=utf-8</userinput></screen>
+    </example>
+    <example>
+        <title>Get containers details response: HTTP and XML</title>
+        <screen><computeroutput>HTTP/1.1 200 OK
+Date: Tue, 25 Nov 2008 19:42:35 GMT
+Server: Apache
+Content-Type: application/xml; charset=utf-8</computeroutput></screen>
+        <programlisting language="xml"><xi:include parse="text" href="samples/get_containers_details_resp.xml"/></programlisting>
+    </example>
+    <example>
+        <title>Get object details request: HTTP and JSON</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-req.txt" parse="text"/></literallayout>
+    </example>
+    <example>
+        <title>Get object details response: HTTP and JSON</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-resp.txt" parse="text"/></literallayout>
+        <programlisting language="json"><xi:include href="samples/objects-get-details-resp.json" parse="text"/></programlisting>
+    </example>
+    <example>
+        <title>Get object details request: XML</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-req.txt" parse="text"/></literallayout>
+    </example>
+    <example>
+        <title>Get object details request: XML</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-resp.txt" parse="text"/></literallayout>
+        <programlisting language="xml"><xi:include href="samples/objects-get-details-resp.xml" parse="text"/></programlisting>
+    </example>
+    <para>The remainder of the examples in this guide use standard,
+        non-serialized output. However, all list operations accept the
+            <literal>format</literal> argument.</para>
+</section>
