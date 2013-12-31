@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="ch_object-storage-dev-general-api">
+    <title>Object Storage API concepts and features</title>
+    <xi:include href="section_object-api-overview.xml"/>
+    <xi:include href="section_object-api-authentication.xml"/>
+    <xi:include href="section_object-api-response-formats.xml"/>
+    <xi:include href="section_object-api-versioning.xml"/>
+    <xi:include href="section_object-api-create-large-objects.xml"/>
+    <xi:include href="section_object-api-cors-headers.xml"/>
+    <xi:include href="section_object-api-compress-files.xml"/>
+    <xi:include href="section_object-api-browser-bypass.xml"/>
+    <xi:include href="section_object-api-expire-objects.xml"/>
+    <xi:include href="section_object-api-pseudo-hier-folders.xml"/>
+    <xi:include href="section_object-api-large-lists.xml"/>
+    <xi:include href="section_object-api-archive-auto-extract.xml"/>
+    <xi:include href="section_object-api-bulk.xml"/>
+    <xi:include href="section_object-api-tempurl.xml"/>
+    <xi:include href="section_object-api-formpost.xml"/>
+</chapter>

@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE section [
+<!-- Some useful entities borrowed from HTML -->
+<!ENTITY ndash  "&#x2013;">
+<!ENTITY mdash  "&#x2014;">
+<!ENTITY hellip "&#x2026;">
+
+<!-- Useful for describing APIs -->
+<!ENTITY COPY   '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="large-object-creation">
+    <title>Large objects</title>
+    <para>By default, the content of an object cannot be greater than
+        5 GB. However, you can use segment objects and manifest
+        objects to store more content.</para>
+    <section xml:id="segment-objects">
+        <title>Segment objects</title>
+        <para>You can divide your content into segments, and upload
+            each segment into its own segment object. Segment objects
+            do not have any special features. You create, update,
+            download, and delete segment objects just as you would
+            normal objects.</para>
+    </section>
+    <section xml:id="manifest-objects">
+        <title>Manifest objects</title>
+        <para>A manifest object points to segment objects. When you
+            download a manifest object, Object Storage concatenates
+            the contents of the segment objects and returns this in
+            the response body of the request.</para>
+        <para>This behavior extends to the response headers returned
+            by &GET; and &HEAD; requests. The
+                <literal>Content-Length</literal> response header
+            value is the total size of all segment objects. Object
+            Storage calculates the <literal>ETag</literal> response
+            header value by taking the <literal>ETag</literal> value
+            of each segment, concatenating them together, and
+            returning the MD5 checksum of the result.</para>
+        <note>
+            <para>If you make a &COPY; request by using a manifest
+                object as the source, the new object is a normal, and
+                not a segment, object. If the total size of the source
+                segment objects exceeds 5 GB, the &COPY; request
+                fails. However, you can make a duplicate of the
+                manifest object and this new object can be larger than
+                5 GB.</para>
+        </note>
+        <para>The manifest object types are:</para>
+        <itemizedlist>
+            <listitem>
+                <para><emphasis role="bold">Static large
+                        objects</emphasis>. The manifest object
+                    content is an ordered list of the names of the
+                    segment objects in JSON format.</para>
+            </listitem>
+            <listitem>
+                <para><emphasis role="bold">Dynamic large
+                        objects</emphasis>. The manifest object has no
+                    content.</para>
+                <para>However, it has
+                        <literal>X-Object-Manifest</literal> metadata
+                    header. The value of this header is
+                        <literal>&lt;container>/&lt;prefix></literal>,
+                    where <literal>&lt;container></literal> is the
+                    name of the container where the segment objects
+                    are stored, and <literal>&lt;prefix></literal> is
+                    a string that all segment objects have in
+                    common.</para>
+            </listitem>
+        </itemizedlist>
+        <para>While both types of manifest objects have similar
+            behavior, the following table describes their
+            differences:</para>
+        <table rules="all">
+            <caption>Static and dynamic large objects</caption>
+            <thead>
+                <tr>
+                    <th>Object type</th>
+                    <th>End-to-end integrity</th>
+                    <th>Upload order</th>
+                    <th>Removal or addition of segment objects</th>
+                    <th>Segment object size and number</th>
+                    <th>Segment object container name</th>
+                    <th>Manifest Object Metadata</th>
+                    <th>Making a copy of the manifest object</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Static large object</td>
+                    <td>Assured. The list of segments includes the MD5
+                        checksum (ETag) of each segment. You cannot
+                        upload the manifest object if the ETag in the
+                        list differs from the segment object already
+                        uploaded. If a segment is somehow lost, an
+                        attempt to download the manifest object will
+                        result in an error.</td>
+                    <td>The segment objects must be uploaded before
+                        the manifest object.</td>
+                    <td>You cannot add or remove segment objects from
+                        the manifest. However, you can create a
+                        completely new manifest object of the same
+                        name with a different manifest list.</td>
+                    <td>Segment objects must be at least 1MB in size
+                        (by default). The final segment object can be
+                        any size. At most 1000 segments are supported
+                        (by default).</td>
+                    <td>The manifest list includes the container name
+                        of each object, i.e., segment objects may be
+                        in different containers.</td>
+                    <td>The object has
+                            <code>X-Static-Large-Object</code> set to
+                            <code>true</code>. You do not set this
+                        metadata directly. Instead the system sets it
+                        when you &PUT; a static manifest object.</td>
+                 <td><para></para></td>
+                </tr>
+                <tr>
+                    <td>Dynamic large object</td>
+                    <td>Not guaranteed. The eventual consistency model
+                        means that although you may have uploaded a
+                        segment object, it may not appear in the
+                        container listing until later. If you download
+                        the manifest before it appears in the
+                        container, it will not form part of the
+                        content returned in response to a &GET;
+                        request.</td>
+                    <td>You can upload manifest and segment objects in
+                        any order. You are recommended to upload the
+                        manifest object after the segments in case a
+                        premature download of the manifest occurs.
+                        However, this is not enforced.</td>
+                    <td>You can upload new segment objects or remove
+                        existing segments. The names must simply match
+                        the <code>&lt;prefix></code> supplied in
+                        <code>X-Object-Manifest</code>.</td>
+                    <td>Segment objects can be of any size.</td>
+                    <td>All segment objects must be in the same
+                        container</td>
+                    <td>The <code>X-Object-Manifest</code> value is
+                        the <code>&lt;container>/&lt;prefix></code>
+                        indicating where the segment objects are
+                        located. You supply this request header in the
+                        &PUT; operation</td>
+                    <td>The &COPY; operation does not create a
+                        manifest object. To duplicate a manifest
+                        object, use the &GET; operation to read the
+                        value of <code>X-Object-Manifest</code> and
+                        use this value in the
+                        <code>X-Object-Manifest</code> request
+                        header in a &PUT; operation. This creates a
+                        new manifest object that shares the same set
+                        of segment objects as the original manifest
+                        object.</td>
+                </tr>
+            </tbody>
+        </table>
+        <section xml:id="dynamic-large-object-creation">
+            <title>Dynamic large objects</title>
+            <para>You must segment objects that are larger than 5 GB
+                before you can upload them. You then upload the
+                segment objects like you would any other object and
+                create a dynamic large manifest object. The manifest
+                object tells Object Storage how to find the segment
+                objects that comprise the large object. The segments
+                remain individually addressable, but retrieving the
+                manifest object streams all the segments concatenated.
+                There is no limit to the number of segments that can
+                be a part of a single large object.</para>
+            <para>To ensure the download works correctly, you must
+                upload all the object segments to the same container
+                and ensure that each object name is prefixed in such a
+                way that it sorts in the order in which it should be
+                concatenated. You also create and upload a manifest
+                file. The manifest file is a zero-byte file with the
+                extra X-Object-Manifest:
+                &lt;container&gt;/&lt;prefix&gt; header, where
+                &lt;container&gt; is the container the object segments
+                are in and &lt;prefix&gt; is the common prefix for all
+                the segments. The container and common prefix must be
+                UTF-8 encoded and URL-encoded in the X-Object-Manifest
+                header.</para>
+            <para>It is best to upload all the segments first and then
+                create or update the manifest. With this method, the
+                full object will not be available for downloading
+                until the upload is complete. Also, you can upload a
+                new set of segments to a second location and then
+                update the manifest to point to this new location.
+                During the upload of the new segments, the original
+                manifest will still be available to download the first
+                set of segments.</para>
+            <example>
+                <title>Upload segment of large object request:
+                    HTTP</title>
+                <literallayout class="monospaced"><xi:include href="samples/large-object-upload-segment-req.txt" parse="text"/></literallayout>
+            </example>
+            <example>
+                <title>Upload segment of large object response:
+                    HTTP</title>
+                <literallayout class="monospaced">s</literallayout>
+            </example>
+            <para>No response body is returned. A status code of 2xx
+                (between 200 and 299, inclusive) indicates a
+                successful write; status 411 (Length Required) denotes
+                a missing <code>Content-Length</code> or
+                    <code>Content-Type</code> header in the request.
+                If the MD5 checksum of the data written to the storage
+                system does NOT match the (optionally) supplied ETag
+                value, a 422 (Unprocessable Entity) response is
+                returned.</para>
+            <para>You can continue uploading segments like this
+                example shows, prior to uploading the manifest.</para>
+            <example>
+                <title>Upload next segment of large object request:
+                    HTTP</title>
+                <literallayout class="monospaced"><xi:include href="samples/large-object-upload-next-segment-req.txt" parse="text"/></literallayout>
+            </example>
+            <example>
+                <title>Upload next segment of large object response:
+                    HTTP</title>
+                <literallayout class="monospaced">w</literallayout>
+            </example>
+            <para>Next, upload the manifest you created that indicates
+                the container the object segments reside within. Note
+                that uploading additional segments after the manifest
+                is created will cause the concatenated object to be
+                that much larger but you do not need to recreate the
+                manifest file for subsequent additional
+                segments.</para>
+            <example>
+                <title>Upload manifest request: HTTP</title>
+                <literallayout class="monospaced"><xi:include href="samples/upload-manifest-req.txt" parse="text"/></literallayout>
+            </example>
+            <example>
+                <title>Upload manifest response: HTTP</title>
+                <literallayout class="monospaced"><xi:include href="samples/upload-manifest-resp.txt" parse="text"/></literallayout>
+            </example>
+            <para>The response's Content-Type for a &GET; or &HEAD; on
+                the manifest will be the same as the Content-Type set
+                during the PUT request that created the manifest. You
+                can easily change the Content-Type by reissuing the
+                &PUT; request.</para>
+        </section>
+        <section xml:id="static-large-objects">
+            <title>Static large objects</title>
+            <procedure>
+                <title>To create a static large object</title>
+                <step>
+                    <para>Divide your content into pieces and create
+                        (upload) a segment object to contain each
+                        piece. You must record the <code>ETag</code>
+                        response header returned by the&PUT;
+                        operation. Alternatively, you can calculate
+                        the MD5 checksum of the segment prior to
+                        uploading and include this in the
+                            <code>ETag</code> request header. This
+                        ensures that the upload cannot corrupt your
+                        data.</para>
+                </step>
+                <step>
+                    <para>List the name of each segment object along
+                        with its size and MD5 checksum in order.
+                        Create a manifest object. You indicate that
+                        this is a manifest object by including the
+                            <code>?multipart-manifest=put</code> query
+                        string at the end of the manifest object
+                        name.</para>
+                </step>
+            </procedure>
+            <para>The body of the &PUT; request on the manifest object
+                comprises a json list, where each element contains the
+                following:</para>
+            <itemizedlist>
+                <listitem>
+                    <para><code>path</code> - this is the container
+                        and object name in the following format:
+                            <code>&lt;container-name>/&lt;object-name></code></para>
+                </listitem>
+                <listitem>
+                    <para><code>etag</code> - this is the MD5 checksum
+                        of the content of the segment object. This
+                        must match the <code>ETag</code> of that
+                        object.</para>
+                </listitem>
+                <listitem>
+                    <para><code>size_bytes</code> - this is the size
+                        of the segment object. This must match the
+                            <code>Content-Length</code> of that
+                        object</para>
+                </listitem>
+            </itemizedlist>
+            <example>
+                <title>Static large object manifest list</title>
+                <para>This is an example containing three segment
+                    objects. In this example, you can use several
+                    containers and the object names do not have to
+                    conform to a specific pattern, in contrast to
+                    dynamic large objects.</para>
+                <literallayout class="monospaced"><xi:include href="samples/slo-manifest-example.txt" parse="text"/></literallayout>
+            </example>
+            <para>The <code>Content-Length</code> request header must
+                contain the length of the json content. Not the length
+                of the segment objects. However, after the &PUT;
+                operation completes, the <code>Content-Length</code>
+                metadata is set to the total length of all the object
+                segments. A similar situation applies to the
+                    <code>ETag</code>. If used in the &PUT; operation,
+                it must contain the MD5 checksum of the json content.
+                The <code>ETag</code> metadata value is then set to be
+                the MD5 checksum of the concatenated <code>ETag</code>
+                values of the object segments. You may also set the
+                    <code>Content-Type</code> request header and
+                custom object metadata.</para>
+            <para>When the &PUT; operation sees the
+                    <code>?multipart-manifest=put</code> query string,
+                it reads the request body and verifies that each
+                segment object exists and that the sizes and ETags
+                match. If there is a mismatch, the &PUT;operation will
+                fail.</para>
+            <para>If everything matches, the manifest object is
+                created. The <code>X-Static-Large-Object</code>
+                metadata is set to <code>true</code> indicating that
+                this is a static object manifest.</para>
+            <para>Normally when you perform a &GET; operation on the
+                manifest object, the response body contains the
+                concatenated content of the segment objects. To
+                download the manifest list, use the query string
+                    <code>?multipart-manifest=get</code>. The
+                resulting list will not be identically formatted as
+                the manifest you originally used in the &PUT;
+                operation.</para>
+            <para>If you use the &DELETE; operation on a manifest
+                object, the manifest object is deleted. The segment
+                objects are not affected. However, if you add the
+                query parameter
+                    <code>?multipart-manifest=delete</code>, the
+                segment objects are deleted and if all are
+                successfully deleted, the manifest object is also
+                deleted.</para>
+            <para>To change the manifest, use a &PUT; operation with
+                the <code>?multipart-manifest=put</code> query string.
+                This will create a <emphasis>new</emphasis> manifest
+                object. You may also update the object metadata in the
+                usual way.</para>
+        </section>
+    </section>
+</section>
