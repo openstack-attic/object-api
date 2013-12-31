@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="pseudo-hierarchical-folders-directories">
+    <title>Pseudo-hierarchical folders and directories</title>
+    <!-- reworked this section / as path and its elements / are not supported - dsh - 02-16-12 -->
+    <para>Although you cannot nest directories in OpenStack Object
+        Storage, you can simulate a hierarchical structure within a
+        single container by adding forward slash characters
+            (<literal>/</literal>) in the object name. To navigate the
+        pseudo-directory structure, you can use the
+            <code>delimiter</code> query parameter. this examples show
+        you how to use pseudo-hierarchical folders and
+        directories.</para>
+    <note>
+        <para>In this example, the objects reside in a container
+            called <code>backups</code>. Within that container, the
+            objects are organized in a pseudo-directory called
+                <code>photos</code>. Keep in mind that the container
+            name is not displayed in the example, but that it is a
+            part of the object URLs. For instance, the URL of the
+            picture <code>me.jpg</code> is
+                <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/backups/photos/me.jpg</uri>.
+        </para>
+    </note>
+    <example>
+        <title>List pseudo-hierarchical folders request: HTTP</title>
+        <para>To display a list of all the objects in the storage
+            container, use &GET; without a <code>delimiter</code> or
+                <code>prefix</code>.</para>
+        <literallayout class="monospaced">GET /v1/AccountString/backups</literallayout>
+        <para>The system returns status code 2xx (between 200 and 299,
+            inclusive) and the requested list of the objects.</para>
+        <literallayout class="monospaced">photos/animals/cats/persian.jpg
+photos/animals/cats/siamese.jpg
+photos/animals/dogs/corgi.jpg
+photos/animals/dogs/poodle.jpg
+photos/animals/dogs/terrier.jpg
+photos/me.jpg
+photos/plants/fern.jpg
+photos/plants/rose.jpg</literallayout>
+        <para>
+            <!-- The JIRA ticket / doc-97 subsumed / to this location - dsh - 02-03-12 -->Use
+            the delimiter parameter to limit the displayed results.
+            You can use any character as a delimiter. However, to use
+                <code>delimiter</code> with pseudo-directories, use
+            the parameter slash (<literal>/</literal>).</para>
+        <literallayout class="monospaced">GET /v1/AccountString/backups?delimiter=/</literallayout>
+        <para>The system returns status code 2xx (between 200 and 299,
+            inclusive) and the requested matching objects. Because you
+            use the slash, only the pseudo-directory
+                <code>photos/</code> displays. Keep in mind that the
+            returned values from a slash <code>delimiter</code> query
+            are not real objects. They have a content-type of
+                <literal>application/directory</literal> and are in
+            the <literal>subdir</literal> section of json and xml
+            results.</para>
+        <literallayout class="monospaced">photos/</literallayout>
+        <para>Use the <code>prefix</code> and <code>delimiter</code>
+            parameters to view the objects inside a pseudo-directory,
+            including further nested pseudo-directories.</para>
+        <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/&#38;delimiter=/</literallayout>
+        <para>The system returns status code 2xx (between 200 and 299,
+            inclusive) and the objects and pseudo-directories within
+            the top level pseudo-directory.</para>
+        <literallayout class="monospaced">photos/animals/
+photos/me.jpg
+photos/plants/</literallayout>
+        <para>You can create an unlimited number of nested
+            pseudo-directories. To navigate through them, use a longer
+                <code>prefix</code> parameter coupled with the
+                <code>delimiter</code> parameter. In this sample
+            output, there is a pseudo-directory called
+                <code>dogs</code> within the pseudo-directory
+                <code>animals</code>. To navigate directly to the
+            files contained within <code>dogs</code>, enter the
+            following command:</para>
+        <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/animals/dogs/&#38;delimiter=/         </literallayout>
+        <para>The system returns status code 2xx (between 200 and 299,
+            inclusive) and the objects and pseudo-directories within
+            the nested pseudo-directory. </para>
+        <literallayout class="monospaced">photos/animals/dogs/corgi.jpg
+photos/animals/dogs/poodle.jpg
+photos/animals/dogs/terrier.jpg</literallayout>
+    </example>
+</section>

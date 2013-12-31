@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="object_storage_overview">
+    <title>Overview</title>
+    <para>The Object Storage API is implemented as a set of
+        Representational State Transfer (REST) web services. You can
+        store an unlimited number of files. Each file can be as large
+        as 5 GBs. With large object creation, you can upload and store
+        objects of any size. You can also use language-specific APIs,
+        which use the ReSTful API but make it easier for you to
+        integrate into your applications.</para>
+    <para>You use standard HTTP calls to perform authentication and
+        account-level, container-level, and object-level operations.
+        Each Object Storage API request must include an
+            <firstterm>authentication token</firstterm> in the
+            <code>X-Auth-Token</code> HTTP header. Clients use an
+        authentication service to obtain this token and the Object
+        Storage URLs. For information, see <xref
+            linkend="authentication-object-dev-guide"/>.</para>
+    <para><!--There are actually two different sets of ReST services that make up the full OpenStack Object Storage product. -->
+        You specify the Object Storage URL in the
+            <code>X-Storage-Url</code> header. This service manages
+        the system data. Example operations include creating
+        containers and uploading objects.
+        <!--The second ReST service is for managing the CDN feature of OpenStack Object Storage and is identified by <code>X-CDN-Management-Url</code>.--></para>
+    <para>The purpose of each HTTP method depends on which service the
+        call is made against. For example, a &PUT; request against the
+        service specified in the <code>X-Storage-Url</code> header is
+        used to create containers and upload
+        objects.<!--, while a &PUT; request against the <code>X-CDN-Management-Url</code> is used to CDN-enable a container--></para>
+    <para>The language-specific APIs mask this system separation from
+        the programmer. They simply create a container and mark it
+            <emphasis>public</emphasis> and it handles calling out to
+        the appropriate back-end services using the appropriate ReST
+        API.</para>
+    <note>
+        <para>All requests to authenticate and operate against
+            OpenStack Object Storage are performed using SSL over HTTP
+            (HTTPS) on TCP port 443.</para>
+    </note>
+    <para>Use the ReST API to interact with the storage component of
+        OpenStack Object Storage. All requests are directed to the
+        host and URL described in the <code>X-Storage-Url</code> HTTP
+        header obtained during successful authentication.</para>
+    <para>The following sections describe the tasks that you can
+        perform in the storage system:</para>
+    <itemizedlist>
+        <listitem>
+            <para><link xlink:href="storage-account-services">Storage
+                    account services</link>. Use to perform
+                account-level tasks.</para>
+        </listitem>
+        <listitem>
+            <para><link xlink:href="storage-container-services"
+                    >Storage container services</link>. Use to perform
+                container-level tasks.</para>
+        </listitem>
+        <listitem>
+            <para><link xlink:href="storage-object-services">Storage
+                    object services</link>. Use to perform
+                object-level tasks.</para>
+        </listitem>
+    </itemizedlist>
+</section>
