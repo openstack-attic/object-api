@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE book [
-        <!-- Some useful entities borrowed from HTML -->
-        <!ENTITY ndash  "&#x2013;">
-        <!ENTITY mdash  "&#x2014;">
-        <!ENTITY hellip "&#x2026;">
-
-        <!-- Useful for describing APIs -->
-        <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
-        <!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
-        <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
-        <!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
-        <!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
-
-        <!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
-                 <imageobject>
-                  <imagedata fileref="img/Check_mark_23x20_02.svg"
-                             format="SVG" scale="60"/>
-                  </imageobject>
-                </inlinemediaobject>'>
-
-         <!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
-                  <imageobject>
-                   <imagedata fileref="img/Arrow_east.svg"
-                              format="SVG" scale="60"/>
-                  </imageobject>
-                </inlinemediaobject>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
 ]>
 <book xmlns="http://docbook.org/ns/docbook"
   xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -68,12 +44,23 @@
     </abstract>
     <revhistory>
       <revision>
+        <date>2014-02-03</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Rewrote introduction and validated all code
+                examples.</para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
         <date>2014-01-24</date>
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Added information about form &POST; and
-                temporary URL middleware.</para>
+              <para>Added information about form &POST; and temporary
+                URL middleware.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -159,7 +146,7 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Fixed bugs 890435 and 907563 - Add/Update
+              <para>Fixed bugs 890435 and 907563; Add/Update
                 Container Metadata and Expiring Objects. Changed to
                 Maven 1.0.10.</para>
             </listitem>
@@ -196,9 +183,9 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Removed references to ACL (Access Control List).
-                Fixed error in examples referring to X-Auth-Key where
-                it should be X-Auth-Token. Added section
+              <para>Removed references to Access Control List (ACL).
+                Fixed error in examples referring to <literal>X-Auth-Key</literal> where
+                it should be <literal>X-Auth-Token</literal>. Added section
                 numbers.</para>
             </listitem>
           </itemizedlist>
@@ -210,7 +197,7 @@
           <itemizedlist spacing="compact">
             <listitem>
               <para>Expanded authentication information for UK
-                release. Added "delimiter" as a Query Parameter and
+                release. Added <literal>delimiter</literal> as a query parameter and
                 server-side object copy example.</para>
             </listitem>
           </itemizedlist>
@@ -221,7 +208,7 @@
         <revdescription>
           <itemizedlist spacing="compact">
             <listitem>
-              <para>Initial Release.</para>
+              <para>Initial release.</para>
             </listitem>
           </itemizedlist>
         </revdescription>
@@ -230,7 +217,7 @@
   </info>
   <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->
   <xi:include href="preface.xml"/>
-  <xi:include href="ch_object-api-general.xml"/>
-  <xi:include href="ch_object-api-storage-services.xml"/>
-  <xi:include href="ch_object-api-troubleshooting-examples.xml"/>
+  <xi:include href="ch_object-api-concepts-and-features.xml"/>
+  <xi:include href="ch_object-api-operations.xml"/>
+  <xi:include href="ch_object-api-examples.xml"/>
 </book>

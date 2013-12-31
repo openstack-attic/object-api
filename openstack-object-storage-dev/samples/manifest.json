@@ -1,0 +1,17 @@
+[
+   {
+      "path":"segments/terrier-jpg-one",
+      "etag":"f7365c1419b4f349592c00bd0cfb9b9a",
+      "size_bytes":4000000
+   },
+   {
+      "path":"segments/terrier-jpg-two",
+      "etag":"ad81e97b10e870613aecb5ced52adbaa",
+      "size_bytes":2000000
+   },
+   {
+      "path":"segments/terrier-jpg-three",
+      "etag":"00b046c9d74c3e8f93b320c5e5fdc2c3",
+      "size_bytes":1000
+   }
+]
