@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preface xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="ch_object-storage-dev-overview">
+    <?dbhtml stop-chunking?>
+    <title>Preface</title>
+    <para>OpenStack Object Storage is an affordable, redundant,
+        scalable, and dynamic storage service offering. The core
+        storage system provides a safe, secure, automatically
+        re-sizing and network-accessible way to store and retrieve
+        object content and metadata. The Object Storage API is
+        implemented as a set of Representational State Transfer (REST)
+        web services. You can store an unlimited number of objects.
+        Each object can be as large as 5 GBs. With large object
+        creation, you can upload and store objects of any size. You
+        can also use language-specific APIs, which use the ReSTful API
+        but make it easier for you to integrate into your
+        applications.</para>
+    <para>For details about the Object Storage service, see <link
+            xlink:href="http://docs.openstack.org/developer/swift/"
+            >http://docs.openstack.org/developer/swift/</link>.</para>
+    <para>We welcome feedback, comments, and bug reports at <link
+            xlink:href="http://bugs.launchpad.net/swift"
+            >http://bugs.launchpad.net/swift</link>.</para>
+    <section xml:id="intended-audience-object-dev-guide">
+        <title>Intended audience</title>
+        <para>This guide is intended to assist software developers who
+            want to develop applications using the OpenStack Object
+            Storage API. It fully documents the ReST application
+            programming interface (API) that allows developers to
+            interact with the storage components of the OpenStack
+            Object Storage system. To use the information provided
+            here, you should first have a general understanding of the
+            Object Storage service and have access to an installation
+            of Object Storage. You should also be familiar with
+            ReSTful web services and HTTP/1.1.</para>
+        <para>You can also find language-specific APIs in several
+            popular programming languages such as C#/.NET, Java, PHP,
+            Python, and Ruby. These APIs use the ReST API and help
+            developers rapidly integrate Object Storage support into
+            their applications without needing to write at the ReST
+            interface. Each API includes its own documentation in its
+            native format. For example, the Java API includes Javadoc
+            documentation.</para>
+    </section>
+    <xi:include href="section_object-api-dochistory.xml"/>
+</preface>

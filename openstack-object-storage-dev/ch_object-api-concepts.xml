@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="ch_object-storage-dev-general-api">
+    <?dbhtml stop-chunking?>
+    <title>API concepts</title>
+    <para>For an introduction to OpenStack Object Storage, see <link xlink:href="http://docs.openstack.org/admin-guide-cloud/content/ch_admin-openstack-object-storage.html">Object Storage</link> in the
+        <citetitle>OpenStack Cloud Administrator Guide</citetitle>.</para>
+    <xi:include href="section_object_api_overview.xml"/>
+    <xi:include href="section_object_api_authentication.xml"/>
+    <xi:include href="section_object_api_response_formats.xml"/>
+    <xi:include href="section_object_api_large_lists.xml"/>
+    <xi:include href="section_object_api_pseudo_hier_folders.xml"/>
+    <xi:include href="section_object_versioning.xml"/>
+    <xi:include href="section_large_object_creation.xml"/>
+    <xi:include href="section_cors_headers.xml"/>
+    <xi:include href="section_file_compression.xml"/>
+    <xi:include href="section_browser_bypass.xml"/>
+    <xi:include href="section_expire_objects.xml"/>
+</chapter>
