@@ -31,7 +31,7 @@ format="SVG" scale="60"/>
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="Create_Static_Website-dle4000">
-    <title>Create Static Website</title>
+    <title>Create static website</title>
     <para>You can use your swift account to create a static website.
         This mode is normally only active for anonymous requests. To
         use it with authenticated requests, set the header
@@ -100,9 +100,10 @@ format="SVG" scale="60"/>
         <para>You can create and set custom error pages for visitors
             to your website; currently, only 401 (Unauthorized) and
             404 (Not Found) errors are supported. To do this, set the
-            metadata header, <code>X-Container-Meta-Web-Error</code>.</para>
+            metadata header,
+            <code>X-Container-Meta-Web-Error</code>.</para>
         <para>Error pages are served with the &lt;status&gt; code
-            prepended to the name of the error page you set. For
+            pre-pended to the name of the error page you set. For
             instance, if you set
                 <code>X-Container-Meta-Web-Error</code> to
                 <code>error.html</code>, 401 errors will display the
