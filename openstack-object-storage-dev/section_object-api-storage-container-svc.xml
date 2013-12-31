@@ -31,8 +31,21 @@ format="SVG" scale="60"/>
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="storage-container-services">
-    <title>Storage Container Services</title>
-    <para>You can perform the following operations for
+    <title>Storage container services</title>
+    <para>Lists objects, creates and delete containers, and gets, creates, updates, or deletes container
+        metadata.</para>
+    <wadl:resources xmlns:wadl="http://wadl.dev.java.net/2009/02">
+        <wadl:resource
+            href="http://git.openstack.org/cgit/openstack/api-site/plain/api-ref/src/wadls/object-api/src/os-object-api-1.0.wadl#container">
+            <wadl:method href="#listObjects"/>
+            <wadl:method href="#createcontainer"/>
+            <wadl:method href="#deletecontainer"/>
+            <wadl:method href="#retrievecontainermeta"/>
+            <wadl:method href="#updateacontainermeta"/>
+            <wadl:method href="#deletecontainermeta"/>
+        </wadl:resource>
+    </wadl:resources>
+   <!-- <para>You can perform the following operations for
         containers:</para>
     <informaltable rules="all">
         <thead>
@@ -191,172 +204,7 @@ format="SVG" scale="60"/>
             <title>List Objects HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/object-list-resp.txt" parse="text"/></literallayout>
         </example>
-        <section xml:id="serialized-list-output">
-            <title>Serialized List Output</title>
-            <para>If a <code>format=xml</code> or
-                    <code>format=json</code> argument is appended to
-                the storage account URL, the service will serve
-                extended object information serialized in the chosen
-                format. Other than the <code>?format=xml|json</code>
-                parameter, it will return the same status/errors
-                codes. The sample responses below are formatted for
-                readability.</para>
-            <example>
-                <title>Get Objects Details HTTP and JSON
-                    Request</title>
-                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-req.txt" parse="text"/></literallayout>
-            </example>
-            <example>
-                <title>Get Objects Details HTTP and JSON Response</title>
-                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-resp.txt" parse="text"/></literallayout>
-                <programlisting language="json"><xi:include href="samples/objects-get-details-resp.json" parse="text"/></programlisting>
-            </example>
-            <example>
-                <title>Objects Details Request: XML</title>
-                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-req.txt" parse="text"/></literallayout>
-            </example>
-            <example>
-                <title>Objects Details Request: XML</title>
-                <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-resp.txt" parse="text"/></literallayout>
-                <programlisting language="xml"><xi:include href="samples/objects-get-details-resp.xml" parse="text"/></programlisting>
-            </example>
-        </section>
-        <section xml:id="list-large-number-of-objects">
-            <title>Controlling a Large List of Objects</title>
-            <para>The system returns a maximum of 10,000 object names
-                per request. To retrieve subsequent object names,
-                another request must be made with the 'marker'
-                parameter. The marker indicates where the last list
-                left off and the system returns object names greater
-                than this marker, up to 10,000 again. Note that the
-                ‘marker’ value should be URL encoded prior to sending
-                the HTTP request.</para>
-            <para>If 10,000 is larger than desired, a 'limit'
-                parameter may be given.</para>
-            <para>If the number of object names returned equals the
-                limit given (or 10,000 if no limit is given), it can
-                be assumed there are more object names to be listed.
-                If the container name list is exactly divisible by the
-                limit, the last request has no content.</para>
-            <example>
-                <title>List Large Number of Objects</title>
-                <para>For an example, let's use a listing of five
-                    object names:</para>
-                <literallayout class="monospaced">gala
-grannysmith
-honeycrisp
-jonagold
-reddelicious</literallayout>
-                <para>We'll use a limit of two to show how things
-                    work:</para>
-                <literallayout class="monospaced"><xi:include href="samples/objects-list-req.txt" parse="text"/></literallayout>
-                <para>Because we received two items back, we can
-                    assume there are more object names to list. So, we
-                    make another request with a marker of the last
-                    item returned:</para>
-                <literallayout class="monospaced"><xi:include href="samples/objects-list-marker-req.txt" parse="text"/></literallayout>
-                <para>Again we have two items returned; there might be
-                    more:</para>
-                <literallayout class="monospaced"><xi:include href="samples/objects-list-marker2-req.txt" parse="text"/></literallayout>
-                <para>Now we received less than the limit number of
-                    object names, indicating that we have the complete
-                    list.</para>
-                <para>By using <code>end_marker</code> we can limit
-                    the result set to object names less than the given
-                    value.</para>
-                <literallayout class="monospaced"><xi:include href="samples/objects-list-end-marker-req.txt" parse="text"/></literallayout>
-            </example>
-        </section>
-        <section xml:id="pseudo-hierarchical-folders-directories">
-            <title>Pseudo-Hierarchical Folders and Directories</title>
-            <!-- reworked this section / as path and its elements / are not supported - dsh - 02-16-12 -->
-            <para>Although you cannot nest directories in OpenStack
-                Object Storage, you can simulate a hierarchical
-                structure within a single container by adding forward
-                slash characters (<literal>/</literal>) in the object
-                name. To navigate the pseudo-directory structure, you
-                may use the <code>delimiter</code> query parameter.
-                See the below examples for an illustration.</para>
-            <note>
-                <para>In the example below, the objects reside in a
-                    container called <code>backups</code>. Within that
-                    container, the objects are organized in a
-                    pseudo-directory called <code>photos</code>. Keep
-                    in mind that the container name is not displayed
-                    in the example, but that it is a part of the
-                    object URLs. For instance, the URL of the picture
-                        <code>me.jpg</code> is
-                        <uri>https://storage.swiftdrive.com/v1/CF_xer7_343/backups/photos/me.jpg</uri>.
-                </para>
-            </note>
-            <example>
-                <title>List Pseudo-Hierarchical Folders/Directories
-                    Request</title>
-                <para>To display a list of all the objects in the
-                    storage container, use &GET; without a
-                        <code>delimiter</code> or <code>prefix</code>.</para>
-                <literallayout class="monospaced">GET /v1/AccountString/backups</literallayout>
-                <para>The system returns status code 2xx (between 200
-                    and 299, inclusive) and the requested list of the
-                    objects.</para>
-                <literallayout class="monospaced">photos/animals/cats/persian.jpg
-photos/animals/cats/siamese.jpg
-photos/animals/dogs/corgi.jpg
-photos/animals/dogs/poodle.jpg
-photos/animals/dogs/terrier.jpg
-photos/me.jpg
-photos/plants/fern.jpg
-photos/plants/rose.jpg</literallayout>
-                <para>
-                    <!-- The JIRA ticket / doc-97 subsumed / to this location - dsh - 02-03-12 -->Use
-                    the delimiter parameter to limit the displayed
-                    results. Any character may be used as a delimiter.
-                    However, to use <code>delimiter</code> with
-                    pseudo-directories, use the parameter slash
-                        (<literal>/</literal>).</para>
-                <literallayout class="monospaced">GET /v1/AccountString/backups?delimiter=/</literallayout>
-                <para>The system returns status code 2xx (between 200
-                    and 299, inclusive) and the requested matching
-                    objects. Because we use the slash, only the
-                    pseudo-directory <code>photos/</code> displays. Keep
-                    in mind that the returned values from a slash
-                    <code>delimiter</code> query are not real objects.
-                    They have a content-type of
-                    <literal>application/directory</literal> and are in
-                    the <literal>subdir</literal> section of json and xml
-                    results.</para>
-                <literallayout class="monospaced">photos/</literallayout>
-                <para>Use the <code>prefix</code> parameter with the
-                        <code>delimiter</code> parameter to view the
-                    objects inside a pseudo-directory, including
-                    further nested pseudo-directories.</para>
-                <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/&#38;delimiter=/</literallayout>
-                <para>The system returns status code 2xx (between 200
-                    and 299, inclusive) and the objects and
-                    pseudo-directories within the top level
-                    pseudo-directory.</para>
-                <literallayout class="monospaced">photos/animals/
-photos/me.jpg
-photos/plants/            </literallayout>
-                <para>You can create an unlimited number of nested
-                    pseudo-directories. To navigate through them, use
-                    a longer <code>prefix</code> parameter coupled
-                    with the <code>delimiter</code> parameter. In the
-                    sample output below, there is a pseudo-directory
-                    called <code>dogs</code> within the
-                    pseudo-directory <code>animals</code>. In order to
-                    navigate directly to the files contained within
-                        <code>dogs</code>, enter the below command.</para>
-                <literallayout class="monospaced">GET /v1/AccountString/backups?prefix=photos/animals/dogs/&#38;delimiter=/         </literallayout>
-                    <para>The system returns status code 2xx (between 200
-                    and 299, inclusive) and the objects and
-                    pseudo-directories within the nested pseudo-directory.
-                    </para>
-                <literallayout class="monospaced">photos/animals/dogs/corgi.jpg
-photos/animals/dogs/poodle.jpg
-photos/animals/dogs/terrier.jpg</literallayout>
-            </example>
-        </section>
+       
     </section>
     <section xml:id="create-container">
         <title>Create Container</title>
@@ -489,11 +337,11 @@ photos/animals/dogs/terrier.jpg</literallayout>
         <example>
             <title>View Container Metadata HTTP Response</title>
             <literallayout class="monospaced"><xi:include href="samples/container-view-metadata-resp.txt" parse="text"/></literallayout>
-        </example>
+        </example>-->
         <!-- Note: using POST with null value should delete a metadata header, but
             this method is not functional with all tools, so we are leaving it out for now.
             A future patch may come where using "-" (dash) for the value will delete it.  dsh - 2012-0309 -->
-    </section>
+   <!-- </section>
     <section xml:id="delete-container-metadata">
         <title>Delete Container Metadata</title>
         <para>To delete a metadata header send an empty value for that
@@ -514,5 +362,5 @@ photos/animals/dogs/terrier.jpg</literallayout>
             <para>No response body is returned. A status code of 2xx
                 (between 200 and 299, inclusive) indicates success.</para>
         </example>
-    </section>
+    </section>-->
 </section>

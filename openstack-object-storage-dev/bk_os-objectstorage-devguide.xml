@@ -49,6 +49,7 @@
       <year>2011</year>
       <year>2012</year>
       <year>2013</year>
+      <year>2014</year>
       <holder>OpenStack Foundation</holder>
     </copyright>
     <releaseinfo>API v1</releaseinfo>
@@ -66,6 +67,16 @@
         Application Programming Interface (API) v1.</para>
     </abstract>
     <revhistory>
+      <revision>
+        <date>2014-01-21</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Reorganized the book and validated examples.</para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
       <revision>
         <date>2013-10-16</date>
         <revdescription>
@@ -173,7 +184,7 @@
               <para>Revised for OpenStack Object Storage use by
                 removing CDN references, Rackspace Cloud references,
                 and revised account examples and URLs for generic
-                implementations.  Clarified that container and object
+                implementations. Clarified that container and object
                 names must be UTF-8 encoded.</para>
             </listitem>
           </itemizedlist>
@@ -217,8 +228,8 @@
     </revhistory>
   </info>
   <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->
-  <xi:include href="ch_object-api-overview.xml"/>
+  <xi:include href="preface.xml"/>
   <xi:include href="ch_object-api-general.xml"/>
-  <xi:include href="ch_object-api-storage-services.xml"/>
-  <xi:include href="ch_object-api-troubleshooting-examples.xml"/>
+  <xi:include href="ch_object-api-operations.xml"/>
+  <xi:include href="ch_object-api-examples.xml"/>
 </book>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="object_storage_constraints">
+    <title>Object Storage default constraints</title>
+    <para>Object Storage HTTP requests have the following default
+        constraints:</para>
+    <informaltable rules="all">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Maximum value</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Number of HTTP headers</td>
+                <td>90</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of HTTP headers</td>
+                <td>4096 bytes</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length per HTTP request line</td>
+                <td>8192 bytes</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of HTTP request</td>
+                <td>5 GBs</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of container names</td>
+                <td>256 bytes</td>
+                <td>Cannot contain the <literal>/</literal>
+                    character.</td>
+            </tr>
+            <tr>
+                <td>Length of object names</td>
+                <td>1024 bytes</td>
+                <td>By default, there are no character
+                    restrictions.</td>
+            </tr>
+        </tbody>
+    </informaltable>
+    <para>Container and object names must be UTF-8 encoded and
+        properly URL-encoded before you call the API binding. If you
+        use an API binding that performs the URL-encoding for you, do
+        not URL-encode the container and object names before you call
+        the API binding. Otherwise, you double-encode these names.
+        Check the length restrictions against the URL-encoded
+        string.</para>
+</section>

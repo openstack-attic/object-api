@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Some useful entities borrowed from HTML -->
+<!ENTITY ndash  "&#x2013;">
+<!ENTITY mdash  "&#x2014;">
+<!ENTITY hellip "&#x2026;">
+<!ENTITY plusmn "&#xB1;">
+
+<!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+
+<!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="figures/Check_mark_23x20_02.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+
+<!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
+<imageobject>
+<imagedata fileref="figures/Arrow_east.svg"
+format="SVG" scale="60"/>
+</imageobject>
+</inlinemediaobject>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="curl">
+    <title>How cURL commands work</title>
+    <para>cURL is a command-line tool that you can use to interact
+        with REST interfaces. cURL lets you to
+        transmit and receive HTTP requests and
+        responses from the command line or a shell script, which
+        enables you to work with the API directly. It is available for
+        Linux distributions, Mac OS X, and Windows. For information
+        about cURL, see <link xlink:href="http://curl.haxx.se/"
+            >http://curl.haxx.se/</link>.</para>
+    <para>To use XML requests and responses, see <xref
+            linkend="curl_summary_xml"/>.</para>
+    <para>To run the cURL request examples shown in this guide, copy
+        each example from the HTML version of this guide directly to
+        the command line or a script.</para>
+    <para>This example cURL command shows account details and lists
+        containers in the account. The response is in JSON
+        format:</para>
+    <screen><prompt>$</prompt> <userinput>curl -i $publicURL?format=json \
+             -X GET -H "X-Auth-Token: $token"</userinput></screen>
+    <screen><computeroutput>HTTP/1.1 200 OK
+Content-Length: 96
+X-Account-Object-Count: 1
+X-Timestamp: 1389453423.35964
+X-Account-Meta-Subject: Literature
+X-Account-Bytes-Used: 14
+X-Account-Container-Count: 2
+Content-Type: application/json; charset=utf-8
+Accept-Ranges: bytes
+X-Trans-Id: tx274a77a8975c4a66aeb24-0052d95365
+Date: Fri, 17 Jan 2014 15:59:33 GMT</computeroutput>
+    </screen>
+    <programlisting language="json">[
+   {
+      "count":0,
+      "bytes":0,
+      "name":"janeausten"
+   },
+   {
+      "count":1,
+      "bytes":14,
+      "name":"marktwain"
+   }
+]</programlisting>
+    <note>
+        <para>The carriage returns in the cURL request examples are
+            escaped with a backslash (<literal>\</literal>) character.
+            The escape character allows continuation of the command
+            across multiple lines. However, do not include the escape
+            character in the JSON or XML request body within the cURL
+            command.</para>
+    </note>
+    <para>The cURL examples in this guide use the following
+        command-line options:</para>
+    <table xml:id="curl_options" rules="all" width="75%">
+        <caption>cURL command-line options</caption>
+        <thead>
+            <tr>
+                <th>Option</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <option>-d</option>
+                </td>
+                <td>
+                    <para>Sends the specified data in a &POST; request
+                        to the HTTP server. Use this option to send a
+                        JSON or XML request body to the server.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <option>-H</option>
+                </td>
+                <td>
+                    <para>Specifies an extra HTTP header in the
+                        request. You can specify any number of extra
+                        headers. Precede each header with the
+                            <option>-H</option> option.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <option>-i</option>
+                </td>
+                <td>
+                    <para>Includes the HTTP header in the
+                        output.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <option>-s</option>
+                </td>
+                <td>
+                    <para>Silent or quiet mode. Does not show progress
+                        or error messages. Makes cURL mute.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <option>-T</option>
+                </td>
+                <td>
+                    <para>Transfers the specified local file to the
+                        remote URL.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <option>-X</option>
+                </td>
+                <td>
+                    <para>Specifies the request method to use when
+                        communicating with the HTTP server. The
+                        specified request is used instead of the
+                        default method, which is &GET;.</para>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <note xml:id="json_tool">
+        <title>json.tool</title>
+        <para>For commands that return a response, you can append the
+            following code to the command to call the json.tool to
+            pretty-print output:</para>
+        <programlisting language="bash" role="gutter: false">| python -m json.tool</programlisting>
+        <para>To use the json.tool, import the json module. For
+            information about the json.tool, see <link
+                xlink:href="http://docs.python.org/2/library/json.html"
+                >json — JSON encoder and decoder</link>.</para>
+        <para>If you run a Python version older than 2.6, import the
+            simplejson module and use the simplejson.tool. For
+            information about the simple.json tool, see <link
+                xlink:href="http://simplejson.googlecode.com/svn/tags/simplejson-2.0.9/docs/index.html"
+                >simplejson — JSON encoder and decoder</link>.</para>
+        <para>If you do not want to pretty-print JSON output, omit
+            this code.</para>
+    </note>
+    <section xml:id="curl_summary_xml">
+        <title>XML requests and responses</title>
+        <para>The following example shows a cURL command that asks for
+            an XML response. The command shows account information and
+            list containers in the account:</para>
+        <screen><prompt>$</prompt> <userinput>curl -i $publicURL?format=xml -X GET -H "X-Auth-Token: $token"</userinput></screen>
+        <para>The example appends the <literal>format=xml</literal>
+            query parameter to return an XML response.</para>
+        <para>If the request requires a request body, specify it in
+            XML format.</para>
+        <para><emphasis role="bold">Output:</emphasis> The cURL
+            command returns information about the new server in XML
+            format, as shown in the following example:</para>
+        <screen><computeroutput>HTTP/1.1 200 OK
+Content-Length: 262
+X-Account-Object-Count: 1
+X-Timestamp: 1389453423.35964
+X-Account-Meta-Subject: Literature
+X-Account-Bytes-Used: 14
+X-Account-Container-Count: 2
+Content-Type: application/xml; charset=utf-8
+Accept-Ranges: bytes
+X-Trans-Id: tx69f60bc9f7634a01988e6-0052d9544b
+Date: Fri, 17 Jan 2014 16:03:23 GMT</computeroutput></screen>
+<programlisting language="xml">&lt;?xml version="1.0" encoding="UTF-8"?>
+&lt;account name="my_account">
+    &lt;container>
+        &lt;name>janeausten&lt;/name>
+        &lt;count>0&lt;/count>
+        &lt;bytes>0&lt;/bytes>
+    &lt;/container>
+    &lt;container>
+        &lt;name>marktwain&lt;/name>
+        &lt;count>1&lt;/count>
+        &lt;bytes>14&lt;/bytes>
+    &lt;/container>
+&lt;/account</programlisting>
+    </section>
+</section>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="object_storage_overview">
+    <title>Overview</title>
+    <xi:include
+        href="http://git.openstack.org/cgit/openstack/openstack-manuals/plain/doc/common/section_objectstorage-intro.xml"/>
+    <xi:include
+        href="http://git.openstack.org/cgit/openstack/openstack-manuals/plain/doc/common/section_objectstorage-features.xml"/>
+    <xi:include href="section_object_storage_api_overview.xml"/>
+</section>
