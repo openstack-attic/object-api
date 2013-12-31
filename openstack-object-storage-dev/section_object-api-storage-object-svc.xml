@@ -16,7 +16,9 @@
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="storage-object-services">
-    <title>Storage Object Services</title>
+    <title>Storage object services</title>
+    <para>Creates, updates, gets details for, and deletes objects.
+        Gets and updates object metadata.</para>
     <para>An object represents the data and metadata for the files
         stored in the system. Through the ReST interface, you can
         include metadata for an object by adding custom HTTP headers
@@ -27,7 +29,19 @@
         Then, you can download the segments as a single concatenated
         object. You can use HTTP requests to work with the segments
         and manifests directly.</para>
-    <informaltable rules="all">
+    <wadl:resources xmlns:wadl="http://wadl.dev.java.net/2009/02">
+        <wadl:resource
+            href="http://git.openstack.org/cgit/openstack/api-site/plain/api-ref/src/wadls/object-api/src/os-object-api-1.0.wadl#object">
+            <wadl:method href="#listObjects"/>
+            <wadl:method href="#retrieveobject"/>
+            <wadl:method href="#createobject"/>
+            <wadl:method href="#deleteobject"/>
+            <wadl:method href="#copyobject"/>
+            <wadl:method href="#retrieveobjectmeta"/>
+            <wadl:method href="#updateaobjmeta"/>
+        </wadl:resource>
+    </wadl:resources>
+    <!-- <informaltable rules="all">
         <thead>
             <tr>
                 <td colspan="1">Verb</td>
@@ -205,7 +219,7 @@
             </tbody>
         </informaltable>
         <example>
-            <title>Get Object Details HTTP Request</title>
+            <title>Get Object Details request: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-req.txt" parse="text"/></literallayout>
         </example>
         <para>The object data is returned in the response body. Object
@@ -214,27 +228,27 @@
             inclusive) indicates success; status 404 (Not Found) is
             returned if no such object exists.</para>
         <example>
-            <title>Get Object Details HTTP Response</title>
+            <title>Get Object Details response: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-resp.txt" parse="text"/></literallayout>
         </example>
         <para>These examples include an object that contains 10 bytes
             of data: <literal>0123456789</literal>.</para>
         <example>
-            <title>Get Object Details HTTP Request Using Range</title>
+            <title>Get Object Details request: HTTP Using Range</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-range-req.txt" parse="text"/></literallayout>
         </example>
         <example>
-            <title>Get Object Details HTTP Response When Using
+            <title>Get Object Details response: HTTP When Using
                 Range</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-range-resp.txt" parse="text"/></literallayout>
         </example>
         <example>
-            <title>Get Object Details HTTP Request Using Multiple
+            <title>Get Object Details request: HTTP Using Multiple
                 Ranges</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-ranges-req.txt" parse="text"/></literallayout>
         </example>
         <example>
-            <title>Get Object Details HTTP Response When Using
+            <title>Get Object Details response: HTTP When Using
                 Multiple Ranges</title>
             <literallayout class="monospaced"><xi:include href="samples/object-get-ranges-resp.txt" parse="text"/></literallayout>
         </example>
@@ -256,7 +270,7 @@
             object at the specified time and shortly after the
             expiration date, it removes the object from the storage
             system.</para>
-        <para>The HTTP response will include the MD5 checksum of the
+        <para>The response: HTTP will include the MD5 checksum of the
             data written to the storage system. If you do not send the
             ETag in the request, you should compare the value returned
             with your content's MD5 locally to perform the end-to-end
@@ -273,7 +287,7 @@
                 <literal>allowed_headers</literal> option in the
             object-server configuration.</para>
         <example>
-            <title>Create or Update Object HTTP Request</title>
+            <title>Create or Update Object request: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-create-req.txt" parse="text"/></literallayout>
             <literallayout class="monospaced">[ ... ]</literallayout>
         </example>
@@ -285,7 +299,7 @@
             does NOT match the (optionally) supplied ETag value, a 422
             (Unprocessable Entity) response is returned.</para>
         <example>
-            <title>Create or Update Object HTTP Response</title>
+            <title>Create or Update Object response: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-create-resp.txt" parse="text"/></literallayout>
         </example>
         <section xml:id="chunked-transfer-encoding">
@@ -308,8 +322,7 @@
                 you have files that are larger than 5GB see <xref
                     linkend="large-object-creation"/>.</para>
             <example>
-                <title>Upload Unspecified Quantity of Content HTTP
-                    Request</title>
+                <title>Upload Unspecified Quantity of Contentrequest: HTTP</title>
                 <literallayout class="monospaced"><xi:include href="samples/chunked-transfer-encoding-req.txt" parse="text"/></literallayout>
             </example>
             <example>
@@ -318,9 +331,9 @@
                 <literallayout class="monospaced"><xi:include href="samples/chunked-transfer-encoding-resp.txt" parse="text"/></literallayout>
             </example>
         </section>
-    </section>
+    </section>-->
     <section xml:id="large-object-creation">
-        <title>Create Large Objects</title>
+        <title>Create large objects</title>
         <para>The content of an object cannot be larger than 5GB (by
             default). However, you can store larger content using two
             types of objects:</para>
@@ -338,7 +351,7 @@
         <para>Segment objects do not have any special features and can
             be created, updated, downloaded and deleted as described
             elsewhere in this document. However, a manifest object is
-            special -- when you download, the system concatenates the
+            special. When you download, the system concatenates the
             contents of the segment objects and returns this in the
             response body of the request. This behavior extends to the
             response headers returned by &GET; and &HEAD; operations.
@@ -378,13 +391,13 @@
             behavior, there are differences as explained in the
             following table.</para>
         <table rules="all">
-            <caption>Comparison of Static and Dynamic Large
-                Objects</caption>
+            <caption>Comparison of static and dynamic large
+                objects</caption>
             <thead>
                 <tr>
                     <th>Feature</th>
-                    <th>Static Large Object</th>
-                    <th>Dynamic Large Object</th>
+                    <th>Static large object</th>
+                    <th>Dynamic large object</th>
                 </tr>
             </thead>
             <tbody>
@@ -423,8 +436,8 @@
                         completely new manifest object of the same
                         name with a different manifest list.</td>
                     <td>You can upload new segment objects or remove
-                        existing segments --- the names must simply
-                        match the <code>&lt;prefix></code> supplied in
+                        existing segments. The names must simply match
+                        the <code>&lt;prefix></code> supplied in
                             <code>X-Object-Manifest</code>.</td>
                 </tr>
                 <tr>
@@ -480,7 +493,7 @@
             </tbody>
         </table>
         <section xml:id="dynamic-large-object-creation">
-            <title>Dynamic Large Objects</title>
+            <title>Dynamic large objects</title>
             <para>Objects that are larger than 5GB must be segmented,
                 prior to upload. You then upload the segments like you
                 would any other object and create a dynamic large
@@ -513,13 +526,13 @@
                 manifest will still be available to download the first
                 set of segments.</para>
             <example>
-                <title>Upload Segment of Large Object HTTP
-                    Request</title>
+                <title>Upload segment of large object request:
+                    HTTP</title>
                 <literallayout class="monospaced"><xi:include href="samples/large-object-upload-segment-req.txt" parse="text"/></literallayout>
             </example>
             <example>
-                <title>Upload Segment of Large Object HTTP
-                    Response</title>
+                <title>Upload segment of large object response:
+                    HTTP</title>
                 <literallayout class="monospaced">s</literallayout>
             </example>
             <para>No response body is returned. A status code of 2xx
@@ -534,13 +547,13 @@
             <para>You can continue uploading segments like this
                 example shows, prior to uploading the manifest.</para>
             <example>
-                <title>Upload Next Segment of Large Object HTTP
-                    Request</title>
+                <title>Upload next segment of large object request:
+                    HTTP</title>
                 <literallayout class="monospaced"><xi:include href="samples/large-object-upload-next-segment-req.txt" parse="text"/></literallayout>
             </example>
             <example>
-                <title>Upload Next Segment of Large Object HTTP
-                    Response</title>
+                <title>Upload next segment of large object response:
+                    HTTP</title>
                 <literallayout class="monospaced">w</literallayout>
             </example>
             <para>Next, upload the manifest you created that indicates
@@ -551,11 +564,11 @@
                 manifest file for subsequent additional
                 segments.</para>
             <example>
-                <title>Upload Manifest HTTP Request</title>
+                <title>Upload manifest request: HTTP</title>
                 <literallayout class="monospaced"><xi:include href="samples/upload-manifest-req.txt" parse="text"/></literallayout>
             </example>
             <example>
-                <title>Upload Manifest HTTP Response</title>
+                <title>Upload manifest response: HTTP</title>
                 <literallayout class="monospaced"><xi:include href="samples/upload-manifest-resp.txt" parse="text"/></literallayout>
             </example>
             <para>The response's Content-Type for a &GET; or &HEAD; on
@@ -565,10 +578,11 @@
                 &PUT; request.</para>
         </section>
         <section xml:id="static-large-objects">
-            <title>Static Large Objects</title>
-            <para>To create a static large object:</para>
-            <orderedlist>
-                <listitem>
+            <title>Static large objects</title>
+
+            <procedure>
+                <title>To create a static large object</title>
+                <step>
                     <para>Divide your content into pieces and create
                         (upload) a segment object to contain each
                         piece. You must record the <code>ETag</code>
@@ -579,8 +593,8 @@
                             <code>ETag</code> request header. This
                         ensures that the upload cannot corrupt your
                         data.</para>
-                </listitem>
-                <listitem>
+                </step>
+                <step>
                     <para>List the name of each segment object along
                         with its size and MD5 checksum in order.
                         Create a manifest object. You indicate that
@@ -588,8 +602,8 @@
                             <code>?multipart-manifest=put</code> query
                         string at the end of the manifest object
                         name.</para>
-                </listitem>
-            </orderedlist>
+                </step>
+            </procedure>
             <para>The body of the &PUT; request on the manifest object
                 comprises a json list, where each element contains the
                 following:</para>
@@ -613,7 +627,7 @@
                 </listitem>
             </itemizedlist>
             <example>
-                <title>Static Large Object Manifest List</title>
+                <title>Static large object manifest list</title>
                 <para>This is an example containing three segment
                     objects. In this example, you can use several
                     containers and the object names do not have to
@@ -622,17 +636,16 @@
                 <literallayout class="monospaced"><xi:include href="samples/slo-manifest-example.txt" parse="text"/></literallayout>
             </example>
             <para>The <code>Content-Length</code> request header must
-                contain the length of the json content -- not the
-                length of the segment objects. However, after the
-                &PUT; operation completes, the
-                    <code>Content-Length</code> metadata is set to the
-                total length of all the object segments. A similar
-                situation applies to the <code>ETag</code>. If used in
-                the &PUT; operation, it must contain the MD5 checksum
-                of the json content. The <code>ETag</code> metadata
-                value is then set to be the MD5 checksum of the
-                concatenated <code>ETag</code> values of the object
-                segments. You may also set the
+                contain the length of the json content. Not the length
+                of the segment objects. However, after the &PUT;
+                operation completes, the <code>Content-Length</code>
+                metadata is set to the total length of all the object
+                segments. A similar situation applies to the
+                    <code>ETag</code>. If used in the &PUT; operation,
+                it must contain the MD5 checksum of the json content.
+                The <code>ETag</code> metadata value is then set to be
+                the MD5 checksum of the concatenated <code>ETag</code>
+                values of the object segments. You may also set the
                     <code>Content-Type</code> request header and
                 custom object metadata.</para>
             <para>When the &PUT; operation sees the
@@ -654,7 +667,7 @@
                 the manifest you originally used in the &PUT;
                 operation.</para>
             <para>If you use the &DELETE; operation on a manifest
-                object, the manifest object is deleted -- the segment
+                object, the manifest object is deleted. The segment
                 objects are not affected. However, if you add the
                 query parameter
                     <code>?multipart-manifest=delete</code>, the
@@ -669,7 +682,7 @@
         </section>
     </section>
     <section xml:id="assigning-cors-headers-to-requests">
-        <title>Assigning CORS Headers to Requests</title>
+        <title>Assign CORS headers to requests</title>
         <para>CORS is a specification that stands for Cross-Origin
             Resource Sharing. It defines how browsers and servers
             communicate across origins using HTTP headers, such as
@@ -706,7 +719,7 @@
             </itemizedlist></para>
         <para>You can assign these headers to objects only.</para>
         <example>
-            <title>Assign CORS Header HTTP Request</title>
+            <title>Assign CORS header request: HTTP</title>
             <para>In the example, the origin header is assigned that
                 indicates where the file came from. This allows you to
                 provide security that requests to your Object Storage
@@ -717,13 +730,13 @@
     </section>
     <section
         xml:id="enabling-file-compression-with-content-encoding-header">
-        <title>Enabling File Compression with the Content-Encoding
-            Header</title>
-        <para>The Content-Encoding header allows a file to be
+        <title>Enable file compression with the Content-Encoding
+            header</title>
+        <para>The Content-Encoding header enables a file to be
             compressed without losing the identity of the underlying
             media type of the file, for example, a video.</para>
         <example>
-            <title>Content-Encoding Header HTTP Request</title>
+            <title>Content-Encoding header request: HTTP</title>
             <para>In the example, the content-encoding header is
                 assigned with an attachment type that indicates how
                 the file should be downloaded:</para>
@@ -732,14 +745,14 @@
     </section>
     <section
         xml:id="enabling-browser-bypass-with-content-disposition-header">
-        <title>Enabling Browser Bypass with the Content-Disposition
-            Header</title>
+        <title>Enable browser bypass with the Content-Disposition
+            header</title>
         <para>When an object is assigned the Content-Disposition
             header you can override a browser's default behavior for a
             file so that the download program saves the file rather
             than displaying it using default browser settings.</para>
         <example>
-            <title>Content-Disposition Header HTTP Request</title>
+            <title>Content-Disposition header request: HTTP</title>
             <para>In the example, the content-encoding header is
                 assigned with an attachment type that indicates how
                 the file should be downloaded.</para>
@@ -747,8 +760,8 @@
         </example>
     </section>
     <section xml:id="Expiring_Objects-e1e3228">
-        <title>Expiring Objects with the X-Delete-After and
-            X-Delete-At Headers</title>
+        <title>Expire objects with the X-Delete-After and X-Delete-At
+            headers</title>
         <para>When an object is assigned either an
                 <code>X-Delete-After</code> or
                 <code>X-Delete-At</code> header when doing a &PUT; or
@@ -759,11 +772,10 @@
             be outdated at a future time.</para>
         <para>The <code>X-Delete-At</code> header requires a Unix
             Epoch timestamp, in integer form; for example: 1348691905
-            represents Wed, 26 Sep 2012 20:38:25 GMT.
-            <!--  Exchanged POSIX in / favor of Epoch for the / sake of clarity dsh 02-06-12 -->By
-            setting the header to a specific Epoch time, you indicate
-            when you want the object to expire, not be served, and be
-            deleted completely from the storage system.</para>
+            represents Wed, 26 Sep 2012 20:38:25 GMT. setting the
+            header to a specific Epoch time, you indicate when you
+            want the object to expire, not be served, and be deleted
+            completely from the storage system.</para>
         <para>The <code>X-Delete-After</code> header takes an integer
             number of seconds and calculates the amount of time from
             now that you want the object to be deleted. The proxy
@@ -774,7 +786,7 @@
         <para>For existing objects that you want to assign expiration
             headers to, use the &POST; operation.</para>
         <example>
-            <title>Delete Object at HTTP Request</title>
+            <title>Delete object at request: HTTP</title>
             <para>In the example, the <code>X-Delete-At</code> header
                 is assigned with a Unix Epoch timestamp in integer
                 form for Mon, 11 Jun 2012 15:38:25 GMT. Use <link
@@ -784,19 +796,16 @@
             <literallayout class="monospaced"><xi:include href="samples/object-delete-at-req.txt" parse="text"/></literallayout>
         </example>
         <example>
-            <title>Delete Object after HTTP Request</title>
-            <para><!-- Reworded this here /  paragraph to make more sense / and match what I see dsh 02-06-12 -->In
-                this example, the <code>X-Delete-After</code> header
-                is assigned a value in seconds, equivalent to 10 days.
-                After this time, the object expires.</para>
-            <!-- Removed, "The system then converts the time necessary for an <code>X-Delete-At</code> header operation." Doesn't seem to match dsh 02-06-12-->
+            <title>Delete object after request: HTTP</title>
+            <para>In this example, the <code>X-Delete-After</code>
+                header is assigned a value in seconds, equivalent to
+                10 days. After this time, the object expires.</para>
             <literallayout class="monospaced"><xi:include href="samples/object-delete-after-req.txt" parse="text"/></literallayout>
         </example>
     </section>
 
     <section xml:id="Object_Versioning-e1e3230">
-        <!-- begin 4.3.2.7 -->
-        <title>Object Versioning</title>
+        <title>Object versioning</title>
         <para>Object versioning allows you to store multiple versions
             of your content to recover from unintended overwrites. It
             provides an easy method to implement version control which
@@ -869,7 +878,7 @@
             container, remove its <code>X-Versions-Location</code>
             metadata by sending an empty key value.</para>
         <example>
-            <title>Object Versioning with cURL</title>
+            <title>Object versioning with cURL</title>
             <para>Make sure a version-storing container exists,
                 creating it if necessary (this example names it
                 "versions"). Then create a container with the
@@ -904,7 +913,7 @@
       http://&lt;storage_url&gt;/versions?prefix=008myobject/</userinput></screen>
         </example>
     </section>
-    <section xml:id="copy-object">
+    <!--  <section xml:id="copy-object">
         <title>Copy Object</title>
         <para>Suppose you upload a file with the wrong object name or
             content type, or you needed to move some objects to
@@ -990,7 +999,7 @@
             time. Refer to <link linkend="Expiring_Objects-e1e3228"
                 >Expiring Objects</link> for more details.</para>
         <example>
-            <title>Object Delete HTTP Request</title>
+            <title>Object Delete request: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-delete-req.txt" parse="text"/></literallayout>
         </example>
         <para>No response body is returned. A status code of 2xx (
@@ -998,7 +1007,7 @@
             code 404 (Not Found) is returned when the object does not
             exist.</para>
         <example>
-            <title>Object Delete HTTP Response</title>
+            <title>Object Delete response: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-delete-resp.txt" parse="text"/></literallayout>
         </example>
     </section>
@@ -1009,7 +1018,7 @@
         <para>The only required header to be sent in the request is
             the authorization token.</para>
         <example>
-            <title>Get Object Metadata HTTP Request</title>
+            <title>Get Object Metadata request: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>No response body is returned. Metadata is returned as
@@ -1017,7 +1026,7 @@
             inclusive) indicates success; status 404 (Not Found) is
             returned when the object does not exist.</para>
         <example>
-            <title>Get Object Metadata HTTP Response</title>
+            <title>Get Object Metadata response: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-metadata-resp.txt" parse="text"/></literallayout>
         </example>
     </section>
@@ -1040,7 +1049,7 @@
             delete all existing metadata added with a previous
             &PUT;/&POST;.</para>
         <example>
-            <title>Update Object Metadata HTTP Request</title>
+            <title>Update Object Metadata request: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-update-metadata-req.txt" parse="text"/></literallayout>
         </example>
         <para>No response body is returned. A status code of 2xx
@@ -1048,8 +1057,8 @@
             404 (Not Found) is returned if the requested object does
             not exist.</para>
         <example>
-            <title>Update Object Metadata HTTP Response</title>
+            <title>Update Object Metadata response: HTTP</title>
             <literallayout class="monospaced"><xi:include href="samples/object-update-metadata-resp.txt" parse="text"/></literallayout>
         </example>
-    </section>
+    </section>-->
 </section>

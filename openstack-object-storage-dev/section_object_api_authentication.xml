@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="authentication-object-dev-guide">
+    <title>Authentication</title>
+    <para>The <emphasis role="italic">owner</emphasis> of an Object
+        Storage account controls access to that account and its
+        containers and objects. An owner is the user who has the
+            <literal>admin</literal> role for that tenant. The tenant
+        is also known as the project or account. </para>
+    <para>As the account owner, you can modify account metadata and
+        create, modify, and delete containers and objects.</para>
+    <para>To make an API request and identify yourself as the account
+        owner, include an authentication token in the
+            <literal>X-Auth-Token</literal> header in the request. </para>
+    <para>Depending on the token value in the
+            <literal>X-Auth-Token</literal> header, one of the
+        following actions occur:</para>
+    <itemizedlist>
+        <listitem>
+            <para>The <literal>X-Auth-Token</literal> header contains
+                the token for the account owner.</para>
+            <para>The request is permitted and has full access to make
+                changes to the account.</para>
+        </listitem>
+        <listitem>
+            <para>You omit the <literal>X-Auth-Token</literal> header
+                or the header contains a token for a non-owner or that
+                not valid. </para>
+            <para>The request fails with a <errorcode>401</errorcode>
+                <errortext>Unauthorized</errortext> or
+                    <errorcode>403</errorcode>
+                <errortext>Forbidden</errortext>response. You have no
+                access to accounts or containers, unless an access
+                control list (ACL) explicitly grants access. The
+                account owner can grant account and container access
+                to users through access control lists (ACLs). For more
+                information about ACLs, see <xref
+                    linkend="special-metadata-acls"/>.</para>
+        </listitem>
+    </itemizedlist>
+    <para>The following table describes the authentication services
+        that you can use:</para>
+    <informaltable rules="all">
+        <thead>
+            <tr>
+                <th>Authentication service</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <para>OpenStack Identity Service
+                    (Keystone)</para></td>
+                <td><para>The Object Storage account name is the same
+                        as the tenant ID.</para><para>For information
+                        about the Identity Service, see <xref
+                            linkend="get_auth_token_keystone"
+                        />.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <para>Tempauth middleware</para></td>
+                <td><para>Object Storage includes this middleware.
+                        User and account management is performed in
+                        the Object Storage system itself.</para>
+                    <para>For information about Tempauth, see <xref
+                            linkend="get_auth_token_tempauth"
+                        />.</para>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <para>swauth (in GitHub) or other custom
+                        middleware</para></td>
+                <td><para>This custom middleware is modeled on
+                        Tempauth, so usage is typically similar to
+                        Tempauth.</para><para>Specifically, you use
+                        the <literal>X-Auth-Token</literal> header to
+                        pass an authentication token to an API
+                        request.</para>
+                </td>
+            </tr>
+        </tbody>
+    </informaltable>
+    <para>Authentication tokens expire after a time period that the
+        authentication service defines. When a token expires, use of
+        the token causes requests to fail with a
+            <errorcode>401</errorcode>
+        <errortext>Unauthorized</errortext> response. To continue, you
+        must obtain a new token.</para>
+</section>
