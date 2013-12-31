@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="browser-bypass">
+    <title>Enable browser bypass with the Content-Disposition
+        header</title>
+    <para>When an object is assigned the Content-Disposition
+        header you can override a browser's default behavior for a
+        file so that the download program saves the file rather
+        than displaying it using default browser settings.</para>
+    <example>
+        <title>Content-Disposition header request: HTTP</title>
+        <para>In the example, the content-encoding header is
+            assigned with an attachment type that indicates how
+            the file should be downloaded.</para>
+        <literallayout class="monospaced"><xi:include href="samples/content-disposition-header-req.txt" parse="text"/></literallayout>
+    </example>
+</section>
