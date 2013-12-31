@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="paging-containers">
+    <title>Page through lists of containers</title>
+    <para>If you have a large number of containers, it is sometimes
+        more convenient to page through them than getting some big
+        long list of them. If I create more containers and then do a
+        regular listing, here's what it looks like with five
+        containers:</para>
+    <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343</userinput>
+<computeroutput>HTTP/1.1 200 OK
+X-Account-Object-Count: 0
+X-Account-Bytes-Used: 0
+X-Account-Container-Count: 5
+Accept-Ranges: bytes
+Content-Length: 31
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: txb28795cc25b04f0dbce408dfa5a3cfc9
+Date: Mon, 07 Nov 2011 19:03:06 GMT
+
+cosmo
+dogs
+elaine
+george
+jerry
+</computeroutput>
+		</screen>
+    <para>Suppose I want a page size of 2, all I do is append a
+        ""?limit=2"" to my URL:</para>
+    <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343?limit=2</userinput>
+<computeroutput>HTTP/1.1 200 OK
+X-Account-Object-Count: 0
+X-Account-Bytes-Used: 0
+X-Account-Container-Count: 5
+Accept-Ranges: bytes
+Content-Length: 11
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx940ee02c1a65451e96a2a2532e3a7ce7
+Date: Mon, 07 Nov 2011 19:05:30 GMT
+
+cosmo
+dogs
+</computeroutput></screen>
+    <para>Not surprisingly, I only get two containers. To get the next
+        page, you tell the system which item you last saw with the
+        "marker=" specifier:</para>
+    <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343?marker=dogs\&amp;limit=2</userinput>
+
+<computeroutput>HTTP/1.1 200 OK
+X-Account-Object-Count: 0
+X-Account-Bytes-Used: 0
+X-Account-Container-Count: 5
+Accept-Ranges: bytes
+Content-Length: 14
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx2a69f7ec38c34078a185c5875a4c0e34
+Date: Mon, 07 Nov 2011 19:15:00 GMT
+
+elaine
+george
+</computeroutput></screen>
+    <para>Notice that I had to use \&amp; so that my bash shell didn't
+        try to interpret the &amp; as wanting to run something in its
+        own thread. With that in place, you get the next page of items
+        that appear after the marker.</para>
+</section>

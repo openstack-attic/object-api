@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter [
+<!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="ch_object-storage-dev-troubleshooting">
+    <title>API examples</title>
+    <para>This section introduces the cURL command-line utility and
+        demonstrates how to use cURL to make API calls.</para>
+    <xi:include href="section_curl_how_curl_works.xml"/>
+    <!-- <section xml:id="using-curl-cli">
+        <title>cURL</title>
+        <para>cURL is a command-line tool which is available on most
+            UNIX®-like environments and Mac OS X® and can be
+            downloaded for Windows®. For more information on cURL,
+            visit <link xlink:href="http://curl.haxx.se/"
+                >http://curl.haxx.se/</link>.</para>
+        <para>cURL allows you to transmit and receive HTTP requests
+            and responses from the command-line or from within a shell
+            script. This makes it possible to work with the ReST API
+            directly without using one of the client APIs.</para>
+        <para>The following cURL command-line options will be
+            used</para>
+        <variablelist>
+            <title>cURL Command-Line Options</title>
+            <varlistentry>
+                <term>-X METHOD</term>
+                <listitem>
+                    <para>Specify the HTTP method to request (&HEAD;,
+                        &GET;, etc.)</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>-i</term>
+                <listitem>
+                    <para>Dump HTTP response headers to stdout.</para>
+                </listitem>
+            </varlistentry>
+            <varlistentry>
+                <term>-H HEADER</term>
+                <listitem>
+                    <para>Specify an HTTP header in the
+                        request.</para>
+                </listitem>
+            </varlistentry>
+        </variablelist>
+    </section>-->
+    <section xml:id="auth_examples">
+        <title>Authenticate</title>
+        <para>The following examples show you how to authenticate with
+            the Identity Service or Tempauth.</para>
+        <section xml:id="get_auth_token_keystone">
+            <title>Authenticate with the Identity Service</title>
+            <para>This section provides a overview of the
+                authentication process. For request and response
+                details, see <link
+                    xlink:href="http://docs.openstack.org/api/openstack-identity-service/2.0/content/POST_authenticate_v2.0_tokens_.html"
+                    >Authenticate</link> in the <citetitle>OpenStack
+                    Identity Service API v2.0
+                Reference</citetitle>.</para>
+            <procedure>
+                <title>To authentication with the Identity
+                    Service</title>
+                <step>
+                    <para>Send your credentials and a tenant ID or
+                        tenant name to the Identity Service.</para>
+                    <para>The response includes an authentication
+                        token and service catalog.</para>
+                </step>
+                <step>
+                    <para>Select the service catalog entry where
+                            <literal>type</literal> is
+                            <literal>object-store</literal>. Use the
+                            <literal>publicURL</literal> endpoint,
+                        which contains a URL with the full path to the
+                        Object Storage account. The URL has the
+                        format,
+                                <uri>https://<replaceable>hostname</replaceable>/v1/<replaceable>account</replaceable></uri>.</para>
+                </step>
+            </procedure>
+        </section>
+        <section xml:id="get_auth_token_tempauth">
+            <title>Authenticate with Tempauth</title>
+            <procedure>
+                <title>To authenticate with Tempauth</title>
+                <step>
+                    <para>Supply your user name and API access key in
+                        headers, as follows:</para>
+                    <itemizedlist>
+                        <listitem>
+                            <para><literal>X-Auth-User</literal>
+                                header. Specify your Object Storage
+                                user name.</para>
+                        </listitem>
+                        <listitem>
+                            <para>
+                                <literal>X-Auth-Key</literal> header.
+                                Specify your access key..</para>
+                        </listitem>
+                    </itemizedlist>
+                    <para>The following example shows a sample
+                        request:</para>
+                    <screen><userinput>GET /v1/auth HTTP/1.1
+Host: swift.yourcloud.com
+X-Auth-User: jdoe
+X-Auth-Key: jdoepassword</userinput></screen>
+                </step>
+                <step>
+                    <para>When authentication succeeds, you receive a
+                            <returnvalue>204</returnvalue>
+                        <errortext>No Content</errortext> status code.
+                        Any
+                                <returnvalue>2<replaceable>nn</replaceable></returnvalue>
+                        response indicates success.</para>
+                    <para>The <literal>X-Auth-Token</literal> response
+                        header contains the authentication token. The
+                            <literal>X-Storage-Url</literal> response
+                        header contains a URL that includes a full
+                        path to the Object Storage account. The URL
+                        has the format,
+                                <uri>https://<replaceable>hostname</replaceable>/v1/<replaceable>account</replaceable></uri>.</para>
+                    <para>The following example shows a sample
+                        response:</para>
+                    <screen><computeroutput>HTTP/1.1 204 No Content
+Date: Mon, 12 Nov 2010 15:32:21
+Server: Apache
+X-Storage-Url: https://swift.yourcloud.com/v1/AUTH_123456789_12345
+X-Auth-Token: eaaafd18-0fed-4b3a-81b4-663c99ec1cbb
+Content-Length: 0
+Content-Type: text/plain; charset=UTF-8</computeroutput></screen>
+                </step>
+            </procedure>
+        </section>
+    </section>
+    <section xml:id="determining-storage-usage">
+        <title>Determine storage usage</title>
+        <para>You can send a &HEAD; request to the storage service to
+            determine how much data you have stored in the system and
+            the number of containers that you are using. </para>
+        <para>Use the <code>-X</code> switch to specify the HTTP
+            method. Use the <code>-i</code> switch to send the HTTP
+            response headers to terminal output (stdout). </para>
+        <para>Also, you must include the authentication token in the
+                <literal>X-Auth-Token</literal> header. </para>
+        <screen><prompt>$</prompt> <userinput>curl –X HEAD -i \
+           -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+           https://storage.swiftdrive.com/v1/CF_xer7_343</userinput></screen>
+        <screen><computeroutput>HTTP/1.1 204 No Content
+Date: Thu, 09 Jul 2009 15:38:14 GMT
+Server: Apache
+X-Account-Container-Count: 22
+X-Account-Bytes-Used: 9891628380
+Content-Type: text/plain</computeroutput></screen>
+        <para>The <literal>X-Account-Container-Count</literal>
+            response header shows the number of containers in this
+            storage account. The
+                <literal>X-Account-Bytes-Used</literal> response
+            header shows the total bytes stored for the entire
+            account.</para>
+    </section>
+    <section xml:id="listing-and-creating-storage-containers">
+        <title>List and create containers</title>
+        <para>The simplest operation for Object Storage is to simply
+            list the containers you have, which when you don't have
+            any containers yet isn't terribly exciting:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+            -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+            https://storage.swiftdrive.com/v1/CF_xer7_343</userinput>
+            <computeroutput>HTTP/1.1 204 No Content
+                X-Account-Object-Count: 0
+                X-Account-Bytes-Used: 0
+                X-Account-Container-Count: 0
+                Accept-Ranges: bytes
+                X-Trans-Id: txe8ca5138ac8643ec84070543a0c9c91e
+                Content-Length: 0
+                Date: Mon, 07 Nov 2011 17:07:01 GMT</computeroutput></screen>
+        <para>So, you take the X-Auth-Token obtained from the
+            authentication operation, pass it as a header value,
+            execute the operation against the URL obtained from the
+            authentication operation, and force the GET verb with the
+            -X switch. What you get back tells you there aren't any
+            containers.</para>
+        <para>Next, let's create a container and then do the listing
+            again:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i \
+            -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+            https://storage.swiftdrive.com/v1/CF_xer7_343/george</userinput>
+            <computeroutput>HTTP/1.1 201 Created
+                Content-Length: 18
+                Content-Type: text/html; charset=UTF-8
+                X-Trans-Id: txb25576385284476d9fa6c73835f21650
+                Date: Mon, 07 Nov 2011 17:44:20 GMT
+                
+                201 Created</computeroutput></screen>
+        <para>Append the container name to the URL and force the &PUT;
+            verb. That creates a container, which you see when you do
+            a listing:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+            -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+            https://storage.swiftdrive.com/v1/CF_xer7_343</userinput>
+            <computeroutput>HTTP/1.1 200 OK
+                X-Account-Object-Count: 0
+                X-Account-Bytes-Used: 0
+                X-Account-Container-Count: 1
+                Accept-Ranges: bytes
+                Content-Length: 7
+                Content-Type: text/plain; charset=utf-8
+                X-Trans-Id: txaedd6b080626453399c9f5febbddb73b
+                Date: Mon, 07 Nov 2011 17:44:23 GMT
+                george</computeroutput></screen>
+        <para>You may have noticed the account metadata that comes
+            back from the listing call. As you'd guess, it'll tell you
+            how many objects you have, how much space you are using,
+            and how many containers you are using.</para>
+    </section>
+    <section xml:id="container-metadata-and-delete-containers">
+        <title>Get container metadata and delete containers</title>
+        <para>You can get at container metadata directly simply by
+            appending the name of the container to a HEAD
+            request:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X HEAD -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</userinput>
+        <computeroutput>HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: tx3dd984f9482341dd97546e9d49d65e90
+Content-Length: 0
+Date: Mon, 07 Nov 2011 20:39:41 GMT
+</computeroutput>
+		</screen>
+        <para>Not very exciting without any objects in the container,
+            but you get the idea. While you cannot update or delete
+            container metadata, you can delete a container:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X DELETE -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/george</userinput>
+        <computeroutput>HTTP/1.1 204 No Content
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: tx3fa3857f266f44319d9b8f4bf7ce7fc8
+Date: Mon, 07 Nov 2011 20:42:58 GMT
+</computeroutput></screen>
+        <para>Then let's confirm the delete by listing the containers
+            again:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343</userinput>
+        <computeroutput>HTTP/1.1 200 OK
+X-Account-Object-Count: 0
+X-Account-Bytes-Used: 0
+X-Account-Container-Count: 4
+Accept-Ranges: bytes
+Content-Length: 24
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx2475741852b849ce9403e382fe3f8015
+Date: Mon, 07 Nov 2011 20:43:08 GMT
+
+cosmo
+dogs
+elaine
+jerry
+</computeroutput></screen>
+    </section>
+    <section xml:id="special-metadata-acls">
+        <title>Special metadata: container ACLs</title>
+        <para>A particularly important metadata element for containers
+            is X-Container-Read, which establishes the ACL permissions
+            on who can read objects in the container. Prior to being
+            set, the ACL logic default to only be accessible to
+            someone with a valid X-Auth-Token for the account in
+            question. Doing a simple listing of a container shows us
+            the absence of X-Container-Read in this default
+            situation:</para>
+
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</userinput>
+        <computeroutput>HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: tx3aa52e951fc64b63bc1fda27902b9bd3
+Content-Length: 0
+Date: Tue, 15 Nov 2011 03:29:22 GMT
+</computeroutput>
+		</screen>
+        <para>Now set the <literal>X-Container-Read</literal> header.
+            For a full explanation of valid values, see <link
+                xlink:href="http://swift.openstack.org/misc.html#acls"
+                > http://swift.openstack.org/misc.html#acls</link>.
+            Enable read access and listing access to anybody:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    -H "X-Container-Read: .r:*,.rlistings" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</userinput>
+        <computeroutput>HTTP/1.1 202 Accepted
+Content-Length: 58
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txf2befb56b1854a50995f710f2db48089
+Date: Tue, 15 Nov 2011 03:33:16 GMT
+
+202 Accepted
+
+The request is accepted for processing.
+</computeroutput></screen>
+        <para>To see the metadata change, do a listing again:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/jerry</userinput>
+        <computeroutput>HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: txb40eb86d949345f7bc66b01e8b63c3a5
+Content-Length: 0
+Date: Tue, 15 Nov 2011 03:33:36 GMT
+</computeroutput></screen>
+        <para>The side effect of giving anybody read access is that
+            any object in the container is now accessible from a
+            browser simply by entering the X-Storage-URL used
+            throughout the session and append the object name. For
+            example:</para>
+        <para>https://storage.swiftdrive.com/v1/CF_xer7_343/jerry/cereal.jpg</para>
+        <para>would be the URL of an object named "cereal.jpg" in the
+            container "jerry" that has been made publicly accessible
+            using this method.</para>
+    </section>
+    <section xml:id="creating-objects">
+        <title>Create objects</title>
+        <para>Enough with containers already, let's start to upload
+            some objects. Suppose you had a local directory full of
+            dog pictures:</para>
+        <screen><prompt>$</prompt> <userinput>ls -l</userinput>
+            <computeroutput>total 504
+-rw-r--r--@ 1 petecj2  staff   44765 Nov  7 14:49 JingleRocky.jpg
+-rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg</computeroutput></screen>
+        <para>To put one of them in a container called "dogs" with
+            cURL, you'd do this:</para>
+
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    -T JingleRocky.jpg \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</userinput>
+        <computeroutput>HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: f7d40eceffdd9c2ecab226105737b2a6
+Last-Modified: Mon, 07 Nov 2011 22:51:29 GMT
+X-Trans-Id: txd131cc897c78403daf5fad010d4d7152
+Date: Mon, 07 Nov 2011 22:51:30 GMT
+
+&lt;html>
+ &lt;head>
+  &lt;title>201 Created&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>201 Created&lt;/h1>
+  &lt;br />&lt;br />
+
+
+
+ &lt;/body>
+&lt;/html>
+</computeroutput></screen>
+        <para>The name of the object comes from whatever you append to
+            the URL path beyond the container name. The -T switch lets
+            you name a file to push with the operation as the request
+            body. Confirm the upload by checking the container
+            again:</para>
+
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</userinput>
+        <computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 1
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 44765
+Accept-Ranges: bytes
+Content-Length: 16
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx83be89d4e1a34eacbfeebcdfc7a7f2e7
+Date: Mon, 07 Nov 2011 22:56:25 GMT
+
+JingleRocky.jpg
+</computeroutput></screen>
+        <para>Notice that the container metadata now reflects the
+            number of objects and the bytes match what you saw when
+            you did the directory listing. After uploading the other
+            two similarly, you get a full object listing:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" https://storage.swiftdrive.com/v1/CF_xer7_343/dogs</userinput>
+<computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 3
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 252732
+Accept-Ranges: bytes
+Content-Length: 53
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: txae17dfa78da64117aaf07585a1b02115
+Date: Mon, 07 Nov 2011 23:00:56 GMT
+
+JingleRocky.jpg
+RockyAndBuster.jpg
+SittingBuster.jpg</computeroutput></screen>
+    </section>
+    <section xml:id="create_static_large_objects">
+        <title>Create static large objects</title>
+        <para>Creation of a static large object is done in several
+            steps. First, divide the content into pieces and upload
+            each piece into a segment object. Then, create a manifest
+            object. In this example, you place the segment objects
+            into the "segments" container and the manifest object into
+            the "images" container. You are not required to do this,
+            but using a dedicated container for segment objects is
+            convenient.</para>
+        <para>Assuming you have already divided the image into three
+            files, you can upload them. You have removed non-essential
+            response headers so you can see the important
+            details.</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i -H "X-Auth-Token: 12345" -T ./piece1 https://storage.swiftdrive.com/v1/CF_xer7_343/segments/terrier-jpg-one</userinput>
+<computeroutput>HTTP/1.1 201 Created
+Content-Length: 4000000
+Etag: f7365c1419b4f349592c00bd0cfb9b9a</computeroutput></screen>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i -H "X-Auth-Token: 12345" -T ./piece2 https://storage.swiftdrive.com/v1/CF_xer7_343/segments/terrier-jpg-two</userinput>
+<computeroutput>HTTP/1.1 201 Created
+Content-Length: 2000000
+Etag: ad81e97b10e870613aecb5ced52adbaa</computeroutput></screen>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i -H "X-Auth-Token: 12345" -T ./piece3 https://storage.swiftdrive.com/v1/CF_xer7_343/segments/terrier-jpg-three</userinput>
+<computeroutput>HTTP/1.1 201 Created
+Content-Length: 1000
+Etag: 00b046c9d74c3e8f93b320c5e5fdc2c3</computeroutput></screen>
+        <para>At this stage, you can create the manifest listing.
+            Notice that the size and ETag are copied from the previous
+            uploads. Create a file called <code>manifest.json</code>
+            with the following content:</para>
+        <programlisting language="json">
+    [
+        {
+            "path": "segments/terrier-jpg-one",
+            "etag": "f7365c1419b4f349592c00bd0cfb9b9a",
+            "size_bytes": 4000000
+        },
+        {
+            "path": "segments/terrier-jpg-two",
+            "etag": "ad81e97b10e870613aecb5ced52adbaa",
+            "size_bytes": 2000000
+        },
+            "path": "segments/terrier-jpg-three",
+            "etag": "00b046c9d74c3e8f93b320c5e5fdc2c3",
+            "size_bytes": 1000
+        {
+        }
+    ]</programlisting>
+        <para>The final operation is to upload this content into a
+            manifest object. To indicate that this is a manifest
+            object, you need to specify the
+                <code>?multipart-manifest=put</code> query
+            string.</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i -H "X-Auth-Token: 12345" -T ./manifest.json  https://storage.swiftdrive.com/v1/CF_xer7_343/images/terrier-jpg?multipart-manifest=put</userinput></screen>
+        <para>Now, examine the static large object. Notice that the
+            size is the total size of all the segments.</para>
+        <screen><prompt>$</prompt> <userinput>curl –X HEAD -i -H "X-Auth-Token: 12345" https://storage.swiftdrive.com/v1/CF_xer7_343/images/terrier-jpg</userinput>
+        <computeroutput>HTTP/1.1 200 OK
+Content-Length: 6001000
+Etag: "0c922c37f915efb1c9b97e6328b3e660"
+</computeroutput></screen>
+    </section>
+    <section xml:id="paging-objects">
+        <title>Page through lists of objects</title>
+        <para>Exactly like listing containers, objects can be listed
+            in pages at a time using markers to denote pages. From the
+            previous example with 3 objects in the container "dogs",
+            the list can be paged with the "limit" query string
+            variable:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?limit=2</userinput>
+<computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 3
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 252732
+Accept-Ranges: bytes
+Content-Length: 35
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx5e00fa9fa895423198bc814cb0c6162d
+Date: Tue, 15 Nov 2011 03:53:51 GMT
+
+JingleRocky.jpg
+RockyAndBuster.jpg</computeroutput></screen>
+        <para>And the second page fetched with:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/dogs?marker=RockyAndBuster.jpg\&amp;limit=2</userinput>
+<computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 3
+X-Container-Read: .r:*,.rlistings
+X-Container-Bytes-Used: 252732
+Accept-Ranges: bytes
+Content-Length: 18
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: txe1287a7179dc4dfd98610850a0fff157
+Date: Tue, 15 Nov 2011 03:54:21 GMT
+
+SittingBuster.jpg
+</computeroutput></screen>
+    </section>
+    <section xml:id="retrieve-copy-retrieve-objects">
+        <title>Get, copy, and delete objects</title>
+        <para>Now, retrieve an object that you previously uploaded.
+            First, remove the local copy:</para>
+        <screen><prompt>$</prompt> <userinput>ls -l</userinput>
+            <computeroutput>total 504
+-rw-r--r--@ 1 petecj2  staff   44765 Nov  7 14:49 JingleRocky.jpg
+-rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg</computeroutput></screen>
+        <screen><prompt>$</prompt> <interfacename>rm JingleRocky.jpg</interfacename>
+            <prompt>$</prompt> <userinput>ls -l</userinput>
+            <computeroutput>total 416
+            -rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg</computeroutput>
+        </screen>
+        <para>Be sure not to use -i switch here because you want the
+            raw data, which you pipe to a file:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg > JingleRocky.jpg</userinput>
+        <computeroutput>$ ls -l
+total 504
+-rw-r--r--  1 petecj2  staff   44765 Nov  7 15:11 JingleRocky.jpg
+-rw-r--r--@ 1 petecj2  staff  100864 Nov  7 14:47 RockyAndBuster.jpg
+-rw-r--r--@ 1 petecj2  staff  107103 Nov  7 14:47 SittingBuster.jpg</computeroutput></screen>
+        <para>Next, Object Storage provides a facility to copy objects
+            from one container to another entirely on the server side.
+            To do this, you do a &PUT; with the destination container
+            and new object name while passing a special X-Copy-From
+            header and a Content-Length of zero:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    -H "X-Copy-From: /dogs/JingleRocky.jpg" \
+    -H "Content-Length: 0" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg</userinput>
+<computeroutput>HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: f7d40eceffdd9c2ecab226105737b2a6
+X-Copied-From: dogs/JingleRocky.jpg
+Last-Modified: Mon, 07 Nov 2011 23:23:53 GMT
+X-Trans-Id: tx244cd14df1b94d8c91ec5dcf8c5f9da4
+Date: Mon, 07 Nov 2011 23:23:54 GMT
+
+&lt;html>
+ &lt;head>
+  &lt;title>201 Created&lt;/title>
+ &lt;/head>
+ &lt;body>
+  &lt;h1>201 Created&lt;/h1>
+  &lt;br />&lt;br />
+
+ &lt;/body>
+&lt;/html></computeroutput></screen>
+        <para>You can then confirm the new location of the object. To
+            do this, you do a GET with the destination container to
+            see the listing of the object:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/</userinput>
+<computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 1
+X-Container-Bytes-Used: 44765
+Accept-Ranges: bytes
+Content-Length: 16
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx46986b4a09b34790924fd43842b2b0dd
+Date: Mon, 07 Nov 2011 23:24:05 GMT
+
+JingleRocky.jpg</computeroutput></screen>
+        <para>To delete an object from its container, simply use the
+            DELETE verb:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X DELETE -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/JingleRocky.jpg</userinput>
+        <computeroutput>HTTP/1.1 204 No Content
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txd45f04422b034e6f8447de400b78cbf3
+Date: Mon, 07 Nov 2011 23:32:39 GMT
+</computeroutput></screen>
+        <para>Confirming the deletion by doing a container
+            listing:</para>
+
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/elaine/</userinput>
+        <computeroutput>HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: txc9b43bf4d896405eb9a88ca468bf7b2d
+Content-Length: 0
+Date: Mon, 07 Nov 2011 23:32:41 GMT
+</computeroutput></screen>
+    </section>
+    <section xml:id="object-metadata">
+        <title>Object metadata</title>
+        <para>Objects can have whatever metadata keys/values you
+            choose. Simply POST an HTTP Header to the object in the
+            form of X-Object-Meta-&lt;key>: &lt;value>. Like
+            this:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X POST -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    -H "X-Object-Meta-Breed: Terrier pit bull mix"" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</userinput>
+        <computeroutput>
+	&lt;html>
+	 &lt;head>
+	  &lt;title>202 Accepted&lt;/title>
+	 &lt;/head>
+	 &lt;body>
+	  &lt;h1>202 Accepted&lt;/h1>
+	  The request is accepted for processing.&lt;br />&lt;br />
+
+
+
+	 &lt;/body>
+	&lt;/html>
+</computeroutput></screen>
+        <para>And then read the object metadata with a HEAD on the
+            object path:</para>
+
+        <screen><prompt>$</prompt> <userinput>curl –X HEAD -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/dogs/JingleRocky.jpg</userinput>
+        <computeroutput>
+    HTTP/1.1 200 OK
+	X-Object-Meta-Breed: Terrier pit bull mix
+	Last-Modified: Tue, 08 Nov 2011 01:26:49 GMT
+	Etag: f7d40eceffdd9c2ecab226105737b2a6
+	Accept-Ranges: bytes
+	Content-Length: 44765
+	Content-Type: image/jpeg
+	X-Trans-Id: txa8bff9ad7ef844829103c1f9b8c20781
+	Date: Tue, 08 Nov 2011 01:29:35 GMT
+</computeroutput></screen>
+    </section>
+    <!-- <section xml:id="folders-directories">
+        <title>Pseudo-hierarchical folders/directories</title>
+        <para>In most storage systems, you
+            have the ability to create custom hierarchies of files so
+            that you can better organize them. On its surface, Object
+            Storage only gives you one level of hierarchy in the form
+            of containers. However, it turns out that you can get
+            creative with naming your objects to give yourself the
+            same effect as having hierarchical containers.</para>
+        <para>Let's start with a fresh container without any objects
+            in it:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/photos</userinput>
+        <computeroutput>HTTP/1.1 201 Created
+Content-Length: 18
+Content-Type: text/html; charset=UTF-8
+X-Trans-Id: txc78254a41b374b6ea10590d90874f769
+Date: Wed, 16 Nov 2011 00:06:22 GMT
+
+201 Created
+</computeroutput></screen>
+        <para>Now list the new container:</para>
+
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/photos</userinput>
+        <computeroutput>HTTP/1.1 204 No Content
+X-Container-Object-Count: 0
+X-Container-Bytes-Used: 0
+Accept-Ranges: bytes
+X-Trans-Id: tx49112200f7934c2bab1de3ae103c368e
+Content-Length: 0
+Date: Wed, 16 Nov 2011 00:06:26 GMT
+</computeroutput></screen>
+        <para>Next, add an object but prefix the name with the
+            hierarchy desired:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    -T JingleRocky.jpg \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/photos/terriers/JingleRocky.jpg</userinput>
+        <computeroutput>HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: f7d40eceffdd9c2ecab226105737b2a6
+Last-Modified: Wed, 16 Nov 2011 00:09:18 GMT
+X-Trans-Id: txe34fdf2704f044e3a7102256386b1cb7
+Date: Wed, 16 Nov 2011 00:09:19 GMT
+
+&lt;html>
+	&lt;head>
+ 		&lt;title>201 Created&lt;/title>
+	&lt;/head>
+	&lt;body>
+ 		&lt;h1>201 Created&lt;/h1>
+ 		&lt;br />&lt;br />
+	&lt;/body>
+&lt;/html>
+</computeroutput></screen>
+        <para>Do it again with a different object and prefix:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X &PUT; -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    -T SittingBuster.jpg \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/photos/chihuahuas/SittingBuster.jpg</userinput>
+        <computeroutput>HTTP/1.1 201 Created
+Content-Length: 118
+Content-Type: text/html; charset=UTF-8
+Etag: e692e744c7180ee368166a24f1a2fa9b
+Last-Modified: Wed, 16 Nov 2011 00:52:25 GMT
+X-Trans-Id: txe229d03af5ea4d2ea1071def213c3f02
+Date: Wed, 16 Nov 2011 00:52:25 GMT
+
+&lt;html>
+	&lt;head>
+ 		&lt;title>201 Created&lt;/title>
+	&lt;/head>
+	&lt;body>
+ 		&lt;h1>201 Created&lt;/h1>
+ 		&lt;br />&lt;br />
+	&lt;/body>
+&lt;/html>
+</computeroutput></screen>
+        <para>Now list the container, revealing the prefixes:</para>
+
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/photos</userinput>
+        <computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 2
+X-Container-Bytes-Used: 151868
+Accept-Ranges: bytes
+Content-Length: 54
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx8544a17e8b1e4da693145fb5f2e6db43
+Date: Wed, 16 Nov 2011 00:53:43 GMT
+
+chihuahuas/SittingBuster.jpg
+terriers/JingleRocky.jpg
+</computeroutput></screen>
+        <para>If you want to perform hierarchical listings with the
+            prefixes in place, you can use the "path" query string
+            variable:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/photos?path=terriers</userinput>
+        <computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 2
+X-Container-Bytes-Used: 151868
+Accept-Ranges: bytes
+Content-Length: 25
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx3f1b9575d4de4a7d97ba3f9ad81923cc
+Date: Wed, 16 Nov 2011 00:55:12 GMT
+
+terriers/JingleRocky.jpg
+</computeroutput></screen>
+        <para>If you wanted to see what prefixes were in place, you
+            can use the "delimiter" query string variable to
+            distinguish prefix paths from object names:</para>
+        <screen><prompt>$</prompt> <userinput>curl –X GET -i \
+    -H "X-Auth-Token: fc81aaa6-98a1-9ab0-94ba-aba9a89aa9ae" \
+    https://storage.swiftdrive.com/v1/CF_xer7_343/photos?delimiter=/</userinput>
+<computeroutput>HTTP/1.1 200 OK
+X-Container-Object-Count: 2
+X-Container-Bytes-Used: 151868
+Accept-Ranges: bytes
+Content-Length: 22
+Content-Type: text/plain; charset=utf-8
+X-Trans-Id: tx7222a3dd73fe44b888db4e58cc647d1e
+Date: Wed, 16 Nov 2011 00:57:40 GMT
+
+chihuahuas/
+terriers/</computeroutput></screen>
+        <para>Using these in combination allows you to discover
+            directories within a particular path and then further
+            drill down based on the results.</para>
+    </section>-->
+
+    
+    <xi:include href="section_object-api-create-website.xml"/>
+</chapter>
