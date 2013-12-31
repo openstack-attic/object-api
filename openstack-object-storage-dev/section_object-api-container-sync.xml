@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+ <!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:m="http://www.w3.org/1998/Math/MathML"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:db="http://docbook.org/ns/docbook" version="5.0"
+    xml:id="container-sync">
+    <?dbhtml stop-chunking?>
+    <title>Container synchronization</title>
+    <para>To discover whether your Object Storage system supports
+        container synchronization, see <xref linkend="discoverability"
+        />. Alternatively, check with your service provider.</para>
+    <para>Container synchronization enables you to synchronize the
+        contents of a source container with a destination container.
+        After you set up container synchronization, the system
+        automatically copies objects from the source container to the
+        destination container. Also, the system deletes objects in the
+        destination container that were deleted in the source
+        container.</para>
+    <para>The system copies objects in a way that object metadata is
+        retained, such as <literal>Last-Modified</literal> and any
+        custom metadata you might have set for the object.</para>
+    <para>You can configure the source and destination containers, as
+        follows:</para>
+    <itemizedlist>
+        <listitem>
+            <para>The source container can be on a different or the
+                same Object Storage system that the destination
+                container is on.</para>
+        </listitem>
+        <listitem>
+            <para>The destination container can be a source container
+                for synchronization for another destination container.
+            </para>
+        </listitem>
+        <listitem>
+            <para>The destination container can be the original source
+                container: both containers synchronize with each
+                other. Any object that you add to or delete from a
+                container is automatically copied to or deleted from
+                the other container.</para>
+        </listitem>
+    </itemizedlist>
+    <para>The Object Storage system performs the synchronization in
+        the background, and makes no guarantees about performance or
+        timeliness.</para>
+    <para>Some Object Storage features, such as large object creation,
+        might require the use of several containers. Container
+        synchronization handles each container separately; if your
+        object segments are located in a different container, they are
+        not transferred unless you also set up container
+        synchronization on that container. However, even if both the
+        manifest and segment containers are synchronized, there is no
+        guarantee that the manifest is transferred before the segment
+        objects. An attempt to download the large object from the
+        destination container might fail, be incomplete, or have
+        jumbled content. Object versioning is not supported.</para>
+    <para>To configure a <emphasis role="italic">source</emphasis>
+        container for synchronization, set the following metadata
+        headers:</para>
+    <itemizedlist>
+        <listitem>
+            <para><literal>X-Container-Sync-To</literal>. Set this
+                metadata header to the following value:</para>
+            <programlisting>//<replaceable>REALM</replaceable>/<replaceable>SYSTEM</replaceable>/<replaceable>DESTINATION_ACCOUNT</replaceable>/<replaceable>DESTINATION_CONTAINER_NAME</replaceable></programlisting>
+            <para>Your service provider can give you the appropriate
+                values for
+                    <literal><replaceable>REALM</replaceable></literal>
+                and
+                    <literal><replaceable>SYSTEM</replaceable></literal>.
+                The objects are sent to the
+                        <literal><replaceable>DESTINATION_ACCOUNT</replaceable>/<replaceable>DESTINATION_CONTAINER_NAME</replaceable></literal>
+                container. These names can be different from the
+                source account and container names.</para>
+        </listitem>
+        <listitem>
+            <para><literal>X-Container-Sync-Key</literal>. Set this
+                metadata header to an arbitrary string value. This
+                value serves as a shared secret. Secure this value
+                just as you would a password.</para>
+        </listitem>
+    </itemizedlist>
+    <para>To configure a <emphasis role="italic"
+            >destination</emphasis> container to receive objects, set
+        the <literal>X-Container-Sync-Key</literal> metadata header to
+        the <literal>X-Container-Sync-Key</literal> value in the
+        source container.</para>
+    <note>
+        <para>To configure a destination container as the source
+            container for another destination container, set the
+                <literal>X-Container-Sync-To</literal> metadata header
+            as you would for a source container.</para>
+    </note>
+</section>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xmlns="http://docbook.org/ns/docbook"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+  xml:id="api-operations" role="api-reference">
+  <title>Object Storage API operations</title>
+  <para>Manage the accounts, containers, and objects in the Object
+    Storage system.</para>
+  <para>For a complete description of HTTP 1.1 header definitions, see
+      <link
+      xlink:href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14"
+      >Header Field Definitions</link>.</para>
+  <section xml:id="storage_account_services">
+    <title>Accounts</title>
+    <para>List containers for a specified account. Create, update,
+      and delete account metadata. Show account metadata.</para>
+    <wadl:resources xmlns:wadl="http://wadl.dev.java.net/2009/02">
+      <wadl:resource
+        href="http://git.openstack.org/cgit/openstack/api-site/plain/api-ref/src/wadls/object-api/src/os-object-api-1.0.wadl#account">
+        <wadl:method href="#showAccountDetails"/>
+        <wadl:method href="#updateAccountMeta"/>
+        <wadl:method href="#showAccountMeta"/>
+      </wadl:resource>
+    </wadl:resources>
+  </section>
+  <section xml:id="storage_container_services">
+    <title>Containers</title>
+    <para>List objects in a specified container. Create, show
+      details for, and delete containers. Create, update, show,
+      and delete container metadata.</para>
+    <wadl:resources xmlns:wadl="http://wadl.dev.java.net/2009/02">
+      <wadl:resource
+        href="http://git.openstack.org/cgit/openstack/api-site/plain/api-ref/src/wadls/object-api/src/os-object-api-1.0.wadl#container">
+        <wadl:method href="#showContainerDetails"/>
+        <wadl:method href="#createContainer"/>
+        <wadl:method href="#deleteContainer"/>
+        <wadl:method href="#updateContainerMeta"/>
+        <wadl:method href="#showContainerMeta"/>
+      </wadl:resource>
+    </wadl:resources>
+  </section>
+  <section xml:id="storage_object_services">
+    <title>Objects</title>
+    <para>Create, replace, show details for, and delete objects.
+      Copy objects with another object with a new or different name.
+      Update object metadata.</para>
+    <wadl:resources xmlns:wadl="http://wadl.dev.java.net/2009/02">
+      <wadl:resource
+        href="http://git.openstack.org/cgit/openstack/api-site/plain/api-ref/src/wadls/object-api/src/os-object-api-1.0.wadl#object">
+        <wadl:method href="#getObject"/>
+        <wadl:method href="#createOrReplaceObject"/>
+        <wadl:method href="#copyObject"/>
+        <wadl:method href="#deleteObject"/>
+        <wadl:method href="#showObjectMeta"/>
+        <wadl:method href="#updateObjectMeta"/>
+      </wadl:resource>
+    </wadl:resources>
+  </section>
+</chapter>

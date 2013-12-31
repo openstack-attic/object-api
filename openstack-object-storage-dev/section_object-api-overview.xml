@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Some useful entities borrowed from HTML -->
+<!ENTITY nbsp "&#160;">
+<!-- Useful for describing APIs -->
+<!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY GET '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="object_storage_api_overview">
+    <title>Object Storage API overview</title>
+    <para>OpenStack Object Storage is an object-based storage system
+        that stores content and metadata as objects. You create,
+        modify, and get objects and metadata by using the Object
+        Storage API, which is implemented as a set of Representational
+        State Transfer (REST) web services.</para>
+    <para>For an introduction to OpenStack Object Storage, see <link
+            xlink:href="http://docs.openstack.org/admin-guide-cloud/content/ch_admin-openstack-object-storage.html"
+            >Object Storage</link> in the <citetitle>OpenStack Cloud
+            Administrator Guide</citetitle>.</para>
+    <para>You use the HTTPS (SSL) protocol to interact with Object
+        Storage, and you use standard HTTP calls to perform API
+        operations. You can also use language-specific APIs, which use
+        the RESTful API, that make it easier for you to integrate into
+        your applications.</para>
+    <para>To assert your right to access and change data in an
+        account, you identify yourself to Object Storage by using an
+        authentication token. To get a token, you present your
+        credentials to an authentication service. The authentication
+        service returns a token and the URL for the account. Depending
+        on which authentication service that you use, the URL for the
+        account appears in:</para>
+    <itemizedlist>
+        <listitem>
+            <para><emphasis role="bold">OpenStack Identity
+                    Service</emphasis>. The URL is defined in the
+                service catalog.</para>
+        </listitem>
+        <listitem>
+            <para><emphasis role="bold">Tempauth</emphasis>. The URL
+                is provided in the <literal>X-Storage-Url</literal>
+                response header.</para>
+        </listitem>
+    </itemizedlist>
+    <para>In both cases, the URL is the full URL and includes the
+        account resource. For information about authentication, see
+            <xref linkend="authentication"/>.</para>
+    <para>The Object Storage API supports the standard, non-serialized
+        response format, which is the default, and both JSON and XML
+        serialized response formats. See <xref
+            linkend="serialized-response-formats"/>.</para>
+    <para>The Object Storage system organizes data in a hierarchy, as
+        follows:</para>
+    <itemizedlist>
+        <listitem>
+            <para><emphasis role="bold">Account</emphasis>. Represents
+                the top-level of the hierarchy.</para>
+            <para>Your service provider creates your account and you
+                own all resources in that account. The account defines
+                a namespace for containers. A container might have the
+                same name in two different accounts.</para>
+            <para>In the OpenStack environment,
+                    <firstterm>account</firstterm> is synonymous with
+                a project or tenant.</para>
+        </listitem>
+        <listitem>
+            <para><emphasis role="bold">Container</emphasis>. Defines
+                a namespace for objects. An object with the same name
+                in two different containers represents two different
+                objects. You can create any number of containers
+                within an account.</para>
+            <para>In addition to containing objects, you can also use
+                the container to control access to objects by using an
+                access control list (ACL). You cannot store an ACL
+                with individual objects.</para>
+            <para>In addition, you configure and control many other
+                features, such as object versioning, at the container
+                level. See <xref linkend="set-object-versions"
+                />.</para>
+            <para>You can bulk-delete up to 10,000 containers in a
+                single request. See <xref linkend="bulk-delete"
+                />.</para>
+        </listitem>
+        <listitem>
+            <para><emphasis role="bold">Object</emphasis>. Stores data
+                content, such as documents, images, and so on. You can
+                also store custom metadata with an object.</para>
+            <para>With the Object Storage API, you can:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>Store an unlimited number of objects. Each
+                        object can be as large as 5&nbsp;GB, which is the
+                        default. You can configure the maximum object
+                        size.</para>
+                </listitem>
+                <listitem>
+                    <para>Upload and store objects of any size with
+                        large object creation. See <xref
+                            linkend="large-object-creation"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Use cross-origin resource sharing to manage
+                        object security. See <xref
+                            linkend="cors-headers"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Compress files. See <xref
+                            linkend="file-compression"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Override browser behavior for an object. See
+                            <xref linkend="content-disposition"
+                        />.</para>
+                </listitem>
+                <listitem>
+                    <para>Schedule objects for deletion. See <xref
+                            linkend="expire-objects"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Bulk-delete up to 10,000 objects in a single
+                        request. See <xref linkend="bulk-delete"
+                        />.</para>
+                </listitem>
+                <listitem>
+                    <para>Auto-extract archive files. See <xref
+                            linkend="archive-auto-extract"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Generate a URL that provides time-limited
+                        &GET; access to an object. See <xref
+                            linkend="tempurl"/>.</para>
+                </listitem>
+                <listitem>
+                    <para>Upload objects directly to the Object
+                        Storage system from a browser by using form
+                        &POST; middleware. See <xref
+                            linkend="form-post"/>.</para>
+                </listitem>
+            </itemizedlist>
+        </listitem>
+    </itemizedlist>
+    <para>The account, container, and object hierarchy affects the way
+        you interact with the Object Storage API.</para>
+    <para>Specifically, the resource path reflects this structure and
+        has this format:</para>
+    <programlisting>/v1/{account}/{container}/{object}</programlisting>
+    <para>For example, for the <literal>flowers/rose.jpg</literal>
+        object in the <literal>images</literal> container in the
+            <literal>12345678912345</literal> account, the resource
+        path is:</para>
+    <programlisting>/v1/12345678912345/images/flowers/rose.jpg</programlisting>
+    <para>Notice that the object name contains the
+            <literal>/</literal> character. This slash does not
+        indicate that Object Storage has a sub-hierarchy called
+            <literal>flowers</literal> because containers do not store
+        objects in actual sub-folders. However, the inclusion of
+            <literal>/</literal> or a similar convention inside object
+        names enables you to create pseudo-hierarchical folders and
+        directories. See <xref
+            linkend="pseudo-hierarchical-folders-directories"
+        />.</para>
+    <para>For example, if the endpoint for Object Storage is
+            <literal>objects.mycloud.com</literal>, the returned URL
+        is
+            <literal>https://objects.mycloud.com/v1/12345678912345</literal>.</para>
+    <para>To access a container, append the container name to the
+        resource path.</para>
+    <para>To access an object, append the container and the object
+        name to the path.</para>
+    <para>If you have a large number of containers or objects, you can
+        use query parameters to page through large lists of
+        containers or objects. Use the <parameter>marker</parameter>,
+            <parameter>limit</parameter>, and
+            <parameter>end_marker</parameter> query parameters to
+        control how many items are returned in a list and where the
+        list starts or ends. See <xref linkend="large-lists"/>.</para>
+    <para>Object Storage HTTP requests have the following default
+        constraints. Your service provider might use different default
+        values.</para>
+    <informaltable rules="all">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Maximum value</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Number of HTTP headers</td>
+                <td>90</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of HTTP headers</td>
+                <td>4096&nbsp;bytes</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length per HTTP request line</td>
+                <td>8192&nbsp;bytes</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of HTTP request</td>
+                <td>5&nbsp;GB</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of container names</td>
+                <td>256&nbsp;bytes</td>
+                <td>Cannot contain the <literal>/</literal>
+                    character.</td>
+            </tr>
+            <tr>
+                <td>Length of object names</td>
+                <td>1024&nbsp;bytes</td>
+                <td>By default, there are no character
+                    restrictions.</td>
+            </tr>
+        </tbody>
+    </informaltable>
+    <para>You must UTF-8-encode and then URL-encode container and
+        object names before you call the API binding. If you use an
+        API binding that performs the URL-encoding for you, do not
+        URL-encode the names before you call the API binding.
+        Otherwise, you double-encode these names. Check the length
+        restrictions against the URL-encoded string.</para>
+    <para>These sections describe the operations that you can perform
+        with the Object Storage API:</para>
+    <itemizedlist>
+        <listitem>
+            <para><xref linkend="storage_account_services"/>. Use to
+                perform account-level tasks.</para>
+            <para>Lists containers for a specified account. Creates,
+                updates, and deletes account metadata. Shows account
+                metadata.</para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="storage_container_services"/>. Use to
+                perform container-level tasks.</para>
+            <para>Lists objects in a specified container. Creates,
+                shows details for, and deletes containers. Creates,
+                updates, shows, and deletes container metadata.</para>
+        </listitem>
+        <listitem>
+            <para><xref linkend="storage_object_services"/>. Use to
+                perform object-level tasks.</para>
+            <para>Creates, replaces, shows details for, and deletes
+                objects. Copies objects with another object with a new
+                or different name. Updates object metadata.</para>
+        </listitem>
+    </itemizedlist>
+</section>

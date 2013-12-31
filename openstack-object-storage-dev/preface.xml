@@ -4,7 +4,7 @@
 <!ENTITY ndash  "&#x2013;">
 <!ENTITY mdash  "&#x2014;">
 <!ENTITY hellip "&#x2026;">
-
+<!ENTITY nbsp "&#160;">
 <!-- Useful for describing APIs -->
 <!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
 <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
@@ -35,15 +35,14 @@ format="SVG" scale="60"/>
         storage system is designed to provide a safe, secure,
         automatically re-sizing and network-accessible way to store
         data. You can store an unlimited quantity of files and each
-        file can be as large as 5 GBs, plus with large object
+        file can be as large as 5&nbsp;GB, plus with large object
         creation, you can upload and store objects of virtually any
         size.</para>
-    <para>OpenStack Object Storage allows users to store and retrieve
-        files and content through a simple Web Service interface
-        (ReST: Representational State Transfer). There are also
-        language-specific APIs that utilize the ReSTful API but make
-        it much easier for developers to integrate into their
-        applications.</para>
+    <para>OpenStack Object Storage enables you to store and get files
+        and content through the Representational State Transfer (REST)
+        interface. There are also language-specific APIs that utilize
+        the RESTful API but make it much easier for developers to
+        integrate into their applications.</para>
     <para>For more details on the OpenStack Object Storage service,
         please refer to <link
             xlink:href="http://docs.openstack.org/developer/swift/"
@@ -56,7 +55,7 @@ format="SVG" scale="60"/>
         <title>Intended Audience</title>
         <para>This guide is intended to assist software developers who
             want to develop applications using the OpenStack Object
-            Storage API. It fully documents the ReST application
+            Storage API. It fully documents the REST application
             programming interface (API) that allows developers to
             interact with the storage components of the OpenStack
             Object Storage system. To use the information provided
@@ -66,7 +65,7 @@ format="SVG" scale="60"/>
             be familiar with:</para>
         <itemizedlist spacing="compact">
             <listitem>
-                <para>ReSTful web services</para>
+                <para>RESTful web services</para>
             </listitem>
             <listitem>
                 <para>HTTP/1.1</para>
@@ -74,12 +73,12 @@ format="SVG" scale="60"/>
         </itemizedlist>
         <para>You can also find language-specific APIs in several
             popular programming languages such as C#/.NET, Java, PHP,
-            Python, and Ruby. These APIs utilize the ReST API and are
+            Python, and Ruby. These APIs utilize the REST API and are
             provided to help developers rapidly integrate OpenStack
             Object Storage support into their applications without
-            needing to write at the ReST interface. Each API includes
+            needing to write at the REST interface. Each API includes
             its own documentation in its native format. For example,
             the Java API includes Javadoc documentation.</para>
     </section>
-<xi:include href="section_object-api-dochistory.xml"/>
+    <xi:include href="section_object-api-dochistory.xml"/>
 </preface>

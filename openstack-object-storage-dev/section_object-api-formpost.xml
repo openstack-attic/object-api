@@ -13,6 +13,9 @@
     xml:id="form-post">
     <title>Form POST middleware</title>
     <?dbhtml stop-chunking?>
+    <para>To discover whether your Object Storage system supports
+        this feature, see <xref linkend="discoverability"
+        />. Alternatively, check with your service provider.</para>
     <para>You can upload objects directly to the Object Storage system
         from a browser by using the form &POST; middleware. This
         middleware uses account secret keys to generate a
