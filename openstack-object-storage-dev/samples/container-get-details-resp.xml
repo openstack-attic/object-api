@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<account name="MichaelBarton">
+<?xml version="1.0" encoding="UTF-8"?>
+<account name="AUTH_73f0aa26640f4971864919d0eb0f0880">
     <container>
-        <name>test_container_1</name>
-        <count>2</count>
-        <bytes>78</bytes>
+        <name>diane</name>
+        <count>0</count>
+        <bytes>0</bytes>
     </container>
     <container>
-        <name>test_container_2</name>
-        <count>1</count>
-        <bytes>17</bytes>
+        <name>joe</name>
+        <count>0</count>
+        <bytes>0</bytes>
+    </container>
+    <container>
+        <name>sarah</name>
+        <count>0</count>
+        <bytes>0</bytes>
     </container>
 </account>
