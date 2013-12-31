@@ -1,192 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter [
-<!-- Some useful entities borrowed from HTML -->
-<!ENTITY ndash  "&#x2013;">
-<!ENTITY mdash  "&#x2014;">
-<!ENTITY hellip "&#x2026;">
-
 <!-- Useful for describing APIs -->
-<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
-<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
 <!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
-<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
-<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
-
-<!ENTITY CHECK  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
-<imageobject>
-<imagedata fileref="img/Check_mark_23x20_02.svg"
-format="SVG" scale="60"/>
-</imageobject>
-</inlinemediaobject>'>
-
-<!ENTITY ARROW  '<inlinemediaobject xmlns="http://docbook.org/ns/docbook">
-<imageobject>
-<imagedata fileref="img/Arrow_east.svg"
-format="SVG" scale="60"/>
-</imageobject>
-</inlinemediaobject>'>
 ]>
 <chapter xmlns="http://docbook.org/ns/docbook"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="ch_object-storage-dev-general-api">
-    <title>General API Information</title>
-    <section xml:id="authentication-object-dev-guide">
-        <title>Authentication</title>
-        <para>Client authentication is provided via a ReST interface
-            using the &GET; method, with <code>v1.0</code> supplied as
-            the path. Additionally, two headers are required,
-                <code>X-Auth-User</code> and <code>X-Auth-Key</code>
-            with values for the username and API Access Key
-            respectively.</para>
-        <para>Each ReST request against the OpenStack Object Storage
-            system requires the inclusion of a specific authorization
-            token HTTP x-header, defined as <code>X-Auth-Token</code>.
-            Clients obtain this token, along with the Cloud Servers
-            API URL, by first using an authentication service and
-            supplying a valid username and API access key.</para>
-        <simplesect>
-            <title>Request</title>
-            <para>To authenticate, you must supply your username and
-                API access key in x-headers:</para>
-            <para>
-                <itemizedlist spacing="compact">
-                    <listitem>
-                        <para>Use your OpenStack Object Storage
-                            (Swift) username as the username for the
-                            API. Place it in the
-                                <code>X-Auth-User</code> x-header.
-                        </para>
-                    </listitem>
-                    <listitem>
-                        <para>Get your API access key from
-                            authentication service you chose when
-                            installing. You have some options for
-                            auth, including tempauth (which is
-                            included with Swift), swauth (an auth
-                            service for Swift as WSGI middleware that
-                            uses Swift itself as a backing store that
-                            is provided via download from Github), the
-                            OpenStack Identity Service (project named
-                            Keystone), or you can use your own
-                            authentication system. Place your access
-                            key in the <code>X-Auth-Key</code>
-                            x-header.</para>
-                    </listitem>
-                </itemizedlist>
-            </para>
-            <para> </para>
-            <example>
-                <title>Authentication HTTP Request</title>
-                <literallayout class="monospaced"><xi:include href="samples/auth-req.txt" parse="text"/></literallayout>
-            </example>
-        </simplesect>
-        <simplesect>
-            <title>Response</title>
-            <para>When authentication is successful, an HTTP status
-                204 (No Content) is returned with the
-                    <code>X-Storage-Url</code> and
-                    <code>X-Auth-Token</code> headers. Any 2xx
-                response is a good response. For example, a 202
-                response means the request has been accepted. Also,
-                additional <code>X-</code> headers may be returned.
-                These additional headers are related to other
-                Rackspace services and can be ignored. An HTTP status
-                of 401 (Unauthorized) is returned upon authentication
-                failure. All subsequent container/object operations
-                against OpenStack Object Storage should be made
-                against the URI specified in
-                    <code>X-Storage-Url</code> and must include the
-                    <code>X-Auth-Token</code> header.</para>
-            <example>
-                <title>Authentication HTTP Response</title>
-                <literallayout class="monospaced"><xi:include href="samples/auth-resp.txt" parse="text"/></literallayout>
-            </example>
-            <para>The <code>X-Storage-Url</code> will need to be
-                parsed and used in the connection and request line of
-                all subsequent requests against Object Storage. In the
-                example response above, users connecting to OpenStack
-                Object Storage would send most container/object
-                requests with a host header of
-                    <code>storage.swiftdrive.com</code> and the
-                request line's version and account as
-                    <code>/v1/CF_xer7_34</code>. Note that
-                authentication tokens are valid for a 24 hour period
-                for many authentication configurations.</para>
-        </simplesect>
-    </section>
-
-    <section xml:id="overview-object-api">
-        <title>Overview of API Operations</title>
-        <para>The OpenStack Object Storage API is implemented as a set
-            of ReSTful (Representational State Transfer) web services.
-            All authentication and container/object operations can be
-            performed with standard HTTP calls. See the <link
-                xlink:href="http://en.wikipedia.org/wiki/Representational_State_Transfer"
-                >Representational State Transfer</link> on ReST for
-            more information</para>
-        <para>The following constraints apply to the ReST API's HTTP
-            requests:</para>
-        <itemizedlist>
-            <listitem>
-                <para>Maximum number of HTTP headers per request:
-                    90</para>
-            </listitem>
-            <listitem>
-                <para>Maximum length of all HTTP headers: 4096
-                    bytes</para>
-            </listitem>
-            <listitem>
-                <para>Maximum length per HTTP request line: 8192
-                    bytes</para>
-            </listitem>
-            <listitem>
-                <para>Maximum length of HTTP request: 5
-                    gigabytes</para>
-            </listitem>
-            <listitem>
-                <para>Maximum length of container name: 256
-                    bytes</para>
-            </listitem>
-            <listitem>
-                <para>Maximum length of object name: 1024 bytes</para>
-            </listitem>
-        </itemizedlist>
-        <para>Container and object names must be UTF-8 encoded and then should be properly
-            URL-encoded prior to interacting with the ReST interface. You may be using an API
-            binding that performs the URL-encoding on your behalf. If so, do not URL-encode before
-            calling the API binding otherwise you will double-encode container and object names. The
-            length restrictions should be checked against the URL-encoded string.</para>
-        <para>Each ReST request against the OpenStack Object Storage
-            system requires the inclusion of a specific
-                <firstterm>authorization token</firstterm> HTTP header
-            defined as <code>X-Auth-Token</code>. Clients obtain this
-            token, along with the OpenStack Object Storage URLs, by
-            first using the Authentication service and supplying a
-            valid Username and API Access Key.</para>
-        <para><!--There are actually two different sets of ReST services that make up the full OpenStack Object Storage product. -->
-            The ReST service identified with
-                <code>X-Storage-Url</code> is used for managing the
-            data stored in the system. Example operations are creating
-            containers and uploading objects.
-            <!--The second ReST service is for managing the CDN feature of OpenStack Object Storage and is identified by <code>X-CDN-Management-Url</code>.--></para>
-        <para>In the following sections, the purpose of each HTTP
-            method depends upon which service the call is made
-            against. For example, a &PUT; request against
-                <code>X-Storage-Url</code> can be used to create a
-            container or upload an
-            object.<!--, while a &PUT; request against the <code>X-CDN-Management-Url</code> is used to CDN-enable a container--></para>
-        <para>The language-specific APIs mask this system separation
-            from the programmer. They simply create a container and
-            mark it <emphasis>public</emphasis> and it handles calling
-            out to the appropriate back-end services using the
-            appropriate ReST API.</para>
-        <note>
-            <para>All requests to authenticate and operate against
-                OpenStack Object Storage are performed using SSL over
-                HTTP (HTTPS) on TCP port 443.</para>
-        </note>
-
-    </section>
-
+    <title>General API information</title>
+    <para>The Object Storage API is implemented as a set of
+        Representational state transfer (REST) web services. You use
+        standard HTTP calls to perform authentication and
+        account-level, container-level, and object-level operations.
+        For more information, see <link
+            xlink:href="http://en.wikipedia.org/wiki/Representational_State_Transfer"
+            >Representational state transfer</link>.</para>
+    <para>Object Storage HTTP requests have the following
+        constraints:</para>
+    <informaltable rules="all">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Maximum value</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Number of HTTP headers</td>
+                <td>90</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of HTTP headers</td>
+                <td>4096 bytes</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length per HTTP request line</td>
+                <td>8192 bytes</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of HTTP request</td>
+                <td>5 GBs</td>
+                <td/>
+            </tr>
+            <tr>
+                <td>Length of container names</td>
+                <td>256 bytes</td>
+                <td>Cannot contain the <literal>/</literal>
+                    character.</td>
+            </tr>
+            <tr>
+                <td>Length of object names</td>
+                <td>1024 bytes</td>
+                <td>No character restrictions.</td>
+            </tr>
+        </tbody>
+    </informaltable>
+    <para>Container and object names must be UTF-8 encoded and
+        properly URL-encoded before you call the API binding. If you
+        use an API binding that performs the URL-encoding for you, do
+        not URL-encode the container and object names before you call
+        the API binding. Otherwise, you double-encode these names.
+        Check the length restrictions against the URL-encoded
+        string.</para>
+    <para>Each Object Storage API request must include an
+            <firstterm>authentication token</firstterm> in the
+            <code>X-Auth-Token</code> HTTP header. Clients use an
+        authentication service to obtain this token and the OpenStack
+        Object Storage URLs. For information, see <xref
+            linkend="authentication-object-dev-guide"/>.</para>
+    <para><!--There are actually two different sets of ReST services that make up the full OpenStack Object Storage product. -->You
+        specify the Object Storage URL in the
+            <code>X-Storage-Url</code> header. This service manages
+        the system data. Example operations include creating
+        containers and uploading objects.
+        <!--The second ReST service is for managing the CDN feature of OpenStack Object Storage and is identified by <code>X-CDN-Management-Url</code>.--></para>
+    <para>The purpose of each HTTP method depends on which service the
+        call is made against. For example, a &PUT; request against the
+        service specified in the <code>X-Storage-Url</code> header is
+        used to create containers and upload
+        objects.<!--, while a &PUT; request against the <code>X-CDN-Management-Url</code> is used to CDN-enable a container--></para>
+    <para>The language-specific APIs mask this system separation from
+        the programmer. They simply create a container and mark it
+            <emphasis>public</emphasis> and it handles calling out to
+        the appropriate back-end services using the appropriate ReST
+        API.</para>
+    <note>
+        <para>All requests to authenticate and operate against
+            OpenStack Object Storage are performed using SSL over HTTP
+            (HTTPS) on TCP port 443.</para>
+    </note>
+    <para>Use the ReST API to interact with the storage component of
+        OpenStack Object Storage. All requests are directed to the
+        host and URL described in the <code>X-Storage-Url</code> HTTP
+        header obtained during successful authentication.</para>
+    <para>The following sections describe the tasks that you can
+        perform in the storage system:</para>
+    <itemizedlist>
+        <listitem>
+            <para><link xlink:href="storage-account-services">Storage
+                    account services</link>. Use to perform
+                account-level tasks.</para>
+        </listitem>
+        <listitem>
+            <para><link xlink:href="storage-container-services"
+                    >Storage container services</link>. Use to perform
+                container-level tasks.</para>
+        </listitem>
+        <listitem>
+            <para><link xlink:href="storage-object-services">Storage
+                    object services</link>. Use to perform
+                object-level tasks.</para>
+        </listitem>
+    </itemizedlist>
+    <xi:include href="section_authentication.xml"/>
+    <xi:include href="section_serialized_list_output.xml"/>
+    <xi:include href="section_large_lists_objects.xml"/>
 </chapter>

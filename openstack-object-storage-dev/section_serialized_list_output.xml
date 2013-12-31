@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0" xml:id="serialized-list-output">
+    <title>Serialized list output</title>
+    <para>If you append the <code>format=xml</code> or
+        <code>format=json</code> argument to the storage
+        account URL, the service serves extended container
+        information serialized in the specified format. The sample
+        responses are formatted for readability. The following
+        example HTTP request asks for a JSON response, so the
+        response returns an HTTP header and a JSON
+        response.</para>
+    <example>
+        <title>Get object details request: HTTP and JSON</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-req.txt" parse="text"/></literallayout>
+    </example>
+    <example>
+        <title>Get object details response: HTTP and JSON</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-json-resp.txt" parse="text"/></literallayout>
+        <programlisting language="json"><xi:include href="samples/objects-get-details-resp.json" parse="text"/></programlisting>
+    </example>
+    <example>
+        <title>Get object details request: XML</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-req.txt" parse="text"/></literallayout>
+    </example>
+    <example>
+        <title>Get object details request: XML</title>
+        <literallayout class="monospaced"><xi:include href="samples/objects-get-details-http-xml-resp.txt" parse="text"/></literallayout>
+        <programlisting language="xml"><xi:include href="samples/objects-get-details-resp.xml" parse="text"/></programlisting>
+    </example>
+</section>
