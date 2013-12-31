@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE section [
+<!-- Some useful entities borrowed from HTML -->
+<!ENTITY ndash  "&#x2013;">
+<!ENTITY mdash  "&#x2014;">
+<!ENTITY hellip "&#x2026;">
+
+<!-- Useful for describing APIs -->
+<!ENTITY COPY   '<command xmlns="http://docbook.org/ns/docbook">COPY</command>'>
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="set-object-versions">
+    <title>Object versioning</title>
+    <para>You can store multiple versions of your content so that you
+        can recover from unintended overwrites. Object versioning is
+        an easy way to implement version control, which you can use
+        with any type of content.</para>
+    <note>
+        <para>A large-object manifest file cannot be versioned, but it
+            may point to versioned segments.</para>
+    </note>
+    <para>It is strongly recommended that you put non-current objects
+        in a different container from where the current object
+        versions reside. After you enable object versioning on a
+        container, such as a <firstterm>current version</firstterm>
+        container, &PUT; requests to existing objects in that
+        container copy the earlier object to a separate, non-current
+        version container. Each non-current version of an object has a
+        time stamp appended to it, which indicates when it was
+        created.</para>
+    <procedure><title>To enable and use object versioning</title>
+        <step>
+            <para>To enable object versioning, your cloud provider
+                must set the <option>allow_versions</option> option to
+                    <literal>TRUE</literal> in the container
+                configuration file.</para>
+        </step>
+        <step>
+            <para>Create a container where your non-current versions
+                are stored.</para>
+        </step>
+        <step>
+            <para>Set the <literal>X-Versions-Location</literal>
+                metadata header on the container that holds the
+                current versions of your objects. Set the metadata
+                header to point to the new non-current version
+                container you created. The name of the container must
+                be UTF-8 encoded and then URL-encoded before putting
+                into the <code>X-Versions-Location</code> header. This
+                is where your non-current versions is stored. Once
+                this is done, each object in your current-version
+                container will have Object Versioning enabled; changes
+                to the objects automatically create non-current
+                versions in the separate container.</para>
+        </step>
+        <step>
+            <para>Nothing is written to the non-current version
+                container when you initially &PUT; an object into the
+                current-version container. Only when you make edits to
+                the objects via &PUT; will you create non-current
+                versions. These non-current versions are labeled
+                according to the schema below.</para>
+            <para>
+                <emphasis>Naming Schema:</emphasis> Non-current
+                versions are assigned the name
+                &lt;length&gt;&lt;object_name&gt;/&lt;timestamp&gt;,
+                where length is the 3-character zero-padded
+                hexadecimal character length of the
+                &lt;object_name&gt; and &lt;timestamp&gt; is when the
+                it was initially created as a current version.</para>
+        </step>
+        <step>
+            <para>Any return status in the 2xx range, such as 202
+                (Accepted), denotes success. Status codes in the 4xx
+                or 5xx range denote failure. You should retry your
+                request if you receive an error. Please note, however,
+                that if you have specified a container that does not
+                exist as your non-current version container, a status
+                of 412 (Precondition Failed) returns when you edit the
+                versioned object. If you receive this error, check
+                that the container exists.</para>
+        </step>
+        <step>
+            <para>A &GET; to a versioned object returns the current
+                version of the object without having to do any request
+                redirects or metadata lookups.</para>
+        </step>
+        <step>
+            <para>A &POST; to a versioned object only updates the
+                object's metadata; it does not create a new version of
+                the object. In other words, new versions are only
+                created when the content of the object changes.</para>
+        </step>
+        <step>
+            <para>A &DELETE; to a versioned object removes the current
+                version of the object and replaces it with the
+                next-most current version, moving it from the
+                non-current container to the current. This next-most
+                current version carries with it any metadata last set
+                on it. If want to completely remove an object and you
+                have five total versions of it, you must &DELETE; it
+                five times.</para>
+        </step>
+        <step>
+            <para>To turn off Object Versioning on your current
+                version container, remove its
+                    <code>X-Versions-Location</code> metadata by
+                sending an empty key value.</para>
+        </step>
+    </procedure>
+    <example>
+        <title>Object versioning with cURL</title>
+        <para>Make sure a version-storing container exists, creating
+            it if necessary (this example names it "versions"). Then
+            create a container with the
+                <code>X-Versions-Location</code> header. In this
+            example, this container is named "current". You can also
+            add the <code>X-Versions-Location</code> header to an
+            existing container. In this example, the name of the
+            container is “versions”; the location for the current
+            version is the container "current".</para>
+        <para>Create a container named versions.</para>
+        <screen><prompt>#</prompt> <userinput>curl -i -XPUT -H "X-Auth-Token: &lt;token&gt;" http://&lt;storage_url&gt;/versions</userinput></screen>
+        <para>Create a container named current with the
+                <code>X-Versions-Location</code> header that
+            references "versions".</para>
+        <screen><prompt>#</prompt> <userinput>curl -i -XPUT -H "X-Auth-Token: &lt;token&gt;" \
+      -H "X-Versions-Location: versions" http://&lt;storage_url&gt;/current</userinput></screen>
+        <para>Create an object (the first version):</para>
+        <screen><prompt>#</prompt> <userinput>curl -i -XPUT --data-binary 1 -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/current/myobject</userinput></screen>
+        <para>Now create a new version of that object:</para>
+        <screen><prompt>#</prompt> <userinput>curl -i -XPUT --data-binary 2 -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/current/myobject</userinput></screen>
+        <para>See a listing of the older versions of the
+            object:</para>
+        <screen><prompt>#</prompt> <userinput>curl -i -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/versions?prefix=008myobject/</userinput></screen>
+        <para>Now delete the current version of the object and see
+            that the older version is gone:</para>
+        <screen><prompt>#</prompt> <userinput>curl -i -XDELETE -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/current/myobject</userinput></screen>
+        <screen><prompt>#</prompt><userinput> curl -i -H "X-Auth-Token: &lt;token&gt;" \
+      http://&lt;storage_url&gt;/versions?prefix=008myobject/</userinput></screen>
+    </example>
+</section>

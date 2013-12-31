@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
+    xml:id="file-compression">
+    <title>File compression</title>
+    <para>The <literal>Content-Encoding</literal> header enables a file to be
+        compressed without losing the identity of the underlying
+        media type of the file, for example, a video.</para>
+    <example>
+        <title>Content-Encoding header request: HTTP</title>
+        <para>In the example, the content-encoding header is
+            assigned with an attachment type that indicates how
+            the file should be downloaded:</para>
+        <literallayout class="monospaced"><xi:include href="samples/content-encoding-header-req.txt" parse="text"/></literallayout>
+    </example>
+</section>
