@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+ <!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:m="http://www.w3.org/1998/Math/MathML"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:db="http://docbook.org/ns/docbook" version="5.0"
+    xml:id="object-storage-tempurl">
+    <?dbhtml stop-chunking?>
+    <title>Temporary URLs</title>
+    <para>A temporary URL gives users temporary access to
+        objects.</para>
+    <para>For example, a website might want to provide a link to
+        download a large object in Object Storage, but the Object
+        Storage account has no public access. The website can generate
+        a URL that provides &GET; access for a limited time to the
+        resource. When the web browser user clicks on the link, the
+        browser downloads the object directly from Object Storage,
+        eliminating the need for the website to act as a proxy for the
+        request. To enable direct-from-browser uploads to specific
+        locations in Object Storage, you can use temporary URLs in
+        combination with browser form &POST; translation
+        middleware.</para>
+    <para>A temporary URL is comprised of the URL for the object with
+        the addition of these query parameters:</para>
+    <itemizedlist>
+        <listitem>
+            <para><literal>temp_url_sig</literal>. A cryptographic
+                signature.</para>
+        </listitem>
+        <listitem>
+            <para><literal>temp_url_expires</literal>. An expiration
+                date, in UNIX time.</para>
+        </listitem>
+    </itemizedlist>
+    <para>An example temporary URL is:</para>
+    <screen><computeroutput>https://swift-cluster.example.com/v1/my_account/container/object?temp_url_sig=da39a3ee5e6b4b0d3255bfef95601890afd80709&amp;temp_url_expires=1323479485</computeroutput></screen>
+    <procedure>
+        <title>To create and use temporary URLs</title>
+        <step>
+            <para>Ask your cloud administrator to enable the temporary
+                URL feature. For information, see the <link
+                    xlink:href="http://docs.openstack.org/havana/config-reference/content/object-storage-tempurl.html"
+                    >Temporary URL</link> in the <citetitle>OpenStack
+                    Configuration Reference</citetitle>.</para>
+        </step>
+        <step>
+            <para>Set the
+                    <literal>X-Account-Meta-Temp-URL-Key</literal>
+                header on your Object Storage account to an arbitrary
+                string, which serves as a secret key. </para>
+            <para>For example, use the <command>swift</command>
+                command-line tool to set the secret key to
+                    <literal>b3968d0207b54ece87cccc06515a89d4</literal>:</para>
+            <screen><prompt>$</prompt> <userinput>swift post -m "Temp-URL-Key: b3968d0207b54ece87cccc06515a89d4"</userinput></screen>
+        </step>
+        <step>
+            <para>Generate an HMAC-SHA1 (RFC 2104) signature to
+                specify:</para>
+            <itemizedlist>
+                <listitem>
+                    <para>Which HTTP method to allow. Typically, &GET;
+                        or &PUT;.</para>
+                </listitem>
+                <listitem>
+                    <para>The expiry date as a UNIX timestamp.</para>
+                </listitem>
+                <listitem>
+                    <para>The full path to the object.</para>
+                </listitem>
+                <listitem>
+                    <para>The secret key set as the
+                            <literal>X-Account-Meta-Temp-URL-Key</literal>
+                        header value.</para>
+                </listitem>
+            </itemizedlist>
+            <para>The following code generates the signature for a
+                &GET; request for 24 hours on the
+                    <literal>/v1/my_account/container/object</literal>
+                object:</para>
+            <programlisting language="python">import hmac
+from hashlib import sha1
+from time import time
+method = 'GET'
+duration_in_seconds = 60*60*24
+expires = int(time() + duration_in_seconds)
+path = '/v1/my_account/container/object'
+key = 'mykey'
+hmac_body = '%s\n%s\n%s' % (method, expires, path)
+sig = hmac.new(key, hmac_body, sha1).hexdigest()
+s = 'https://{host}/{path}?temp_url_sig={sig}&amp;temp_url_expires={expires}'
+url = s.format(host='swift-cluster.example.com', path=path, sig=sig, expires=expires)</programlisting>
+            <para>Any change to the resource path or query arguments
+                causes a <errorcode>401</errorcode>
+                <errortext>Unauthorized</errortext> error. Similarly,
+                substituting a &PUT; where &GET; is the allowed method
+                causes a <errorcode>401</errorcode> error.</para>
+            <para>You can substitute &HEAD; where &GET; or &PUT; is
+                allowed.</para>
+            <note>
+                <para>Changing the
+                        <literal>X-Account-Meta-Temp-URL-Key</literal>
+                    invalidates any previously generated temporary
+                    URLs within 60 seconds, which is the memcache time
+                    for the key. Object Storage supports up to two
+                    keys, which you set in the
+                        <literal>X-Account-Meta-Temp-URL-Key</literal>
+                    and
+                        <literal>X-Account-Meta-Temp-URL-Key-2</literal>
+                    headers. Object Storage checks signatures against
+                    both keys, if present, to enable key rotation
+                    without invalidating existing temporary
+                    URLs.</para>
+            </note>
+            <note>
+                <title>swift-temp-url script</title>
+                <para>Object Storage provides the
+                        <command>swift-temp-url</command> script that
+                    auto-generates the
+                        <parameter>temp_url_sig</parameter> and
+                        <parameter>temp_url_expires</parameter> query
+                    parameters:</para>
+                <screen><prompt>$</prompt> <userinput>bin/swift-temp-url GET 3600 /v1/my_account/container/object mykey</userinput></screen>
+                <para>This command returns the path:</para>
+                <screen><computeroutput>/v1/my_account/container/object?temp_url_sig=5c4cc8886f36a9d0919d708ade98bf0cc71c9e91&amp;temp_url_expires=1374497657</computeroutput></screen>
+                <para>To create the temporary URL, prefix this path
+                    with the Object Storage storage host name. For
+                    example, prefix the path with
+                        <literal>https://swift-cluster.example.com</literal>,
+                    as follows:</para>
+                <screen><computeroutput>https://swift-cluster.example.com/v1/my_account/container/object?temp_url_sig=5c4cc8886f36a9d0919d708ade98bf0cc71c9e91&amp;temp_url_expires=1374497657</computeroutput></screen>
+            </note>
+        </step>
+        <step>
+            <para>With &GET; temporary URLs, the
+                    <literal>Content-Disposition</literal> response
+                header contains the file name. The file name defaults
+                to a value based on the object name, but you can use
+                the <literal>filename</literal> query parameter to
+                override the default file name value. Browsers can use
+                this file name value as a file attachment to be
+                saved.</para>
+            <para>This temporary URL sets the
+                    <parameter>filename</parameter> query parameter to
+                    <filename>My Test File.pdf</filename>:</para>
+            <screen><computeroutput>https://swift-cluster.example.com/v1/my_account/container/object?temp_url_sig=da39a3ee5e6b4b0d3255bfef95601890afd80709&amp;temp_url_expires=1323479485&amp;filename=My+Test+File.pdf</computeroutput></screen>
+        </step>
+
+        <step>
+            <para>Provide the temporary URL to users. If the user
+                shares a temporary URL, the direct access is limited
+                to the expiration time set when the website created
+                the link.</para>
+        </step>
+    </procedure>
+</section>
