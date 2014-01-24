@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:m="http://www.w3.org/1998/Math/MathML"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:db="http://docbook.org/ns/docbook" version="5.0"
+    xml:id="object-storage-form-post">
+    <title>Form POST</title>
+    <para>To upload objects to a cluster, you can use an HTML form
+        &POST; request.</para>
+    <para>The format of the form &POST; request is:</para>
+    <example xml:id="formpost-example">
+        <title>Form POST example</title>
+        <programlistingco>
+            <areaspec>
+                <area xml:id="formpost.txt.action" units="linecolumn"
+                    coords="2 26"/>
+                <area xml:id="formpost.txt.method" units="linecolumn"
+                    coords="3 19"/>
+                <area xml:id="formpost.txt.enctype" units="linecolumn"
+                    coords="4 36"/>
+                <area xml:id="formpost.txt.redirect"
+                    units="linecolumn" coords="5 65"/>
+                <area xml:id="formpost.txt.max_file_size"
+                    units="linecolumn" coords="6 63"/>
+                <area xml:id="formpost.txt.max_file_count"
+                    units="linecolumn" coords="7 64"/>
+                <area xml:id="formpost.txt.expires" units="linecolumn"
+                    coords="8 66"/>
+                <area xml:id="formpost.txt.signature"
+                    units="linecolumn" coords="9 58"/>
+                <area xml:id="formpost.txt.file" units="linecolumn"
+                    coords="10 39"/>
+                <area xml:id="formpost.txt.submit" units="linecolumn"
+                    coords="12 28"/>
+            </areaspec>
+            <programlisting language="bash"><xi:include href="samples/formpost.txt" parse="text"/></programlisting>
+        </programlistingco>
+    </example>
+    <para>The example, <xref linkend="formpost-example"/>, shows these
+        attributes: </para>
+    <calloutlist>
+        <callout arearefs="formpost.txt.action">
+            <para><emphasis role="bold"
+                            ><literal>action="<replaceable>SWIFT_URL</replaceable>"</literal></emphasis>
+            </para>
+            <para>Set to the Object Storage endpoint URL. The name of
+                each uploaded file is appended to the specified
+                    <replaceable>SWIFT_URL</replaceable>. So, you can
+                upload directly to the root of a container with a URL
+                like:</para>
+            <screen><userinput>https://23.253.72.207/v1/my_account/container/</userinput></screen>
+            <para>Optionally, you can include an object prefix to
+                separate uploads, such as:</para>
+            <screen><userinput>https://23.253.72.207/v1/my_account/container/<replaceable>OBJECT_PREFIX</replaceable></userinput></screen>
+        </callout>
+        <callout arearefs="formpost.txt.method">
+            <para><emphasis role="bold"
+                >method="POST"</emphasis></para>
+            <para>Must be <literal>POST</literal>.</para>
+        </callout>
+        <callout arearefs="formpost.txt.enctype">
+            <para><emphasis role="bold"
+                    >enctype="multipart/form-data"</emphasis></para>
+            <para>Must be
+                <literal>multipart/form-data</literal>.</para>
+        </callout>
+        <callout arearefs="formpost.txt.redirect">
+            <para><emphasis role="bold">name="redirect"
+                        value="<replaceable>REDIRECT_URL</replaceable>"</emphasis></para>
+            <para>Redirects the browser to the
+                    <replaceable>REDIRECT_URL</replaceable> after the
+                upload completes. The URL has status and message query
+                parameters added to it, which specify the HTTP status
+                code for the upload and an optional error message. The
+                    2<replaceable>nn</replaceable> status code
+                indicates success.</para>
+        </callout>
+        <callout arearefs="formpost.txt.max_file_size">
+            <para><emphasis role="bold">name="max_file_size"
+                        value="<replaceable>BYTES</replaceable>"</emphasis></para>
+            <para>Required. Indicates the size, in bytes, of the
+                maximum single file upload.</para>
+        </callout>
+        <callout arearefs="formpost.txt.max_file_count">
+            <para><emphasis role="bold">name="max_file_count" value=
+                        "<replaceable>COUNT</replaceable>"</emphasis></para>
+            <para>Required. Indicates the maximum number of files that
+                can be uploaded with the form. </para>
+        </callout>
+        <callout arearefs="formpost.txt.expires">
+            <para><emphasis role="bold">name="expires"
+                        value="<replaceable>UNIX_TIMESTAMP</replaceable>"</emphasis></para>
+            <para>The UNIX timestamp that specifies the time before
+                which the form must be submitted before it becomes no
+                longer valid.</para>
+        </callout>
+        <callout arearefs="formpost.txt.signature">
+            <para><emphasis role="bold">name="signature"
+                        value="<replaceable>HMAC</replaceable>"</emphasis></para>
+            <para>The HMAC-SHA1 signature of the form.</para>
+            <para>This sample Python code shows how to compute the
+                signature:</para>
+            <programlisting language="python">import hmac
+from hashlib import sha1
+from time import time
+path = '/v1/account/container/object_prefix'
+redirect = 'https://myserver.com/some-page'
+max_file_size = 104857600
+max_file_count = 10
+expires = int(time() + 600)
+key = '<replaceable>MYKEY</replaceable>'
+                hmac_body = '%s\n%s\n%s\n%s\n%s' % (path, redirect,
+    max_file_size, max_file_count, expires)
+signature = hmac.new(key, hmac_body, sha1).hexdigest()</programlisting>
+            <para>The <replaceable>MYKEY</replaceable> value is the
+                value of the
+                    <literal>X-Account-Meta-Temp-URL-Key</literal>
+                header on the account. Include the full path, from the
+                    <filename>/v1/</filename> onward. Use can use the
+                    <command>swift-form-signature</command> tool
+                during testing to compute the
+                    <literal>expires</literal> and
+                    <literal>signature</literal> values.</para>
+        </callout>
+        <callout arearefs="formpost.txt.file">
+            <para><emphasis role="bold">type="file"
+                        name="<replaceable>FILE_NAME</replaceable>"</emphasis></para>
+            <para>Optional. The file attributes must appear after the
+                other attributes to be processed correctly. </para>
+            <para>If attributes appear after the file attributes, they
+                are not sent with the sub-request because on the
+                server side, all attributes in the file cannot be
+                parsed unless the whole file is read into memory and
+                the server does not have enough memory to service
+                these requests. Attributes that follow the file
+                attributes are ignored.</para>
+        </callout>
+        <callout arearefs="formpost.txt.submit">
+            <para><emphasis role="bold">type=
+                "submit"</emphasis></para>
+            <para>Must be <literal>submit</literal>.</para>
+        </callout>
+    </calloutlist>
+
+
+    <para>For information about the form &POST; configuration options,
+        see <link
+            xlink:href="http://docs.openstack.org/havana/config-reference/content/object-storage-form-post.html"
+                ><citetitle>OpenStack Configuration
+                Reference</citetitle></link>.</para>
+</section>
