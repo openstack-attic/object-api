@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+ <!-- Useful for describing APIs -->
+<!ENTITY GET    '<command xmlns="http://docbook.org/ns/docbook">GET</command>'>
+<!ENTITY HEAD   '<command xmlns="http://docbook.org/ns/docbook">HEAD</command>'>
+<!ENTITY PUT    '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:m="http://www.w3.org/1998/Math/MathML"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:db="http://docbook.org/ns/docbook" version="5.0"
+    xml:id="object-storage-tempurl">
+    <?dbhtml stop-chunking?>
+    <title>Temporary URL middleware</title>
+    <para>A temporary URL gives users temporary access to objects. For
+        example, a website might want to provide a link to download a
+        large object in Object Storage, but the Object Storage account
+        has no public access. The website can generate a URL that
+        provides time-limited &GET; access to the object. When the web
+        browser user clicks on the link, the browser downloads the
+        object directly from Object Storage, eliminating the need for
+        the website to act as a proxy for the request.</para>
+    <para>Ask your cloud administrator to enable the temporary URL
+        feature. For information, see <link
+            xlink:href="http://docs.openstack.org/havana/config-reference/content/object-storage-tempurl.html"
+            >Temporary URL</link> in the <citetitle>OpenStack
+            Configuration Reference</citetitle>.</para>
+    <note>
+        <para>To use &POST; requests to upload objects to specific
+            Object Storage locations, use form &POST; instead of
+            temporary URL middleware. See <xref linkend="form-post"
+            />.</para>
+    </note>
+    <section xml:id="temp-url-format">
+        <title>Temporary URL format</title>
+        <para>A temporary URL is comprised of the URL for an object
+            with added query parameters:</para>
+        <example xml:id="tempurl-example">
+            <title>Temporary URL format</title>
+            <programlistingco>
+                <areaspec>
+                    <area xml:id="tempurl.txt.object_url"
+                        units="linecolumn" coords="1 66"/>
+                    <area xml:id="tempurl.txt.temp_url_sig"
+                        units="linecolumn" coords="2 56"/>
+                    <area xml:id="tempurl.txt.temp_url_expires"
+                        units="linecolumn" coords="3 31"/>
+                    <area xml:id="tempurl.txt.filename"
+                        units="linecolumn" coords="4 28"/>
+                </areaspec>
+                <programlisting language="bash"><xi:include href="samples/tempurl.txt" parse="text"/></programlisting>
+            </programlistingco>
+        </example>
+        <para>The example shows
+            these elements:</para>
+        <calloutlist>
+            <callout arearefs="tempurl.txt.object_url">
+                <para><emphasis role="bold">Object
+                    URL</emphasis></para>
+                <para>Required. The full path URL to the
+                    object.</para>
+            </callout>
+            <callout arearefs="tempurl.txt.temp_url_sig">
+                <para><emphasis role="bold"
+                    >temp_url_sig</emphasis></para>
+                <para>Required. An HMAC-SHA1 cryptographic signature
+                    that defines the allowed HTTP method, expiration
+                    date, full path to the object, and the secret key
+                    for the temporary URL.</para>
+                <para>For more information about secret keys, see
+                        <xref linkend="account-secret-keys-temp-url"
+                    />.</para>
+                <para>For more information about signatures, see <xref
+                        linkend="signature-temp-url"/>.</para>
+            </callout>
+            <callout arearefs="tempurl.txt.temp_url_expires">
+                <para><emphasis role="bold"
+                        >temp_url_expires</emphasis></para>
+                <para>Required. An expiration date as a UNIX Epoch
+                    timestamp, which is an integer value. For example,
+                        <literal>1390852007</literal> represents
+                        <literal>Mon, 27 Jan 2014 19:46:47
+                        GMT</literal>.</para>
+                <para>For more information, see <link
+                        xlink:href="http://www.epochconverter.com/"
+                        >Epoch &amp; Unix Timestamp Conversion
+                        Tools</link>.</para>
+            </callout>
+            <callout arearefs="tempurl.txt.temp_url_expires">
+                <para><emphasis role="bold">filename</emphasis></para>
+                <para>Optional. Overrides the default file name.
+                    Object Storage generates a default file name for
+                    &GET; temporary URLs that is based on the object
+                    name. Object Storage returns this value in the
+                        <literal>Content-Disposition</literal>
+                    response header. Browsers can interpret this file
+                    name value as a file attachment to be
+                    saved.</para>
+            </callout>
+        </calloutlist>
+    </section>
+    <section xml:id="account-secret-keys-temp-url">
+        <title>Account secret keys</title>
+        <para>Object Storage supports up to two secret keys. You set
+            secret keys at the account level.</para>
+        <para>To set these keys, set one or both of the following
+            request headers to arbitrary values:</para>
+        <itemizedlist>
+            <listitem>
+                <para><literal>X-Account-Meta-Temp-URL-Key</literal></para>
+            </listitem>
+            <listitem>
+                <para><literal>X-Account-Meta-Temp-URL-Key-2</literal></para>
+            </listitem>
+        </itemizedlist>
+        <para>The arbitrary values serve as the secret keys.</para>
+        <para>Object Storage checks signatures against both keys, if
+            present, to enable key rotation without invalidating
+            existing temporary URLs.</para>
+        <para>For example, use the <command>swift post</command>
+            command to set the secret key to
+                <replaceable>MYKEY</replaceable>:</para>
+        <screen><prompt>$</prompt> <userinput>swift post -m "X-Account-Meta-Temp-URL-Key: <replaceable>MYKEY</replaceable>"</userinput></screen>
+        <note>
+            <para>Changing these headers invalidates any previously
+                generated temporary URLs within 60 seconds, which is
+                the memcache time for the key.</para>
+        </note>
+    </section>
+    <section xml:id="signature-temp-url">
+        <title>HMAC-SHA1 signature for temporary URLs</title>
+        <para>Temporary URL middleware uses an HMAC-SHA1 cryptographic
+            signature. This signature includes
+            these elements:</para>
+        <itemizedlist>
+            <listitem>
+                <para>The allowed method. Typically, &GET; or
+                    &PUT;.</para>
+            </listitem>
+            <listitem>
+                <para>Expiry time. In <xref
+                        linkend="signature-example-temporary-urls"/>,
+                    the expiry time is set to <literal>86400</literal>
+                    seconds (or 1 day) into the future.</para>
+            </listitem>
+            <listitem>
+                <para>The path. Starting with <literal>/v1/</literal>
+                    onwards and including a container name and object.
+                    In <xref
+                        linkend="signature-example-temporary-urls"/>,
+                    the path is
+                        <literal>/v1/my_account/container/object</literal>.
+                    Do not URL-encode the path at this stage.</para>
+            </listitem>
+            <listitem>
+                <para>The secret key. Set as the
+                        <literal>X-Account-Meta-Temp-URL-Key</literal>
+                    header value.</para>
+            </listitem>
+        </itemizedlist>
+        <para>This sample Python code shows how to compute a signature
+            for use with temporary URLs:</para>
+        <example xml:id="signature-example-temporary-urls">
+            <title>HMAC-SHA1 signature for temporary URLs</title>
+            <programlisting language="python">import hmac
+from hashlib import sha1
+from time import time
+method = 'GET'
+duration_in_seconds = 60*60*24
+expires = int(time() + duration_in_seconds)
+path = '/v1/my_account/container/object'
+key = '<replaceable>MYKEY</replaceable>'
+hmac_body = '%s\n%s\n%s' % (method, expires, path)
+signature = hmac.new(key, hmac_body, sha1).hexdigest()</programlisting>
+        </example>
+        <para>Do not URL-encode the path when you generate the
+            HMAC-SHA1 signature. However, when you make the actual
+            HTTP request, you should properly URL-encode the
+            URL.</para>
+        <para>The <replaceable>MYKEY</replaceable> value is the value
+            you set in the
+                <literal>X-Account-Meta-Temp-URL-Key</literal> request
+            header on the account.</para>
+        <para>For more information, see <link
+                xlink:href="http://www.ietf.org/rfc/rfc2104.txt">RFC
+                2104: HMAC: Keyed-Hashing for Message
+                Authentication</link>.</para>
+    </section>
+    <section xml:id="swift-temp-url-script">
+        <title>swift-temp-url script</title>
+        <para>Object Storage provides the
+                <command>swift-temp-url</command> script that
+            auto-generates the <parameter>temp_url_sig</parameter> and
+                <parameter>temp_url_expires</parameter> query
+            parameters. For example, you might run this
+            command:</para>
+        <screen><prompt>$</prompt> <userinput>bin/swift-temp-url GET 3600 /v1/my_account/container/object <replaceable>MYKEY</replaceable></userinput></screen>
+        <para>This command returns the path:</para>
+        <screen><computeroutput>/v1/my_account/container/object
+?temp_url_sig=5c4cc8886f36a9d0919d708ade98bf0cc71c9e91
+&amp;temp_url_expires=1374497657</computeroutput></screen>
+        <para>To create the temporary URL, prefix this path with the
+            Object Storage storage host name. For example, prefix the
+            path with
+                <literal>https://swift-cluster.example.com</literal>,
+            as follows:</para>
+        <screen><computeroutput>https://swift-cluster.example.com/v1/my_account/container/object
+?temp_url_sig=5c4cc8886f36a9d0919d708ade98bf0cc71c9e91
+&amp;temp_url_expires=1374497657</computeroutput></screen>
+    </section>
+
+</section>

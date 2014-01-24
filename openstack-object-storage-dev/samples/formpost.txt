@@ -1,0 +1,14 @@
+&lt;![CDATA[
+<form action="SWIFT_URL"
+    method="POST"
+    enctype="multipart/form-data">
+    <input type="hidden" name="redirect" value="REDIRECT_URL"/>
+    <input type="hidden" name="max_file_size" value="BYTES"/>
+    <input type="hidden" name="max_file_count" value="COUNT"/>
+    <input type="hidden" name="expires" value="UNIX_TIMESTAMP"/>
+    <input type="hidden" name="signature" value="HMAC"/>
+    <input type="file" name="FILE_NAME"/>
+    <br/>
+    <input type="submit"/>
+</form>
+]]&gt;
