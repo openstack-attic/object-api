@@ -186,7 +186,7 @@ format="SVG" scale="60"/>
                 OpenStack Object Storage are performed using SSL over
                 HTTP (HTTPS) on TCP port 443.</para>
         </note>
-
     </section>
-
+    <xi:include href="section_object_api_tempurl.xml"/>
+    <xi:include href="section_object_api_formpost.xml"/>
 </chapter>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE section [
+<!-- Useful for describing APIs -->
+<!ENTITY POST   '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
+]>
+<section xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns:m="http://www.w3.org/1998/Math/MathML"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:db="http://docbook.org/ns/docbook" version="5.0"
+    xml:id="form-post">
+    <title>Form POST middleware</title>
+    <?dbhtml stop-chunking?>
+    <para>You can upload objects directly to the Object Storage system
+        from a browser by using the form &POST; middleware. This
+        middleware uses account secret keys to generate a
+        cryptographic signature for the request. This means that you
+        do not need to send an authentication token in the
+            <literal>X-Auth-Token</literal> header to perform the
+        request.</para>
+    <para>The form &POST; middleware uses the same secret keys as the
+        temporary URL middleware uses. For information about how to
+        set these keys, see <xref
+            linkend="account-secret-keys-temp-url"/>.</para>
+    <para>For information about the form &POST; middleware
+        configuration options, see <link
+            xlink:href="http://docs.openstack.org/havana/config-reference/content/object-storage-form-post.html"
+            >Form post</link> in the <citetitle>OpenStack
+            Configuration Reference</citetitle>.</para>
+    <section xml:id="form-post-format">
+        <title>Form POST format</title>
+        <para>To upload objects to a cluster, you can use an HTML form
+            &POST; request.</para>
+        <para>The format of the form &POST; request is:</para>
+        <example xml:id="formpost-example">
+            <title>Form POST format</title>
+            <programlistingco>
+                <areaspec>
+                    <area xml:id="formpost.txt.action"
+                        units="linecolumn" coords="2 26"/>
+                    <area xml:id="formpost.txt.method"
+                        units="linecolumn" coords="3 19"/>
+                    <area xml:id="formpost.txt.enctype"
+                        units="linecolumn" coords="4 36"/>
+                    <area xml:id="formpost.txt.redirect"
+                        units="linecolumn" coords="5 65"/>
+                    <area xml:id="formpost.txt.max_file_size"
+                        units="linecolumn" coords="6 63"/>
+                    <area xml:id="formpost.txt.max_file_count"
+                        units="linecolumn" coords="7 64"/>
+                    <area xml:id="formpost.txt.expires"
+                        units="linecolumn" coords="8 66"/>
+                    <area xml:id="formpost.txt.signature"
+                        units="linecolumn" coords="9 58"/>
+                    <area xml:id="formpost.txt.file"
+                        units="linecolumn" coords="10 39"/>
+                    <area xml:id="formpost.txt.submit"
+                        units="linecolumn" coords="12 28"/>
+                </areaspec>
+                <programlisting language="bash"><xi:include href="samples/formpost.txt" parse="text"/></programlisting>
+            </programlistingco>
+        </example>
+        <para>The example shows these attributes:</para>
+        <calloutlist>
+            <callout arearefs="formpost.txt.action">
+                <para><emphasis role="bold"
+                                ><literal>action="<replaceable>SWIFT_URL</replaceable>"</literal></emphasis></para>
+                <para>Set to full URL where the objects are to be
+                    uploaded. The names of uploaded files are appended
+                    to the specified
+                        <replaceable>SWIFT_URL</replaceable>. So, you
+                    can upload directly to the root of a container
+                    with a URL like:</para>
+                <screen><userinput>https://swift-cluster.example.com/v1/my_account/container/</userinput></screen>
+                <para>Optionally, you can include an object prefix to
+                    separate uploads, such as:</para>
+                <screen><userinput>https://swift-cluster.example.com/v1/my_account/container/<replaceable>OBJECT_PREFIX</replaceable></userinput></screen>
+            </callout>
+            <callout arearefs="formpost.txt.method">
+                <para><emphasis role="bold"
+                    >method="POST"</emphasis></para>
+                <para>Must be <literal>POST</literal>.</para>
+            </callout>
+            <callout arearefs="formpost.txt.enctype">
+                <para><emphasis role="bold"
+                        >enctype="multipart/form-data"</emphasis></para>
+                <para>Must be
+                    <literal>multipart/form-data</literal>.</para>
+            </callout>
+            <callout arearefs="formpost.txt.redirect">
+                <para><emphasis role="bold">name="redirect"
+                            value="<replaceable>REDIRECT_URL</replaceable>"</emphasis></para>
+                <para>Redirects the browser to the
+                        <replaceable>REDIRECT_URL</replaceable> after
+                    the upload completes. The URL has status and
+                    message query parameters added to it, which
+                    specify the HTTP status code for the upload and an
+                    optional error message. The
+                        2<replaceable>nn</replaceable> status code
+                    indicates success.</para>
+                <para>The <replaceable>REDIRECT_URL</replaceable> can
+                    be an empty string. If so, the
+                        <literal>Location</literal> response header is
+                    not set.</para>
+            </callout>
+            <callout arearefs="formpost.txt.max_file_size">
+                <para><emphasis role="bold">name="max_file_size"
+                            value="<replaceable>BYTES</replaceable>"</emphasis></para>
+                <para>Required. Indicates the size, in bytes, of the
+                    maximum single file upload.</para>
+            </callout>
+            <callout arearefs="formpost.txt.max_file_count">
+                <para><emphasis role="bold">name="max_file_count"
+                        value=
+                        "<replaceable>COUNT</replaceable>"</emphasis></para>
+                <para>Required. Indicates the maximum number of files
+                    that can be uploaded with the form.</para>
+            </callout>
+            <callout arearefs="formpost.txt.expires">
+                <para><emphasis role="bold">name="expires"
+                            value="<replaceable>UNIX_TIMESTAMP</replaceable>"</emphasis></para>
+                <para>The UNIX timestamp that specifies the time
+                    before which the form must be submitted before it
+                    becomes no longer valid.</para>
+            </callout>
+            <callout arearefs="formpost.txt.signature">
+                <para><emphasis role="bold">name="signature"
+                            value="<replaceable>HMAC</replaceable>"</emphasis></para>
+                <para>The HMAC-SHA1 signature of the form. See <xref
+                        linkend="signature-form-post"/>.</para>
+            </callout>
+            <callout arearefs="formpost.txt.file">
+                <para><emphasis role="bold">type="file"
+                            name="<replaceable>FILE_NAME</replaceable>"</emphasis></para>
+                <para>File name of the file to be uploaded. You can
+                    include from one to the
+                        <literal>max_file_count</literal> value of
+                    files.</para>
+                <para>The file attributes must appear <emphasis
+                        role="italic">after</emphasis> the other
+                    attributes to be processed correctly.</para>
+                <para>If attributes appear after the file attributes,
+                    they are not sent with the sub-request because all
+                    attributes in the file cannot be parsed on the
+                    server side unless the whole file is read into
+                    memory; the server does not have enough memory to
+                    service these requests. Attributes that follow the
+                    file attributes are ignored.</para>
+            </callout>
+            <callout arearefs="formpost.txt.submit">
+                <para><emphasis role="bold">type=
+                    "submit"</emphasis></para>
+                <para>Must be <literal>submit</literal>.</para>
+            </callout>
+        </calloutlist>
+    </section>
+    <section xml:id="signature-form-post">
+        <title>HMAC-SHA1 signature for form POST</title>
+        <para>Form &POST; middleware uses an HMAC-SHA1 cryptographic
+            signature. This signature includes these elements from the
+            form:</para>
+        <itemizedlist>
+            <listitem>
+                <para>The path. Starting with <literal>/v1/</literal>
+                    onwards and including a container name and,
+                    optionally, an object prefix. In <xref
+                        linkend="signature-example-form-post"/>, the
+                    path is
+                        <literal>/v1/my_account/container/object_prefix</literal>.
+                    Do not URL-encode the path at this stage.</para>
+            </listitem>
+            <listitem>
+                <para>A redirect URL. If there is no redirect URL, use
+                    the empty string.</para>
+            </listitem>
+            <listitem>
+                <para>Maximum file size. In <xref
+                        linkend="signature-example-form-post"/>, the
+                        <literal>max_file_size</literal> is
+                        <literal>104857600</literal> bytes.</para>
+            </listitem>
+            <listitem>
+                <para>The maximum number of objects to upload. In
+                        <xref linkend="signature-example-form-post"/>,
+                        <literal>max_file_count</literal> is
+                        <literal>10</literal>.</para>
+            </listitem>
+            <listitem>
+                <para>Expiry time. In <xref
+                        linkend="signature-example-form-post"/>, the
+                    expiry time is set to <literal>600</literal>
+                    seconds into the future.</para>
+            </listitem>
+            <listitem>
+                <para>The secret key. Set as the
+                        <literal>X-Account-Meta-Temp-URL-Key</literal>
+                    header value.</para>
+            </listitem>
+        </itemizedlist>
+        <para>The following example code generates a signature for use
+            with form &POST;:</para>
+        <example xml:id="signature-example-form-post">
+            <title>HMAC-SHA1 signature for form POST</title>
+            <programlisting language="python">import hmac
+from hashlib import sha1
+from time import time
+path = '/v1/my_account/container/object_prefix'
+redirect = 'https://myserver.com/some-page'
+max_file_size = 104857600
+max_file_count = 10
+expires = int(time() + 600)
+key = '<replaceable>MYKEY</replaceable>'
+hmac_body = '%s\n%s\n%s\n%s\n%s' % (path, redirect,
+max_file_size, max_file_count, expires)
+signature = hmac.new(key, hmac_body, sha1).hexdigest()</programlisting>
+        </example>
+        <para>For more information, see <link
+                xlink:href="http://www.ietf.org/rfc/rfc2104.txt">RFC
+                2104: HMAC: Keyed-Hashing for Message
+                Authentication</link>.</para>
+    </section>
+    <section xml:id="form-post-curl">
+        <title>Form POST example</title>
+        <para>The following example shows how to submit a form by
+            using a cURL command. In this example, the object prefix
+            is <literal>photos/</literal> and the file being uploaded
+            is called <filename>flower.jpg</filename>.</para>
+        <para>This example uses the
+                <command>swift-form-signature</command> script to
+            compute the <literal>expires</literal> and
+                <literal>signature</literal> values.</para>
+        <screen><prompt>$</prompt> <userinput>bin/swift-form-signature /v1/my_account/container/photos/ https://example.com/done.html 5373952000 1 200 <replaceable>MYKEY</replaceable>
+Expires: 1390825338
+Signature: 35129416ebda2f1a21b3c2b8939850dfc63d8f43</userinput></screen>
+        <screen><prompt>$</prompt> <userinput>curl -i https://swift-cluster.example.com/v1/my_account/container/photos/ -X POST \
+       -F max_file_size=5373952000 -F max_file_count=1 -F expires=1390825338 \
+       -F signature=35129416ebda2f1a21b3c2b8939850dfc63d8f43 \
+       -F redirect=https://example.com/done.html \
+       -F file=@flower.jpg</userinput></screen>
+    </section>
+</section>
