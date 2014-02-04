@@ -669,7 +669,7 @@
         </section>
     </section>
     <section xml:id="assigning-cors-headers-to-requests">
-        <title>Assigning CORS Headers to Requests</title>
+        <title>Assign CORS headers to requests</title>
         <para>CORS is a specification that stands for Cross-Origin
             Resource Sharing. It defines how browsers and servers
             communicate across origins using HTTP headers, such as
@@ -678,35 +678,36 @@
             read more about the definition of the Access-Control-
             response headers and Origin response header at <link
                 xlink:href="http://www.w3.org/TR/access-control/"
-                >www.w3.org/TR/access-control/</link>.<itemizedlist>
-                <listitem>
-                    <para>Access-Control-Allow-Credentials</para>
-                </listitem>
-                <listitem>
-                    <para>Access-Control-Allow-Methods</para>
-                </listitem>
-                <listitem>
-                    <para>Access-Control-Allow-Origin</para>
-                </listitem>
-                <listitem>
-                    <para>Access-Control-Expose-Headers</para>
-                </listitem>
-                <listitem>
-                    <para>Access-Control-Max-Age</para>
-                </listitem>
-                <listitem>
-                    <para>Access-Control-Request-Headers</para>
-                </listitem>
-                <listitem>
-                    <para>Access-Control-Request-Method</para>
-                </listitem>
-                <listitem>
-                    <para>Origin</para>
-                </listitem>
-            </itemizedlist></para>
-        <para>You can assign these headers to objects only.</para>
+                >www.w3.org/TR/access-control/</link>.
+            <table rules="all">
+                <caption>Supported Headers</caption>
+                <col width="50%"/>
+                <col width="50%"/>
+                <thead>
+                    <tr>
+                        <td><emphasis>Metadata</emphasis></td>
+                        <td><emphasis>Use</emphasis></td>
+                    </tr>
+                 </thead>
+                 <tbody>
+                    <tr>
+                        <td>X-Container-Meta-Access-Control-Allow-Origin</td>
+                        <td>Origins to be allowed to make Cross Origin Requests, space separated.</td>
+                    </tr>
+                    <tr>
+                        <td>X-Container-Meta-Access-Control-Max-Age</td>
+                        <td>Max age for the Origin to hold the preflight results.</td>
+                    </tr>
+                    <tr>
+                        <td>X-Container-Meta-Access-Control-Expose-Headers</td>
+                        <td>Headers exposed to the user agent (e.g. browser) in the the actual request response. Space separated.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </para>
+        <para>CORS metadata is held on the container only. The values given apply to the container itself and all objects within it.</para>
         <example>
-            <title>Assign CORS Header HTTP Request</title>
+            <title>Assign CORS header request: HTTP</title>
             <para>In the example, the origin header is assigned that
                 indicates where the file came from. This allows you to
                 provide security that requests to your Object Storage
@@ -714,6 +715,9 @@
                 origination:</para>
             <literallayout class="monospaced"><xi:include href="samples/object-assign-cors-header-req.txt" parse="text"/></literallayout>
         </example>
+        <para>You can find more details in the <link
+                xlink:href="http://docs.openstack.org/developer/swift/cors.html"
+                >Swift Documentation</link>.</para>
     </section>
     <section
         xml:id="enabling-file-compression-with-content-encoding-header">
