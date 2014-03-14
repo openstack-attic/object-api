@@ -2,59 +2,58 @@
 <!DOCTYPE section [
 <!-- Useful for describing APIs -->
 <!ENTITY PUT '<command xmlns="http://docbook.org/ns/docbook">PUT</command>'>
+<!ENTITY DELETE '<command xmlns="http://docbook.org/ns/docbook">DELETE</command>'>
 <!ENTITY POST '<command xmlns="http://docbook.org/ns/docbook">POST</command>'>
 ]>
 <section xmlns="http://docbook.org/ns/docbook"
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="bulk-delete">
+    <?dbhtml stop-chunking?>
     <title>Bulk delete</title>
-    <para>To discover whether your Object Storage system supports
-        this feature, see <xref linkend="discoverability"
-        />. Alternatively, check with your service provider.</para>
-    <para>With bulk delete, you can delete up to 10,000 (configurable)
-        objects or containers in one request. The objects to be
-        deleted are listed in the body of a &POST; operation. Use
-        the <parameter>bulk-delete</parameter> query parameter to
-        indicate that you are performing a bulk delete operation
-        instead of a normal delete.</para>
+    <para>To discover whether your Object Storage system supports this
+        feature, see <xref linkend="discoverability"/>. Alternatively,
+        check with your service provider.</para>
+    <para>With bulk delete, you can delete up to 10,000 objects or
+        containers (configurable) in one request.</para>
     <section xml:id="bulk-delete-request">
-        <title>Bulk delete request body</title>
+        <title>Bulk delete request</title>
         <para>To perform a bulk delete operation, add the
                 <parameter>bulk-delete</parameter> query parameter to
-            the path. The path should be the account, such as
-                <literal>/v1/12345678912345</literal>), that contains
-            the objects and containers. You must set the
-                <literal>Content-Type</literal> request header to
-                <literal>text/plain</literal>.</para>
-        <para>In the request body, specify a list of objects or
-            containers names that are separated by a newline
-            character.</para>
-        <para>In addition:</para>
+            the path of a &POST; or &DELETE; operation.</para>
+        <note>
+            <para>The &DELETE; operation is supported for backwards
+                compatibility.</para>
+        </note>
+        <para>The path is the account, such as
+                <literal>/v1/12345678912345</literal>, that contains
+            the objects and containers.</para>
+        <para>In the request body of the &POST; or &DELETE; operation,
+            list the objects or containers to be deleted. Separate
+            each name with a newline character. You can include a
+            maximum of 10,000 items (configurable) in the list.</para>
+        <para>In addition, you must:</para>
         <itemizedlist>
             <listitem>
-                <para>You must UTF-8-encode and then URL-encode the
+                <para>UTF-8-encode and then URL-encode the
                     names.</para>
             </listitem>
             <listitem>
                 <para>To indicate an object, specify the container and
                     object name as:
-                            <literal><replaceable>CONTAINER_NAME</replaceable>/<replaceable>OBJECT_NAME</replaceable></literal></para>
+                            <literal><replaceable>CONTAINER_NAME</replaceable>/<replaceable>OBJECT_NAME</replaceable></literal>.</para>
             </listitem>
             <listitem>
                 <para>To indicate a container, specify the container
                     name as:
-                            <literal><replaceable>CONTAINER_NAME</replaceable></literal></para>
-            </listitem>
-            <listitem>
-                <para>A container must be empty. If it contains
-                    objects, Object Storage does not delete the
+                            <literal><replaceable>CONTAINER_NAME</replaceable></literal>.
+                    Ensure that the container is empty. If it contains
+                    objects, Object Storage cannot delete the
                     container.</para>
             </listitem>
             <listitem>
-                <para>You can include a maximum of 10,000 items in the
-                    list. You can configure the maximum number of
-                    items value.</para>
+                <para>Set the <literal>Content-Type</literal> request
+                    header to <literal>text/plain</literal>.</para>
             </listitem>
         </itemizedlist>
     </section>
@@ -63,11 +62,13 @@
         <para>When Object Storage processes the request, it performs
             multiple sub-operations. Even if all sub-operations fail,
             the operation returns a <returnvalue>200</returnvalue>
-            status. You must examine the response body to determine
-            which members failed to result in an object
-            deletion.</para>
+            status. The bulk operation returns a response body that
+            contains details that indicate which sub-operations have
+            succeeded and failed. Some sub-operations might succeed
+            while others fail: Examine the response body to determine
+            the results of each delete sub-operation.</para>
         <para>You can set the <literal>Accept</literal> request header
-            to one of these values, which defines the response
+            to one of these values to define the response
             format:</para>
         <itemizedlist>
             <listitem>
@@ -87,19 +88,6 @@
                     as XML.</para>
             </listitem>
         </itemizedlist>
-        <para>For more information, see <xref
-                linkend="response-body-bulk-delete"/>.</para>
-    </section>
-    <section xml:id="response-body-bulk-delete">
-        <title>Response body for bulk operations</title>
-        <para>Some bulk operations, such as bulk delete and
-            auto-extract archive files, perform multiple
-            sub-operations. Some sub-operations might succeed while
-            others fail. The bulk operation returns a response body
-            that contains details that indicate which sub-operations
-            have succeeded and failed.</para>
-        <para>You can set the <literal>Accept</literal> request header
-            to define the response format.</para>
         <para>The response body contains the following
             information:</para>
         <itemizedlist>
@@ -108,8 +96,7 @@
                     depending on context.</para>
             </listitem>
             <listitem>
-                <para>The number of not found objects. For bulk delete
-                    only.</para>
+                <para>The number of not found objects.</para>
             </listitem>
             <listitem>
                 <para>Errors. A list of object names and associated
@@ -119,41 +106,7 @@
                     header.</para>
             </listitem>
         </itemizedlist>
-        <para>The following auto-extract archive files example shows a
-                <literal>text/plain</literal> response body where no
-            failures occurred:</para>
-        <screen><computeroutput>Number Files Created: 10
-            Errors:</computeroutput></screen>
-        <para>The following auto-extract archive files example shows a
-                <literal>text/plain</literal> response where some
-            failures occurred. In this example, the Object Storage
-            system is configured to reject certain character strings
-            so that the <errorcode>400</errorcode>
-            <errortext>Bad Request</errortext> error occurs for any
-            objects that use the restricted strings.</para>
-        <screen><computeroutput>Number Files Created: 8
-        Errors:
-        /v1/12345678912345/mycontainer/home/xx%3Cyy, 400 Bad Request
-        /v1/12345678912345/mycontainer/../image.gif, 400 Bad Request</computeroutput></screen>
-        <para>The following example shows the failure response in
-                <literal>application/json</literal> format. This
-            example output has been reformatted with whitespace to
-            make it easier to read. The actual response has no such
-            whitespace.</para>
-        <programlisting language="json">{
-   "Number Files Created":1,
-   "Errors":[
-      [
-         "/v1/12345678912345/mycontainer/home/xx%3Cyy",
-         "400 Bad Request"
-      ],
-      [
-         "/v1/12345678912345/mycontainer/../image.gif",
-         "400 Bad Request"
-      ]
-   ]
-}</programlisting>
-        <para>The following bulk delete example response is in
+        <para>The following bulk delete response is in
                 <literal>application/xml</literal> format. In this
             example, the <literal>mycontainer</literal> container is
             not empty, so it cannot be deleted.</para>

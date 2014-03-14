@@ -7,16 +7,17 @@
     xmlns:xi="http://www.w3.org/2001/XInclude"
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="archive-auto-extract">
+    <?dbhtml stop-chunking?>
     <title>Auto-extract archive files</title>
-    <para>To discover whether your Object Storage system supports
-        this feature, see <xref linkend="discoverability"
-        />. Alternatively, check with your service provider.</para>
+    <para>To discover whether your Object Storage system supports this
+        feature, see <xref linkend="discoverability"/>. Alternatively,
+        check with your service provider.</para>
     <para>Use the auto-extract archive feature to upload a tar(1)
         archive file.</para>
     <para>The Object Storage system extracts files from the archive
         file and creates an object.</para>
     <section xml:id="archive-auto-extract-put">
-        <title>Auto-extract archive PUT request</title>
+        <title>Auto-extract archive request</title>
         <para>To upload an archive file, you make a &PUT; request. Add
             the
                     <parameter>extract-archive=<replaceable>format</replaceable></parameter>
@@ -74,22 +75,25 @@
                     archive.</para>
                 <para>Use the <parameter>extract-archive</parameter>
                     query parameter to specify the format. Valid
-                    values for this parameter are <literal>tar</literal>,
+                    values for this parameter are
+                        <literal>tar</literal>,
                         <literal>tar.gz</literal>, or
                         <literal>tar.bz2</literal>.</para>
             </listitem>
         </itemizedlist>
     </section>
     <section xml:id="archive-auto-extract-response">
-        <title>Auto-extract archive response: JSON</title>
+        <title>Auto-extract archive response</title>
         <para>When Object Storage processes the request, it performs
             multiple sub-operations. Even if all sub-operations fail,
             the operation returns a <returnvalue>201</returnvalue>
-            <literal>Created</literal> status. You must examine the
-            response body to determine which members failed to result
-            in an object creation.</para>
+            <literal>Created</literal> status. Some sub-operations
+            might succeed while others fail: Examine the response body
+            to determine the results of each auto-extract archive
+            sub-operation.</para>
         <para>You can set the <literal>Accept</literal> request header
-            to one of these values, which defines the response format:</para>
+            to one of these values to define the response
+            format:</para>
         <itemizedlist>
             <listitem>
                 <para><literal>text/plain</literal>. Formats response
@@ -108,7 +112,36 @@
                     as XML.</para>
             </listitem>
         </itemizedlist>
-        <para>For more information, see <xref
-                linkend="archive-auto-extract-response"/>.</para>
+        <para>The following auto-extract archive files example shows a
+                <literal>text/plain</literal> response body where no
+            failures occurred:</para>
+        <screen><computeroutput>Number Files Created: 10
+Errors:</computeroutput></screen>
+        <para>The following auto-extract archive files example shows a
+                <literal>text/plain</literal> response where some
+            failures occurred. In this example, the Object Storage
+            system is configured to reject certain character strings
+            so that the <errorcode>400</errorcode>
+            <errortext>Bad Request</errortext> error occurs for any
+            objects that use the restricted strings.</para>
+        <screen><computeroutput>Number Files Created: 8
+Errors:
+/v1/12345678912345/mycontainer/home/xx%3Cyy, 400 Bad Request
+/v1/12345678912345/mycontainer/../image.gif, 400 Bad Request</computeroutput></screen>
+        <para>The following example shows the failure response in
+                <literal>application/json</literal> format.</para>
+        <programlisting language="json">{
+   "Number Files Created":1,
+   "Errors":[
+      [
+         "/v1/12345678912345/mycontainer/home/xx%3Cyy",
+         "400 Bad Request"
+      ],
+      [
+         "/v1/12345678912345/mycontainer/../image.gif",
+         "400 Bad Request"
+      ]
+   ]
+}</programlisting>
     </section>
 </section>
