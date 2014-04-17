@@ -43,11 +43,10 @@ format="SVG" scale="60"/>
         interface. There are also language-specific APIs that utilize
         the RESTful API but make it much easier for developers to
         integrate into their applications.</para>
-    <para>For more details on the OpenStack Object Storage service,
-        please refer to <link
+    <para>For more details about the OpenStack Object Storage service,
+        see <link
             xlink:href="http://docs.openstack.org/developer/swift/"
-            >http://docs.openstack.org/developer/swift/</link>
-    </para>
+            >http://docs.openstack.org/developer/swift/</link>.</para>
     <para>We welcome feedback, comments, and bug reports at <link
             xlink:href="http://bugs.launchpad.net/swift"
             >http://bugs.launchpad.net/swift</link>.</para>

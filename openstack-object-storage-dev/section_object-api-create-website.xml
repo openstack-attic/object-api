@@ -4,9 +4,9 @@
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="static-website">
     <title>Create static website</title>
-    <para>To discover whether your Object Storage system supports
-        this feature, see <xref linkend="discoverability"
-        />. Alternatively, check with your service provider.</para>
+    <para>To discover whether your Object Storage system supports this
+        feature, see <xref linkend="discoverability"/>. Alternatively,
+        check with your service provider.</para>
     <para>You can use your Object Storage account to create a static
         website. This mode is normally only active for anonymous
         requests, which provide no authentication token. To use it
@@ -21,7 +21,7 @@
             <literal>X-Container-Meta-Web-Error</literal>. (The latter
         header is discussed below, under <link
             linkend="Set_Error_Pages_for_Static_Website-dle4005">Set
-            Error Pages for Static Website</link>.) With
+            error pages for static website</link>.) With
             <literal>X-Container-Meta-Web-Index</literal>, you
         determine the index file (or default page served, such as
             <literal>index.html</literal>) displays your website. When
@@ -41,9 +41,9 @@
         style sheet (for example,
         <literal>lists.css</literal>).</para>
     <section xml:id="Examples_for_static_web-dle4025">
-        <title>Static Web Middleware through swift</title>
+        <title>Static web middleware through swift</title>
         <example>
-            <title>Make Container Publicly Readable</title>
+            <title>Make container publicly readable</title>
             <para>Make the container publicly readable. Once the
                 container is publicly readable, you may access your
                 objects directly, but you must set the index file to
@@ -52,27 +52,27 @@
             <screen><prompt>$</prompt> <userinput>swift post -r '.r:*' container</userinput></screen>
         </example>
         <example>
-            <title>Set Site Index File</title>
+            <title>Set site index file</title>
             <para>Set the index file. In this case,
                     <literal>index.html</literal> is the default file
                 displayed when the site displays.</para>
             <screen><prompt>$</prompt> <userinput>swift post -m 'web-index:index.html' container</userinput></screen>
         </example>
         <example>
-            <title>Enable File Listing</title>
+            <title>Enable file listing</title>
             <para>Turn on file listing. If you do not set the index
                 file, list the objects in the container. Instructions
                 on styling the list with the CSS follow.</para>
             <screen><prompt>$</prompt> <userinput>swift post -m 'web-listings: true' container</userinput></screen>
         </example>
         <example>
-            <title>Enable CSS for File Listing</title>
+            <title>Enable CSS for file listing</title>
             <para>Style the file listing.</para>
             <programlisting language="ini"><xi:include href="samples/file-listings-css-set-req.txt" parse="text"/></programlisting>
         </example>
     </section>
     <section xml:id="Set_Error_Pages_for_Static_Website-dle4005">
-        <title>Set Error Pages for Static Website</title>
+        <title>Set error pages for static website</title>
         <para>You can create and set custom error pages for visitors
             to your website; currently, only 401 (Unauthorized) and
             404 (Not Found) errors are supported. To do this, set the
@@ -93,10 +93,10 @@
         <para>Set the <literal>X-Container-Meta-Web-Error</literal>
             metadata once for your entire static website.</para>
         <example>
-            <title>Set Error Pages for Static Website Request</title>
+            <title>Set error pages for static website request</title>
             <programlisting language="ini"><xi:include href="samples/error-page-set-req.txt" parse="text"/></programlisting>
         </example>
-        <para>Any 2<varname>nn</varname> response indicates success.
-       </para>
+        <para>Any 2<varname>nn</varname> response indicates
+            success.</para>
     </section>
 </section>

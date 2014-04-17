@@ -26,8 +26,7 @@
         </listitem>
         <listitem>
             <para><literal>X-Container-Meta-Quota-Count</literal>. The
-                number of objects that can be stored in a container.
-            </para>
+                number of objects that can be stored in a container.</para>
         </listitem>
     </itemizedlist>
     <para>When you exceed a container quota, subsequent requests to
