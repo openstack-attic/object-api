@@ -44,6 +44,16 @@
     </abstract>
     <revhistory>
       <revision>
+        <date>2014-04-16</date>
+        <revdescription>
+          <itemizedlist spacing="compact">
+            <listitem>
+              <para>Added <literal>X-Newest</literal> header to show container details and list objects call.</para>
+            </listitem>
+          </itemizedlist>
+        </revdescription>
+      </revision>
+      <revision>
         <date>2014-02-03</date>
         <revdescription>
           <itemizedlist spacing="compact">
