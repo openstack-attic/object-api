@@ -40,8 +40,7 @@
         </listitem>
         <listitem>
             <para>The destination container can be a source container
-                for synchronization for another destination container.
-            </para>
+                for synchronization for another destination container.</para>
         </listitem>
         <listitem>
             <para>The destination container can be the original source
