@@ -62,16 +62,16 @@ Date: Fri, 17 Jan 2014 15:59:33 GMT</computeroutput>
     </screen>
     <para>The response, in JSON format, is:</para>
     <programlisting language="json">[
-   {
-      "count":0,
-      "bytes":0,
-      "name":"janeausten"
-   },
-   {
-      "count":1,
-      "bytes":14,
-      "name":"marktwain"
-   }
+    {
+        "count": 0,
+        "bytes": 0,
+        "name": "janeausten"
+    },
+    {
+        "count": 1,
+        "bytes": 14,
+        "name": "marktwain"
+    }
 ]</programlisting>
     <note>
         <para>The carriage returns in the cURL request examples are
