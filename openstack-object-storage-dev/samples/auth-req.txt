@@ -1,4 +1,0 @@
-GET /v1.0 HTTP/1.1
-Host: auth.api.yourcloud.com
-X-Auth-User: jdoe
-X-Auth-Key: a86850deb2742ec3cb41518e26aa2d89

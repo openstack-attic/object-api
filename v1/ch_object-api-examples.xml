@@ -19,7 +19,7 @@
         API calls.</para>
     <note>
         <para>For more examples, see <link
-                xlink:href="http://api.openstack.org/api-ref-objectstorage.html"
+            xlink:href="http://developer.openstack.org/api-ref-objectstorage-v1.html"
                 >Object Storage API v1</link>.</para>
     </note>
     <xi:include href="section_object-api-curl-commands.xml"/>

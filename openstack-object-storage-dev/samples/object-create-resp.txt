@@ -1,6 +1,0 @@
-HTTP/1.1 201 Created
-Date: Thu, 07 Jun 2010 18:57:07 GMT
-Server: Apache
-ETag: d9f5eb4bba4e2f2f046e54611bc8196b
-Content-Length: 0
-Content-Type: text/plain; charset=UTF-8

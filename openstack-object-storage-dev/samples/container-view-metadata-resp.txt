@@ -1,9 +1,0 @@
-HTTP/1.1 204 No Content
-X-Container-Object-Count: 0
-X-Trans-Id: tx028b40d228534c759f4d5fa69f8cf7fd
-X-Container-Meta-Book: MobyDick
-X-Container-Meta-Subject: Whaling
-Accept-Ranges: bytes
-Date: Mon, 12 Mar 2012 16:40:20 GMT
-Content-Length: 0
-X-Container-Bytes-Used: 0

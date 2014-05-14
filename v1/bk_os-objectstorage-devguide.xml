@@ -11,7 +11,7 @@
   xmlns:db="http://docbook.org/ns/docbook" version="5.0"
   xml:id="openstack-object-storage-dev-guide">
   <title>OpenStack Object Storage API v1 Reference</title>
-  <?rax title.font.size="26px" subtitle.font.size="26px"?>
+  <?rax title.font.size="28px" subtitle.font.size="28px"?>
   <titleabbrev>Object Storage API Reference</titleabbrev>
   <info>
     <author>
@@ -19,17 +19,16 @@
         <firstname/>
         <surname/>
       </personname>
+      <affiliation>
+        <orgname>OpenStack Foundation</orgname>
+      </affiliation>
     </author>
     <copyright>
-      <year>2010</year>
-      <year>2011</year>
-      <year>2012</year>
-      <year>2013</year>
-      <year>2014</year>
+      <year>2010-2014</year>
       <holder>OpenStack Foundation</holder>
     </copyright>
     <releaseinfo>API v1</releaseinfo>
-    <productname>OpenStack Object Storage API v1</productname>
+    <productname>OpenStack Object Storage</productname>
     <pubdate/>
     <legalnotice role="apache2">
       <annotation>
