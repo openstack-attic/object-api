@@ -26,7 +26,6 @@
                 <groupId>com.rackspace.cloud.api</groupId>
                 <artifactId>clouddocs-maven-plugin</artifactId>
                 <!-- version is in ../pom.xml file -->
-              <!--  <version>1.15.0</version>-->
                 <executions>
                     <!-- Configuration for OpenStack End User Guide -->
                     <execution>
