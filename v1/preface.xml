@@ -67,7 +67,8 @@ format="SVG" scale="60"/>
                 <para>RESTful web services</para>
             </listitem>
             <listitem>
-                <para>HTTP/1.1</para>
+                <para>HTTP/1.1 - the Swift API is HTTP 1.1, which means that you can use cache
+                    control headers such as If-Modified-Since in your queries.</para>
             </listitem>
         </itemizedlist>
         <para>You can also find language-specific APIs in several
