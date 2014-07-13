@@ -127,7 +127,7 @@
         <para>For example, use the <command>swift post</command>
             command to set the secret key to
                 <replaceable>MYKEY</replaceable>:</para>
-        <screen><prompt>$</prompt> <userinput>swift post -m "X-Account-Meta-Temp-URL-Key: <replaceable>MYKEY</replaceable>"</userinput></screen>
+        <screen><prompt>$</prompt> <userinput>swift post -m "Temp-URL-Key:<replaceable>MYKEY</replaceable>"</userinput></screen>
         <note>
             <para>Changing these headers invalidates any previously
                 generated temporary URLs within 60 seconds, which is
