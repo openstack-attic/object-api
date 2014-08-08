@@ -233,21 +233,24 @@
         with the Object Storage API:</para>
     <itemizedlist>
         <listitem>
-            <para><xref linkend="storage_account_services"/>. Use to
+            <para><link xlink:href="http://developer.openstack.org/api-ref-objectstorage-v1.html#storage_account_services">Storage accounts</link>: Use to
                 perform account-level tasks.</para>
             <para>Lists containers for a specified account. Creates,
                 updates, and deletes account metadata. Shows account
                 metadata.</para>
         </listitem>
         <listitem>
-            <para><xref linkend="storage_container_services"/>. Use to
+            <para><link
+                xlink:href="http://developer.openstack.org/api-ref-objectstorage-v1.html#storage_container_services">Storage containers</link>: Use to
                 perform container-level tasks.</para>
             <para>Lists objects in a specified container. Creates,
                 shows details for, and deletes containers. Creates,
                 updates, shows, and deletes container metadata.</para>
         </listitem>
         <listitem>
-            <para><xref linkend="storage_object_services"/>. Use to
+            <para><link
+                xlink:href="http://developer.openstack.org/api-ref-objectstorage-v1.html#storage_object_services">Storage
+                objects</link>: Use to
                 perform object-level tasks.</para>
             <para>Creates, replaces, shows details for, and deletes
                 objects. Copies objects with another object with a new
