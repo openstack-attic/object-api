@@ -14,7 +14,7 @@
         formats are supported.</para>
     <note>
         <para>To run the cURL command examples, you must export <link
-                xlink:href="run_curl_commands">environment
+                linkend="env-vars">environment
                 variables</link>.</para>
     </note>
     <para>To define the response format, use one of these
