@@ -1,7 +1,11 @@
 Object Storage API
 ++++++++++++++++++
 
-This repository contains the RESTful API information for the OpenStack
+This repository is now frozen-in-time and will not accept new patches.
+To update Object Storage API information, please submit patches to
+http://git.openstack.org/cgit/openstack/swift and http://git.openstack.org/cgit/openstack/api-site.
+
+It was the original holder for API information for the OpenStack
 Object Storage Service, also known as Swift. The Swift project
 provides services for object storage and retrieval as well as
 assigning metadata.

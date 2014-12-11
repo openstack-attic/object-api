@@ -41,7 +41,7 @@
         applications by using the OpenStack™ Object Storage
         Application Programming Interface (API) v1.</para>
     </abstract>
-    <revhistory>
+    <!--<revhistory>
       <revision>
         <date>2014-04-16</date>
         <revdescription>
@@ -222,10 +222,10 @@
           </itemizedlist>
         </revdescription>
       </revision>
-    </revhistory>
+    </revhistory>-->
   </info>
   <!-- Chapters are referred from the book file through these include statements. You can add additional chapters using these types of statements. -->
-  <xi:include href="preface.xml"/>
+  <!--<xi:include href="preface.xml"/>-->
   <xi:include href="ch_object-api-concepts-and-features.xml"/>
   <xi:include href="ch_object-api-operations.xml"/>
   <xi:include href="ch_object-api-examples.xml"/>
