@@ -12,11 +12,7 @@
     xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0"
     xml:id="object_storage_api_overview">
     <title>Object Storage API overview</title>
-    <para>OpenStack Object Storage is an object-based storage system
-        that stores content and metadata as objects. You create,
-        modify, and get objects and metadata by using the Object
-        Storage API, which is implemented as a set of Representational
-        State Transfer (REST) web services.</para>
+    <para>Swift is a highly available, distributed, eventually consistent object/blob store.</para>
     <para>For an introduction to OpenStack Object Storage, see <link
             xlink:href="http://docs.openstack.org/admin-guide-cloud/content/ch_admin-openstack-object-storage.html"
             >Object Storage</link> in the <citetitle>OpenStack Cloud
