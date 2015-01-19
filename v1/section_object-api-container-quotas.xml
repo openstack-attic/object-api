@@ -40,7 +40,7 @@
         quota.</para>
     <para>At some later time, the system updates the container size
         and object count to the actual values. At this time,
-        subsequent requests fails. In addition, if you are currently
+        subsequent requests fail. In addition, if you are currently
         under the <literal>X-Container-Meta-Quota-Bytes</literal>
         limit and a request uses chunked transfer encoding, the system
         cannot know if the request will exceed the quota so the system
